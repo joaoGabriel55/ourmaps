@@ -3,8 +3,7 @@
 class Owner
   attr_accessor :custom_maps
 
-  def initialize(name:, custom_maps:)
-    @name = name
+  def initialize(custom_maps:)
     @custom_maps = custom_maps
   end
 
