@@ -1,8 +1,13 @@
 # OurMaps API
 
-Deploy app locally
+### Deploy app locally
 ```sh
 docker-compose up --build
+```
+
+### Run tests
+```sh
+docker compose run --build web rspec
 ```
 
 ### Format your code
