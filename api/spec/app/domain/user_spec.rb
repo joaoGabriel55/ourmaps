@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require './app/domain/user'
 
 RSpec.describe User do
   context 'valid user' do
     let(:user) do
-      User.new(name: 'John')
+      described_class.new(name: 'John', password: '123456')
     end
 
     it { expect(user.valid?).to be(true) }
@@ -12,7 +14,7 @@ RSpec.describe User do
 
   context 'invalid user' do
     let(:user) do
-      User.new
+      described_class.new
     end
 
     it { expect(user.valid?).to be(false) }
@@ -20,7 +22,7 @@ RSpec.describe User do
 
   context 'to hash' do
     let(:user) do
-      User.new(name: 'John')
+      described_class.new(name: 'John')
     end
 
     it { expect(user.to_hash).to include({ name: 'John', owner: nil, colaborator: nil }) }
