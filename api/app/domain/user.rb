@@ -5,11 +5,12 @@ require './app/domain/owner'
 require './app/domain/colaborator'
 
 class User
-  attr_accessor :id, :name, :owner, :colaborator, :created_at, :updated_at
+  attr_accessor :id, :name, :password, :owner, :colaborator, :created_at, :updated_at
 
-  def initialize(name: nil, owner: nil, colaborator: nil)
+  def initialize(name: nil, password: nil, owner: nil, colaborator: nil)
     @id = IdProvider.next_id
     @name = name
+    @password = password
     @owner = owner
     @colaborator = colaborator
     @created_at = DateTime.now
@@ -17,13 +18,14 @@ class User
   end
 
   def valid?
-    name.present?
+    name.present? && password.present?
   end
 
   def to_hash
     {
       id:,
       name:,
+      password:,
       owner:,
       colaborator:,
       created_at:,
