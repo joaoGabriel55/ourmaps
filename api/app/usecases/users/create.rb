@@ -10,7 +10,7 @@ module Usecases
     class Create
       attr_accessor :user_repository, :user, :params
 
-      def initialize(params:, user: Domain::User, repository_adapter:)
+      def initialize(params:, repository_adapter:, user: Domain::User)
         @params = params
         @user = user
         @user_repository = Domain::UserRepository.new(repository: repository_adapter)

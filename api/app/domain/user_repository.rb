@@ -10,8 +10,6 @@ module Domain
       @repository = repository
     end
 
-    def create!(user)
-      repository.create!(user)
-    end
+    delegate :create!, to: :repository
   end
 end

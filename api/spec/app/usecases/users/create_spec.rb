@@ -15,7 +15,8 @@ RSpec.describe Usecases::Users::Create do
 
   context 'create new user' do
     let(:create_user) do
-      described_class.new(params: { name: 'John', password: '123456' }, repository_adapter:)
+      described_class.new(params: { name: 'John', password: '123456' },
+        repository_adapter:)
     end
 
     it 'calls user repository' do
