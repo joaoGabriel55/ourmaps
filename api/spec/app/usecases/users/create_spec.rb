@@ -4,18 +4,26 @@ require 'spec_helper'
 require './app/usecases/users/create'
 require './app/adapters/user_repository'
 
-RSpec.describe Users::Create do
+class RepositoryAdapter
+  def create!(user)
+    user
+  end
+end
+
+RSpec.describe Usecases::Users::Create do
+  let(:repository_adapter) { RepositoryAdapter.new }
+
   context 'create new user' do
     let(:create_user) do
-      described_class.new(params: { name: 'John', password: '123456' })
+      described_class.new(params: { name: 'John', password: '123456' }, repository_adapter:)
     end
 
     it 'calls user repository' do
-      allow(UserRepository).to receive(:create!).and_return(nil)
+      allow(repository_adapter).to receive(:create!).and_return(nil)
 
       create_user.call
 
-      expect(UserRepository).to have_received(:create!).with(include({
+      expect(repository_adapter).to have_received(:create!).with(include({
         name: 'John', password: '123456', owner: nil, colaborator: nil
       }))
     end
@@ -23,9 +31,9 @@ RSpec.describe Users::Create do
 
   context 'invalid user' do
     let(:create_user) do
-      described_class.new(params: { name: '' })
+      described_class.new(params: { name: '' }, repository_adapter:)
     end
 
-    it { expect { create_user.call }.to raise_error(Users::InvalidUser) }
+    it { expect { create_user.call }.to raise_error(Usecases::Users::InvalidUser) }
   end
 end

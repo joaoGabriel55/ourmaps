@@ -3,7 +3,7 @@
 require 'spec_helper'
 require './app/domain/user'
 
-RSpec.describe User do
+RSpec.describe Domain::User do
   context 'valid user' do
     let(:user) do
       described_class.new(name: 'John', password: '123456')

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
-class UserRepository < ActiveRecord::Base
-  self.table_name = 'users'
+module Adapters
+  class UserRepository < ActiveRecord::Base
+    self.table_name = 'users'
+  end
 end
