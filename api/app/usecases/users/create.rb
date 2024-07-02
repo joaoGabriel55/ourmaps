@@ -5,8 +5,6 @@ require './app/domain/user_repository'
 
 module Usecases
   module Users
-    class InvalidUser < StandardError; end
-
     class Create
       attr_accessor :user_repository, :user, :params
 
@@ -19,9 +17,9 @@ module Usecases
       def call
         new_user = user.new(name: params[:name], password: params[:password])
 
-        raise InvalidUser if new_user.valid? == false
-
         user_repository.create!(new_user.to_hash)
+
+        new_user.to_hash
       end
     end
   end

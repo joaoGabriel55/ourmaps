@@ -9,7 +9,7 @@ RSpec.describe Domain::User do
       described_class.new(name: 'John', password: '123456')
     end
 
-    it { expect(user.valid?).to be(true) }
+    it { expect { described_class.new(name: 'John', password: '123456') }.not_to raise_error(Domain::InvalidUser) }
   end
 
   context 'invalid user' do
@@ -17,14 +17,14 @@ RSpec.describe Domain::User do
       described_class.new
     end
 
-    it { expect(user.valid?).to be(false) }
+    it { expect { described_class.new }.to raise_error(Domain::InvalidUser) }
   end
 
-  context 'to hash' do
+  describe '.to_hash' do
     let(:user) do
-      described_class.new(name: 'John')
+      described_class.new(name: 'John', password: '123456')
     end
 
-    it { expect(user.to_hash).to include({ name: 'John', owner: nil, colaborator: nil }) }
+    it { expect(user.to_hash).to include({ name: 'John', password: '123456', owner: nil, colaborator: nil }) }
   end
 end

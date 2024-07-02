@@ -3,6 +3,7 @@
 require 'spec_helper'
 require './app/usecases/users/create'
 require './app/adapters/user_repository'
+require './app/domain/user'
 
 class RepositoryAdapter
   def create!(user)
@@ -35,6 +36,6 @@ RSpec.describe Usecases::Users::Create do
       described_class.new(params: { name: '' }, repository_adapter:)
     end
 
-    it { expect { create_user.call }.to raise_error(Usecases::Users::InvalidUser) }
+    it { expect { create_user.call }.to raise_error(Domain::InvalidUser) }
   end
 end
