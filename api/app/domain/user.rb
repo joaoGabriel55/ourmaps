@@ -4,30 +4,46 @@ require './app/shared_kernel/id_provider'
 require './app/domain/owner'
 require './app/domain/colaborator'
 
-class User
-  attr_accessor :id, :name, :owner, :colaborator, :created_at, :updated_at
+module Domain
+  class InvalidUser < StandardError; end
 
-  def initialize(name: nil, owner: nil, colaborator: nil)
-    @id = IdProvider.next_id
-    @name = name
-    @owner = owner
-    @colaborator = colaborator
-    @created_at = DateTime.now
-    @updated_at = nil
-  end
+  class User
+    attr_accessor :id, :name, :password, :owner, :colaborator, :created_at, :updated_at
 
-  def valid?
-    name.present?
-  end
+    def initialize(name: nil, password: nil, owner: nil, colaborator: nil)
+      validate(name:, password:)
 
-  def to_hash
-    {
-      id:,
-      name:,
-      owner:,
-      colaborator:,
-      created_at:,
-      updated_at:
-    }
+      @id = IdProvider.next_id
+      @name = name
+      @password = password
+      @owner = owner
+      @colaborator = colaborator
+      @created_at = DateTime.now
+      @updated_at = nil
+    end
+
+    def to_hash
+      {
+        id:,
+        name:,
+        password:,
+        owner:,
+        colaborator:,
+        created_at:,
+        updated_at:
+      }
+    end
+
+    private
+
+    def validate(name:, password:)
+      if name.nil?
+        raise InvalidUser, 'Name is required'
+      elsif password.nil?
+        raise InvalidUser, 'Password is required'
+      elsif password.length < 6
+        raise InvalidUser, 'Password must be at least 6 characters long'
+      end
+    end
   end
 end

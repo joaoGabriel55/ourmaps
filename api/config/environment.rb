@@ -11,5 +11,5 @@ require 'active_support/all'
 
 Dotenv.load
 
-set :database, { adapter: 'postgresql', database: ENV.fetch('DB_PATH', nil) }
+set :database, { adapter: 'postgresql', database: ENV.fetch('DATABASE_PATH', nil) }
 set :bind, '0.0.0.0'
