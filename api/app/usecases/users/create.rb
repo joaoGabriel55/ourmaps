@@ -5,6 +5,8 @@ require './app/domain/user_repository'
 
 module Usecases
   module Users
+    class CreateError < StandardError; end
+
     class Create
       attr_accessor :user_repository, :user, :params
 
@@ -20,6 +22,10 @@ module Usecases
         user_repository.create!(new_user.to_hash)
 
         new_user.to_hash
+      rescue Domain::InvalidUser => e
+        raise CreateError, e.message
+      rescue StandardError
+        raise CreateError, 'Error creating user'
       end
     end
   end

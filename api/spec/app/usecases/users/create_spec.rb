@@ -31,11 +31,11 @@ RSpec.describe Usecases::Users::Create do
     end
   end
 
-  context 'invalid user' do
+  context 'create user raise error' do
     let(:create_user) do
       described_class.new(params: { name: '' }, repository_adapter:)
     end
 
-    it { expect { create_user.call }.to raise_error(Domain::InvalidUser) }
+    it { expect { create_user.call }.to raise_error(Usecases::Users::CreateError) }
   end
 end

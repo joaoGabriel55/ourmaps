@@ -37,7 +37,13 @@ module Domain
     private
 
     def validate(name:, password:)
-      raise InvalidUser unless name && password
+      if name.nil?
+        raise InvalidUser, 'Name is required'
+      elsif password.nil?
+        raise InvalidUser, 'Password is required'
+      elsif password.length < 6
+        raise InvalidUser, 'Password must be at least 6 characters long'
+      end
     end
   end
 end
