@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './app/adapters/user_repository'
+require './app/adapters/repositories/user_repository'
 
 module Domain
   class UserRepository
