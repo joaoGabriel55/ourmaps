@@ -3,7 +3,6 @@
 require './app/usecases/users/create'
 
 class UsersController
-
   def initialize(repositories:)
     @repositories = repositories
   end
@@ -13,7 +12,7 @@ class UsersController
   def create(params)
     create_user = Usecases::Users::Create.new(
       params:,
-      repository_adapter: repositories[:user_repository],
+      repository_adapter: repositories[:user_repository].new
     )
 
     { result: create_user.call }.to_json

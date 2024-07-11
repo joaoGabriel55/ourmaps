@@ -5,19 +5,19 @@ source 'https://rubygems.org'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 gem 'dotenv'
+gem 'pg'
 gem 'puma'
+gem 'rack-unreloader'
 gem 'rackup'
 gem 'rake'
 gem 'sinatra'
 gem 'sinatra-activerecord'
 
 group :test do
-  gem 'sqlite3'
   gem 'rack-test'
   gem 'rspec'
 end
 
-group :development, :production do
-  gem 'pg'
+group :development do
   gem 'byebug'
 end

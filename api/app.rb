@@ -2,6 +2,7 @@
 
 require 'sinatra'
 require 'sinatra/activerecord'
+
 require 'dotenv'
 
 Dotenv.load
@@ -13,16 +14,11 @@ before do
   content_type :json
 end
 
-repositories = {
-  user_repository: UserRepository.new,
+{
+  user_repository: UserRepository
 }
 
 class App < Sinatra::Base
-  # development settings
-  configure :development do
-    register Sinatra::Reloader
-  end
-
   set :database_file, 'config/database.yml'
   set :bind, '0.0.0.0'
 
@@ -38,8 +34,7 @@ class App < Sinatra::Base
     UsersController.new(repositories:).create(params)
   rescue Usecases::Users::CreateError
     status 422
-  rescue StandardError => e
-    puts e
+  rescue StandardError
     status 500
   end
 end
