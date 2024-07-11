@@ -15,3 +15,8 @@ docker compose run --build web rspec
 rubocop -A
 ```
 _*Install `rubocop` gem first_
+
+### Create Migration
+```sh
+docker compose run --build web rake db:create_migration NAME=[migration_name]
+```
