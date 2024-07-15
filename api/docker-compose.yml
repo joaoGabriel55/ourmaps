@@ -21,7 +21,7 @@ services:
     environment:
       DATABASE_URL: postgres://postgres:password@db:5432/ourmaps_development
     volumes:
-      - .:/app
+      - .:/var/app
 
 volumes:
   db_data:

@@ -8,33 +8,35 @@ require 'dotenv'
 Dotenv.load
 
 require './app/adapters/controllers/users_controller'
-require './app/adapters/repositories/user_repository'
+require './app/adapters/repositories/index'
 
 before do
   content_type :json
 end
 
-{
-  user_repository: UserRepository
-}
+set :bind, '0.0.0.0'
+set :database_file, 'config/database.yml'
 
-class App < Sinatra::Base
-  set :database_file, 'config/database.yml'
-  set :bind, '0.0.0.0'
+def to_symbol_hash(body)
+  JSON.parse(body).to_hash.transform_keys(&:to_sym)
+end
 
-  get '/health-check' do
-    ActiveRecord::Base.connection.execute('SELECT 1')
+get '/health-check' do
+  ActiveRecord::Base.connection.execute('SELECT 1')
 
-    { database_status: 'OK' }.to_json
-  rescue StandardError
-    { database_status: 'DOWN' }.to_json
-  end
+  { database_status: 'OK' }.to_json
+rescue StandardError
+  { database_status: 'DOWN' }.to_json
+end
 
-  post '/api/users' do
-    UsersController.new(repositories:).create(params)
-  rescue Usecases::Users::CreateError
-    status 422
-  rescue StandardError
-    status 500
-  end
+post '/api/users' do
+  params = to_symbol_hash(request.body.read)
+
+  UsersController.new(repositories:, params:).create
+rescue Usecases::Users::CreateError => e
+  status 422
+  { error: e.message }.to_json
+rescue StandardError => e
+  puts e
+  status 500
 end

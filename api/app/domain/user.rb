@@ -31,7 +31,7 @@ module Domain
         colaborator:,
         created_at:,
         updated_at:
-      }
+      }.compact
     end
 
     private

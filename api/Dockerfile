@@ -5,13 +5,13 @@ FROM ruby:3.3.2
 WORKDIR /app
 
 # Copy the Gemfile and Gemfile.lock into the container
-ADD Gemfile Gemfile.lock ./
+COPY Gemfile Gemfile.lock ./
 
 # Install the gem dependencies
 RUN bundle install
 
-# Copy the rest of the application code
-ADD . /app
+# Copy application code
+COPY . .
 
 # Expose the port the app runs on
 EXPOSE 4567

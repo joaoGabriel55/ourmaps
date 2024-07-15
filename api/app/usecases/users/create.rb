@@ -2,6 +2,7 @@
 
 require './app/domain/user'
 require './app/domain/user_repository'
+require './app/shared_kernel/logger_provider'
 
 module Usecases
   module Users
@@ -23,8 +24,10 @@ module Usecases
 
         new_user.to_hash
       rescue Domain::InvalidUser => e
+        LoggerProvider.new.error(e)
         raise CreateError, e.message
-      rescue StandardError
+      rescue StandardError => e
+        LoggerProvider.new.error(e)
         raise CreateError, 'Error creating user'
       end
     end
