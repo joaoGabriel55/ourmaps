@@ -6,6 +6,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: ourmaps_development
+      RACK_ENV: development
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:
@@ -19,6 +20,8 @@ services:
       - db
     environment:
       DATABASE_URL: postgres://postgres:password@db:5432/ourmaps_development
+    volumes:
+      - .:/var/app
 
 volumes:
   db_data:

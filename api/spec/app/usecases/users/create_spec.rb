@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 require './app/usecases/users/create'
-require './app/adapters/user_repository'
+require './app/adapters/repositories/user_repository'
 require './app/domain/user'
 
 class RepositoryAdapter

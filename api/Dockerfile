@@ -10,7 +10,7 @@ COPY Gemfile Gemfile.lock ./
 # Install the gem dependencies
 RUN bundle install
 
-# Copy the rest of the application code
+# Copy application code
 COPY . .
 
 # Expose the port the app runs on
