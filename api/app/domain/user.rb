@@ -16,8 +16,6 @@ module Domain
       @id = IdProvider.next_id
       @name = name
       @password = password
-      @owner = owner
-      @colaborator = colaborator
       @created_at = DateTime.now
       @updated_at = nil
     end
@@ -27,11 +25,9 @@ module Domain
         id:,
         name:,
         password:,
-        owner:,
-        colaborator:,
         created_at:,
         updated_at:
-      }.compact
+      }
     end
 
     private
