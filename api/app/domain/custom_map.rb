@@ -43,7 +43,7 @@ module Domain
 
     private
 
-    def validate(name:, owner:)
+    def validate(id:, name:, owner:)
       if id.nil?
         raise InvalidCustomMap, 'Id is required'
       elsif name.nil?
