@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require './app/shared_kernel/id_provider'
-
 module Domain
   class InvalidCustomMap < StandardError; end
 
@@ -18,9 +16,9 @@ module Domain
       colaborators: []
     )
 
-      validate(name:, owner:)
+      validate(id:, name:, owner:)
 
-      @id = id || IdProvider.next_id
+      @id = id
       @name = name
       @description = description
       @custom_map_data = custom_map_data
@@ -46,7 +44,9 @@ module Domain
     private
 
     def validate(name:, owner:)
-      if name.nil?
+      if id.nil?
+        raise InvalidCustomMap, 'Id is required'
+      elsif name.nil?
         raise InvalidCustomMap, 'Name is required'
       elsif owner.nil?
         raise InvalidCustomMap, 'Owner is required'

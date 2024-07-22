@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require './app/domain/custom_map'
 require './app/domain/custom_map_repository'
 require './app/shared_kernel/logger_provider'
 
@@ -22,7 +21,7 @@ module Usecases
         custom_map_repository.lookup!(id:)
       rescue StandardError => e
         LoggerProvider.new.error(e)
-        raise LookupError, "Custom map #{id} not found"
+        raise LookupError, "Error looking up custom map #{id}"
       end
     end
   end

@@ -3,6 +3,7 @@
 require './app/domain/custom_map'
 require './app/domain/custom_map_repository'
 require './app/shared_kernel/logger_provider'
+require './app/shared_kernel/id_provider'
 
 module Usecases
   module CustomMaps
@@ -21,6 +22,7 @@ module Usecases
 
       def call
         new_map = custom_map.new(
+          id: IdProvider.next_id,
           name: params[:name],
           description: params[:description],
           custom_map_data: params[:custom_map_data],

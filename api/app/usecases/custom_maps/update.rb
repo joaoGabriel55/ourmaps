@@ -30,8 +30,6 @@ module Usecases
         )
 
         custom_map_repository.update!(updated_map.to_hash)
-
-        updated_map.to_hash
       rescue Domain::InvalidCustomMap => e
         LoggerProvider.new.error(e)
         raise UpdateError, e.message

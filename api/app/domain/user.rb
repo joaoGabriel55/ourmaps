@@ -8,12 +8,12 @@ module Domain
   class InvalidUser < StandardError; end
 
   class User
-    attr_accessor :id, :name, :password, :owner, :colaborator, :created_at, :updated_at
+    attr_accessor :id, :name, :password, :created_at, :updated_at
 
-    def initialize(name: nil, password: nil, owner: nil, colaborator: nil)
+    def initialize(id: nil, name: nil, password: nil)
       validate(name:, password:)
 
-      @id = IdProvider.next_id
+      @id = id || IdProvider.next_id
       @name = name
       @password = password
       @created_at = DateTime.now

@@ -12,5 +12,9 @@ module Domain
     delegate :update!, to: :repository
     delegate :lookup!, to: :repository
     delegate :delete!, to: :repository
+
+    def get_all!(owner_id:, paginator:)
+      repository.get_all!(owner_id:, paginator:)
+    end
   end
 end
