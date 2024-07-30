@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require './app/shared_kernel/id_provider'
-require './app/domain/owner'
-require './app/domain/colaborator'
 
 module Domain
   class InvalidUser < StandardError; end

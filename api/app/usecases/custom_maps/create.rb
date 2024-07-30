@@ -25,7 +25,7 @@ module Usecases
           id: IdProvider.next_id,
           name: params[:name],
           description: params[:description],
-          custom_map_data: params[:custom_map_data],
+          content: params[:content],
           owner: params[:owner],
           colaborators: params[:colaborators]
         )

@@ -5,13 +5,13 @@ module Domain
 
   class CustomMap
     attr_accessor :id, :name, :description,
-      :custom_map_data, :owner, :colaborators, :created_at, :updated_at
+      :content, :owner, :colaborators, :created_at, :updated_at
 
     def initialize(
       id: nil,
       name: nil,
       description: nil,
-      custom_map_data: [],
+      content: [],
       owner: nil,
       colaborators: []
     )
@@ -21,7 +21,7 @@ module Domain
       @id = id
       @name = name
       @description = description
-      @custom_map_data = custom_map_data
+      @content = content
       @owner = owner
       @colaborators = colaborators
       @created_at = DateTime.now
@@ -33,7 +33,7 @@ module Domain
         id:,
         name:,
         description:,
-        custom_map_data:,
+        content:,
         owner: owner.to_hash,
         colaborators: colaborators&.map(&:to_hash),
         created_at:,
