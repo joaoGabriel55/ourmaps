@@ -1,32 +1,33 @@
 # frozen_string_literal: true
 
 module Domain
-  class Image
-    attr_accessor :id, :image_link, :uploaded_at
+  class InvalidImage < StandardError; end
 
-    def initialize(id: nil, image_link: nil)
-      validate(id:, image_link:)
+  class Image
+    attr_accessor :id, :url, :uploaded_at
+
+    def initialize(id: nil, url: nil)
+      validate(id:, url:)
 
       @id = id
-      @image_link = image_link
+      @url = url
       @uploaded_at = DateTime.now
     end
 
     def to_hash
       {
         id:,
-        image_link:,
-        custom_map_id:,
+        url:,
         uploaded_at:
       }
     end
 
     private
 
-    def validate(id:, image_link:)
+    def validate(id:, url:)
       if id.nil?
         raise InvalidImage, 'Id is required'
-      elsif image_link.nil?
+      elsif url.nil?
         raise InvalidImage, 'Image link is required'
       end
     end
