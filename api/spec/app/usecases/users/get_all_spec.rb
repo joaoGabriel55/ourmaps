@@ -4,12 +4,12 @@ require 'spec_helper'
 require './app/usecases/users/get_all'
 require './app/domain/user'
 
-class RepositoryAdapter
+class UsersRepositoryAdapter
   def get_all!(paginator:); end
 end
 
 RSpec.describe Usecases::Users::GetAll do
-  let(:repository_adapter) { RepositoryAdapter.new }
+  let(:repository_adapter) { UsersRepositoryAdapter.new }
   let(:get_all_users) do
     described_class.new(repository_adapter:)
   end

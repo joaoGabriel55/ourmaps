@@ -22,7 +22,7 @@ module Usecases
         user_repository.get_all!(paginator:)
       rescue StandardError => e
         LoggerProvider.new.error(e)
-        raise GetAllError, "Error fetching users"
+        raise GetAllError, 'Error fetching users'
       end
     end
   end

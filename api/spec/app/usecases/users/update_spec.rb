@@ -15,7 +15,7 @@ RSpec.describe Usecases::Users::Update do
     {
       id: 'abc1234',
       name: 'My Custom Map',
-      password: '123456',
+      password: '123456'
     }
   end
 
