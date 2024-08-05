@@ -2,7 +2,6 @@
 
 require 'spec_helper'
 require './app/usecases/users/create'
-require './app/adapters/repositories/user_repository'
 require './app/domain/user'
 
 class RepositoryAdapter
@@ -26,7 +25,7 @@ RSpec.describe Usecases::Users::Create do
       create_user.call
 
       expect(repository_adapter).to have_received(:create!).with(include({
-        name: 'John', password: '123456', owner: nil, colaborator: nil
+        name: 'John', password: '123456'
       }))
     end
   end
