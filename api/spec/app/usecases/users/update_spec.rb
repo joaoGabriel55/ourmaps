@@ -4,12 +4,8 @@ require 'spec_helper'
 require './app/usecases/users/update'
 require './app/domain/user'
 
-class RepositoryAdapter
-  def update!(custom_map); end
-end
-
 RSpec.describe Usecases::Users::Update do
-  let(:repository_adapter) { RepositoryAdapter.new }
+  let(:repository_adapter) { instance_double('UsersRepositoryAdapter') }
   let(:update_user) { described_class.new(params:, repository_adapter:) }
   let(:params) do
     {

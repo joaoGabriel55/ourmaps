@@ -4,12 +4,8 @@ require 'spec_helper'
 require './app/usecases/users/lookup'
 require './app/domain/user'
 
-class RepositoryAdapter
-  def lookup!(user); end
-end
-
 RSpec.describe Usecases::Users::Lookup do
-  let(:repository_adapter) { RepositoryAdapter.new }
+  let(:repository_adapter) { instance_double('UsersRepositoryAdapter') }
   let(:user_id) { 'abc1234' }
 
   context 'lookup a user' do

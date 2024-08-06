@@ -5,12 +5,8 @@ require './app/usecases/custom_maps/delete'
 require './app/domain/custom_map'
 require './app/domain/user'
 
-class RepositoryAdapter
-  def delete!(custom_map); end
-end
-
 RSpec.describe Usecases::CustomMaps::Delete do
-  let(:repository_adapter) { RepositoryAdapter.new }
+  let(:repository_adapter) { instance_double('CustomMapRepositoryAdapter') }
   let(:custom_map_id) { 'abc1234' }
   let(:delete_custom_map) do
     described_class.new(id: custom_map_id, repository_adapter:)

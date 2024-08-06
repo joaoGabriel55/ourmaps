@@ -4,13 +4,8 @@ require 'spec_helper'
 require './app/usecases/custom_maps/get_all'
 require './app/domain/custom_map'
 
-class CustomMapRepositoryAdapter
-  def get_all!(owner_id:, paginator:); end
-end
-
 RSpec.describe Usecases::CustomMaps::GetAll do
-
-  let(:repository_adapter) { CustomMapRepositoryAdapter.new }
+  let(:repository_adapter) { instance_double('CustomMapRepositoryAdapter') }
   let(:owner_id) { 'abc1234' }
   let(:get_all_maps) do
     described_class.new(owner_id:, repository_adapter:)

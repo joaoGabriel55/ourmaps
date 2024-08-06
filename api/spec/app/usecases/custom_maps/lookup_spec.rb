@@ -4,12 +4,8 @@ require 'spec_helper'
 require './app/usecases/custom_maps/lookup'
 require './app/domain/custom_map'
 
-class RepositoryAdapter
-  def lookup!(custom_map); end
-end
-
 RSpec.describe Usecases::CustomMaps::Lookup do
-  let(:repository_adapter) { RepositoryAdapter.new }
+  let(:repository_adapter) { instance_double('CustomMapRepositoryAdapter') }
   let(:custom_map_id) { 'abc1234' }
 
   context 'lookup a custom map' do

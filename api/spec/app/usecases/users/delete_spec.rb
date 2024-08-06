@@ -4,12 +4,8 @@ require 'spec_helper'
 require './app/usecases/users/delete'
 require './app/domain/user'
 
-class RepositoryAdapter
-  def delete!(user); end
-end
-
 RSpec.describe Usecases::Users::Delete do
-  let(:repository_adapter) { RepositoryAdapter.new }
+  let(:repository_adapter) { instance_double('UsersRepositoryAdapter') }
   let(:user_id) { 'abc1234' }
   let(:delete_user) do
     described_class.new(id: user_id, repository_adapter:)
