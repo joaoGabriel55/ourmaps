@@ -5,14 +5,8 @@ require './app/usecases/custom_maps/create'
 require './app/domain/custom_map'
 require './app/domain/user'
 
-class RepositoryAdapter
-  def create!(custom_map)
-    custom_map
-  end
-end
-
 RSpec.describe Usecases::CustomMaps::Create do
-  let(:repository_adapter) { RepositoryAdapter.new }
+  let(:repository_adapter) { instance_double('CustomMapRepositoryAdapter') }
   let(:create_custom_map) { described_class.new(params:, repository_adapter:) }
   let(:params) do
     {

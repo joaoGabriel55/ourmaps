@@ -4,14 +4,8 @@ require 'spec_helper'
 require './app/usecases/users/create'
 require './app/domain/user'
 
-class RepositoryAdapter
-  def create!(user)
-    user
-  end
-end
-
 RSpec.describe Usecases::Users::Create do
-  let(:repository_adapter) { RepositoryAdapter.new }
+  let(:repository_adapter) { instance_double('UsersRepositoryAdapter') }
 
   context 'create new user' do
     let(:create_user) do

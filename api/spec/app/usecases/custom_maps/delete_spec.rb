@@ -5,14 +5,10 @@ require './app/usecases/custom_maps/delete'
 require './app/domain/custom_map'
 require './app/domain/user'
 
-class RepositoryAdapter
-  def delete!(custom_map); end
-end
-
 RSpec.describe Usecases::CustomMaps::Delete do
-  let(:repository_adapter) { RepositoryAdapter.new }
+  let(:repository_adapter) { instance_double('CustomMapRepositoryAdapter') }
   let(:custom_map_id) { 'abc1234' }
-  let(:create_custom_map) do
+  let(:delete_custom_map) do
     described_class.new(id: custom_map_id, repository_adapter:)
   end
 
@@ -20,7 +16,7 @@ RSpec.describe Usecases::CustomMaps::Delete do
     it 'calls custom map repository' do
       allow(repository_adapter).to receive(:delete!).and_return(nil)
 
-      create_custom_map.call
+      delete_custom_map.call
 
       expect(repository_adapter).to have_received(:delete!).with(id: custom_map_id)
     end
@@ -29,6 +25,6 @@ RSpec.describe Usecases::CustomMaps::Delete do
   context 'delete custom map raise error' do
     before { allow(repository_adapter).to receive(:delete!).and_raise(StandardError) }
 
-    it { expect { create_custom_map.call }.to raise_error(Usecases::CustomMaps::DeleteError) }
+    it { expect { delete_custom_map.call }.to raise_error(Usecases::CustomMaps::DeleteError) }
   end
 end

@@ -9,5 +9,12 @@ module Domain
     end
 
     delegate :create!, to: :repository
+    delegate :update!, to: :repository
+    delegate :lookup!, to: :repository
+    delegate :delete!, to: :repository
+
+    def get_all!(paginator:)
+      repository.get_all!(paginator:)
+    end
   end
 end
