@@ -11,7 +11,7 @@ module Domain
     def initialize(id: nil, name: nil, password: nil)
       validate(name:, password:)
 
-      @id = id || IdProvider.next_id
+      @id = id
       @name = name
       @password = password
       @created_at = DateTime.now
@@ -22,7 +22,6 @@ module Domain
       {
         id:,
         name:,
-        password:,
         created_at:,
         updated_at:
       }

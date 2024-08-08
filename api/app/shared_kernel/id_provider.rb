@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-require 'securerandom'
+require 'uuid'
 
 class IdProvider
-  def self.next_id
-    SecureRandom.uuid
+  def initialize
+    @next_id = UUID.new.generate
   end
+
+  attr_reader :next_id
 end

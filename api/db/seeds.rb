@@ -4,7 +4,7 @@ require './app/usecases/users/create'
 require './app/adapters/repositories/index'
 
 # TODO: Fix seed!
-Rails.logger.debug 'Running seeds'
+puts 'Running seeds'
 
 create_user1 = Usecases::Users::Create.new(
   params: { name: 'John', password: '123456' },
@@ -19,4 +19,4 @@ create_user2 = Usecases::Users::Create.new(
 create_user1.call
 create_user2.call
 
-Rails.logger.debug 'Finished seeds'
+puts 'Finished seeds'

@@ -18,7 +18,7 @@ module Usecases
       end
 
       def call
-        new_user = user.new(name: params[:name], password: params[:password])
+        new_user = user.new(id: params[:id], name: params[:name], password: params[:password])
 
         user_repository.create!(new_user.to_hash)
 
