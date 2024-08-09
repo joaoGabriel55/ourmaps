@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
-require './app/usecases/users/create'
+require_relative '../../usecases/users/create'
+require_relative '../../shared_kernel/id_provider'
 
-class UsersController
+class UsersService
   def initialize(repositories:, params:)
+    params[:id] = IdProvider.new.next_id
+
     @create_user = Usecases::Users::Create.new(
       params:,
       repository_adapter: repositories[:user_repository]
@@ -13,6 +16,6 @@ class UsersController
   attr_reader :create_user
 
   def create
-    { result: create_user.call }.to_json
+    { data: create_user.call }.to_json
   end
 end

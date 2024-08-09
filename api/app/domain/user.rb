@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require './app/shared_kernel/id_provider'
-
 module Domain
   class InvalidUser < StandardError; end
 
@@ -11,7 +9,7 @@ module Domain
     def initialize(id: nil, name: nil, password: nil)
       validate(name:, password:)
 
-      @id = id || IdProvider.next_id
+      @id = id
       @name = name
       @password = password
       @created_at = DateTime.now
@@ -26,6 +24,10 @@ module Domain
         created_at:,
         updated_at:
       }
+    end
+
+    def response
+      to_hash.except(:password).transform_keys(&:to_s).transform_keys(&:camelize)
     end
 
     private

@@ -22,7 +22,7 @@ module Usecases
 
       def call
         new_map = custom_map.new(
-          id: IdProvider.next_id,
+          id: params[:id],
           name: params[:name],
           description: params[:description],
           content: params[:content],

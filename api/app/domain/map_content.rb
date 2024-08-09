@@ -7,7 +7,7 @@ module Domain
     attr_accessor :id, :image, :geometry
 
     def initialize(id: nil, image: nil, geometry: nil)
-      validate(id:, image:, geometry:)
+      validate(id:, geometry:)
 
       @id = id
       @image = image
@@ -24,7 +24,7 @@ module Domain
 
     private
 
-    def validate(id:, image:, geometry:)
+    def validate(id:, geometry:)
       if id.nil?
         raise InvalidMapContent, 'Id is required'
       elsif geometry.nil?

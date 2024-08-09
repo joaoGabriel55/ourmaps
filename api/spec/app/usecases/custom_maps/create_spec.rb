@@ -10,6 +10,7 @@ RSpec.describe Usecases::CustomMaps::Create do
   let(:create_custom_map) { described_class.new(params:, repository_adapter:) }
   let(:params) do
     {
+      id: 'abc1234',
       name: 'My Custom Map',
       owner: Domain::User.new(name: 'John', password: '123456')
     }
