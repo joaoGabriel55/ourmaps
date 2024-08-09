@@ -2,9 +2,10 @@
 
 require './app/usecases/users/create'
 require './app/adapters/repositories/index'
+require './app/shared_kernel/logger_provider'
 
 # TODO: Fix seed!
-puts 'Running seeds'
+LoggerProvider.new.info('Running seeds')
 
 create_user1 = Usecases::Users::Create.new(
   params: { name: 'John', password: '123456' },
@@ -19,4 +20,4 @@ create_user2 = Usecases::Users::Create.new(
 create_user1.call
 create_user2.call
 
-puts 'Finished seeds'
+LoggerProvider.new.info('Finished seeds')

@@ -2,7 +2,6 @@
 
 require './app/domain/user'
 require './app/domain/user_repository'
-require './app/shared_kernel/logger_provider'
 
 module Usecases
   module Users
@@ -18,11 +17,12 @@ module Usecases
       end
 
       def call
-        new_user = user.new(id: params[:id], name: params[:name], password: params[:password])
+        new_user = user.new(id: params[:id], name: params[:name],
+          password: params[:password])
 
         user_repository.create!(new_user.to_hash)
 
-        new_user.to_hash
+        new_user.response
       rescue Domain::InvalidUser => e
         LoggerProvider.new.error(e)
         raise CreateError, e.message

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require './app/shared_kernel/id_provider'
-
 module Domain
   class InvalidUser < StandardError; end
 
@@ -22,9 +20,14 @@ module Domain
       {
         id:,
         name:,
+        password:,
         created_at:,
         updated_at:
       }
+    end
+
+    def response
+      to_hash.except(:password).transform_keys(&:to_s).transform_keys(&:camelize)
     end
 
     private

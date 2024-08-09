@@ -100,6 +100,9 @@ RSpec/NoExpectationExample:
 RSpec/ContextWording:
   Enabled: false
 
+RSpec/VerifiedDoubleReference:
+  Enabled: false
+
 Rails/TransactionExitStatement:
   Enabled: false
 
