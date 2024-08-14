@@ -5,23 +5,10 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      RACK_ENV: $RACK_ENV
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
-  web:
-    build: .
-    ports:
-      - "4567:4567"
-    depends_on:
-      - db
-    environment:
-      # DATABASE_URL: postgres://postgres:password@db:5432/ourmaps_development
-      RACK_ENV: $RACK_ENV
-    volumes:
-      - .:/var/app
 
 volumes:
   db_data:

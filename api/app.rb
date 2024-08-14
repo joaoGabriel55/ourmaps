@@ -12,14 +12,11 @@ require_relative 'config/environment'
 Dotenv.load
 
 def to_symbol_hash(body)
-  JSON.parse(body).to_hash.transform_keys(&:to_sym)
-end
-
-before do
-  content_type :json
+  JSON.parse(body).transform_keys(&:to_sym)
 end
 
 set :bind, '0.0.0.0'
+set :default_content_type, :json
 set :database_file, 'config/database.yml'
 
 require './app/adapters/routes/users_routes'

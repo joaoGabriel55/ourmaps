@@ -2,7 +2,7 @@
 
 require './app/adapters/services/users_service'
 require 'sinatra/base'
-require './app/shared_kernel/logger_provider'
+
 
 post '/users' do
   request.body.rewind

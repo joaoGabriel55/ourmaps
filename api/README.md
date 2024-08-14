@@ -1,13 +1,26 @@
 # OurMaps API
 
-### Deploy app locally
+### Setup
+
+Start database
 ```sh
-docker compose up --build
+docker compose up
+```
+
+Install dependencies
+```sh
+bundle install
+```
+
+### Deploy app locally
+
+```sh
+ruby app.rb
 ```
 
 ### Run tests
 ```sh
-docker compose run --build web rspec
+rspec
 ```
 
 ### Format your code
@@ -20,12 +33,12 @@ _*Install `rubocop` gem first_
 
 ### Setup
 ```sh
-docker compose run --build web rake db:environment:set
-docker compose run --build web rake db:setup
-docker compose run --build web rake db:migrate
+rake db:environment:set
+rake db:setup
+rake db:migrate
 ```
 
 ### Create Migration
 ```sh
-docker compose run --build web rake db:create_migration NAME=[migration_name]
+rake db:create_migration NAME=[migration_name]
 ```
