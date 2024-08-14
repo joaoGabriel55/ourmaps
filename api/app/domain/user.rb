@@ -6,14 +6,14 @@ module Domain
   class User
     attr_accessor :id, :name, :password, :created_at, :updated_at
 
-    def initialize(id: nil, name: nil, password: nil)
+    def initialize(id: nil, name: nil, password: nil, created_at: nil, updated_at: nil)
       validate(name:, password:)
 
       @id = id
       @name = name
       @password = password
-      @created_at = DateTime.now
-      @updated_at = nil
+      @created_at = created_at || DateTime.now
+      @updated_at = updated_at || nil
     end
 
     def to_hash

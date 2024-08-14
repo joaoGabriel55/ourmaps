@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require './app/domain/user_repository'
+require './app/domain/user'
 require './app/shared_kernel/logger_provider'
 
 module Usecases
@@ -19,7 +20,15 @@ module Usecases
       end
 
       def call
-        user_repository.get_all!(paginator:)
+        user_repository.get_all!(paginator:).map do |user|
+          Domain::User.new(
+            id: user.id,
+            name: user.name,
+            password: user.password,
+            created_at: user.created_at,
+            updated_at: user.updated_at
+          ).response
+        end
       rescue StandardError => e
         LoggerProvider.new.error(e)
         raise GetAllError, 'Error fetching users'
