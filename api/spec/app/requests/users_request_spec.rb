@@ -21,6 +21,7 @@ RSpec.describe '/users' do
     it 'returns all users' do
       get '/users'
 
+      expect(JSON.parse(last_response.body)['data'].size).to eq(1)
       expect(JSON.parse(last_response.body)['data'][0]).to include({
         'id' => String,
         'name' => params[:name],

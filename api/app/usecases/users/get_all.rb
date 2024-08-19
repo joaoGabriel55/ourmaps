@@ -20,7 +20,7 @@ module Usecases
       end
 
       def call
-        user_repository.get_all!(paginator:).map do |user|
+        user_repository.get_all!(paginator:)&.map do |user|
           Domain::User.new(
             id: user.id,
             name: user.name,
