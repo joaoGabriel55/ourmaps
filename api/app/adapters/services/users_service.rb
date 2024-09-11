@@ -26,8 +26,8 @@ class UsersService
     Usecases::Users::Update.new(params: user, repository_adapter:).call
   end
 
-  def get_all
-    Usecases::Users::GetAll.new(repository_adapter:).call
+  def get_all(paginator:)
+    Usecases::Users::GetAll.new(repository_adapter:, paginator:).call
   end
 
   def find_by_id(id)

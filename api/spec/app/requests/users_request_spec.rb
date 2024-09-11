@@ -36,6 +36,46 @@ RSpec.describe 'Users' do
     end
   end
 
+  context 'get all users with pagination' do
+    before { UsersService.new(repository:).create(params:) }
+
+    let(:repository) { repositories[:user_repository] }
+    let(:params) { { name: 'John', password: '123456' } }
+
+    it { expect { get '/users?page=2&per_page=1' }.not_to raise_error }
+
+    it 'returns 200 ok status' do
+      get '/users?page=1&per_page=1'
+
+      expect(last_response.status).to eq(200)
+    end
+
+    it 'returns all users' do
+      get '/users?page=1&per_page=1'
+
+      expect(JSON.parse(last_response.body)['data'][0]).to include({
+        'id' => String,
+        'name' => params[:name],
+        'createdAt' => String,
+        'updatedAt' => String
+      })
+    end
+
+    it 'returns users count' do
+      get '/users?page=1&per_page=1'
+
+      expect(JSON.parse(last_response.body)['data'].size).to eq(1)
+    end
+
+    context 'when page do not have users' do
+      it 'returns users count as 0' do
+        get '/users?page=2&per_page=1'
+
+        expect(JSON.parse(last_response.body)['data'].size).to eq(0)
+      end
+    end
+  end
+
   context 'get user by id' do
     let!(:user_id) do
       user = UsersService.new(repository:).create(params:)

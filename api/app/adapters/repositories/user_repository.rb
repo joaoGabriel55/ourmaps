@@ -4,7 +4,7 @@ class UserRepository < ActiveRecord::Base
   self.table_name = 'users'
 
   def self.get_all!(paginator:)
-    all
+    paginate(per_page: paginator[:per_page], page: paginator[:page])
   end
 
   def self.lookup!(id:)

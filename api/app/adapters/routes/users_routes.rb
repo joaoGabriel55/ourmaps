@@ -50,7 +50,12 @@ end
 get '/users' do
   repository = repositories[:user_repository]
 
-  users = UsersService.new(repository:).get_all
+  users = UsersService.new(repository:).get_all(
+    paginator: {
+      per_page: params[:per_page],
+      page: params[:page]
+    }
+  )
 
   { data: users }.to_json
 rescue Usecases::Users::CreateError => e

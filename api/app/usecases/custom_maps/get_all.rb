@@ -11,7 +11,7 @@ module Usecases
       attr_accessor :owner_id, :paginator, :custom_map_repository
 
       def initialize(owner_id:, repository_adapter:,
-                     paginator: { page_size: 10, cursor: nil })
+                     paginator: { per_page: 10, page: 1 })
         @owner_id = owner_id
         @paginator = paginator
         @custom_map_repository = Domain::CustomMapRepository.new(

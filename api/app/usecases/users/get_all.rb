@@ -12,7 +12,7 @@ module Usecases
       attr_accessor :paginator, :user_repository
 
       def initialize(repository_adapter:,
-                     paginator: { page_size: 10, cursor: nil })
+                     paginator: { per_page: 10, page: 1 })
         @paginator = paginator
         @user_repository = Domain::UserRepository.new(
           repository: repository_adapter

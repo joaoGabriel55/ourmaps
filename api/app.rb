@@ -3,6 +3,8 @@
 require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/activerecord'
+require 'will_paginate'
+require 'will_paginate/active_record'
 require 'rack/unreloader'
 require 'dotenv'
 require_relative 'app/shared_kernel/camelize'
