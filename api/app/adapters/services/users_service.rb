@@ -2,11 +2,14 @@
 
 require_relative '../../usecases/users/create'
 require_relative '../../usecases/users/get_all'
+require_relative '../../usecases/users/lookup'
+require_relative '../../usecases/users/update'
+require_relative '../../usecases/users/delete'
 require_relative '../../shared_kernel/id_provider'
 
 class UsersService
-  def initialize(repositories:)
-    @repository_adapter = repositories[:user_repository]
+  def initialize(repository:)
+    @repository_adapter = repository
   end
 
   attr_reader :repository_adapter
@@ -14,13 +17,24 @@ class UsersService
   def create(params:)
     params[:id] = IdProvider.new.next_id
 
-    create_user = Usecases::Users::Create.new(params:, repository_adapter:)
+    Usecases::Users::Create.new(params:, repository_adapter:).call
+  end
 
-    { data: create_user.call }.to_json
+  def update(user:, params:)
+    user = user.merge(params)
+
+    Usecases::Users::Update.new(params: user, repository_adapter:).call
   end
 
   def get_all
-    get_all_users = Usecases::Users::GetAll.new(repository_adapter:)
-    { data: get_all_users.call }.to_json
+    Usecases::Users::GetAll.new(repository_adapter:).call
+  end
+
+  def find_by_id(id)
+    Usecases::Users::Lookup.new(id:, repository_adapter:).call
+  end
+
+  def delete(id)
+    Usecases::Users::Delete.new(id:, repository_adapter:).call
   end
 end

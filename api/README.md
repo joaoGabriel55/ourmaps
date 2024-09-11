@@ -20,12 +20,12 @@ ruby app.rb
 
 ### Run tests
 ```sh
-rspec
+bundle exec rspec
 ```
 
 ### Format your code
 ```sh
-rubocop -A
+bundle exec rubocop -A
 ```
 _*Install `rubocop` gem first_
 
