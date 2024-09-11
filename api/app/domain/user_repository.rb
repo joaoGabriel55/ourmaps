@@ -10,8 +10,15 @@ module Domain
 
     delegate :create!, to: :repository
     delegate :update!, to: :repository
-    delegate :lookup!, to: :repository
     delegate :delete!, to: :repository
+
+    def delete!(id:)
+      repository.delete!(id:)
+    end
+
+    def lookup!(id:)
+      repository.lookup!(id:)
+    end
 
     def get_all!(paginator:)
       repository.get_all!(paginator:)

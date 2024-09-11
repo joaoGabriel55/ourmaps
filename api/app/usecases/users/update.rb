@@ -23,10 +23,13 @@ module Usecases
         updated_user = user.new(
           id: params[:id],
           name: params[:name],
-          password: params[:password]
+          password: params[:password],
+          updated_at: DateTime.now
         )
 
         user_repository.update!(updated_user.to_hash)
+
+        updated_user.response
       rescue Domain::InvalidUser => e
         LoggerProvider.new.error(e)
         raise UpdateError, e.message

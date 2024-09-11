@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+ruby '3.2.0'
+
 source 'https://rubygems.org'
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
@@ -7,17 +9,24 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 gem 'dotenv'
 gem 'pg'
 gem 'puma'
+gem 'rack', '~> 3.1'
 gem 'rack-unreloader'
 gem 'rackup'
 gem 'rake'
 gem 'sinatra'
 gem 'sinatra-activerecord'
+gem 'sinatra-contrib', '~> 4.0'
+gem 'uuid', '~> 2.3'
+gem 'will_paginate', '~> 4.0'
 
 group :test do
+  gem 'database_cleaner', '~> 2.0'
   gem 'rack-test'
   gem 'rspec'
 end
 
-group :development do
-  gem 'byebug'
+group :development, :test do
+  gem 'pry'
+  gem 'rubocop'
+  gem 'rubocop-rspec'
 end

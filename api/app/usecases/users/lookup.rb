@@ -18,10 +18,20 @@ module Usecases
       end
 
       def call
-        user_repository.lookup!(id:)
+        user = user_repository.lookup!(id:)
+
+        raise LookupError, "User not found: #{id}" if user.nil?
+
+        Domain::User.new(
+          id: user.id,
+          name: user.name,
+          password: user.password,
+          created_at: user.created_at,
+          updated_at: user.updated_at
+        ).response
       rescue StandardError => e
         LoggerProvider.new.error(e)
-        raise LookupError, "Error looking up user #{id}"
+        raise LookupError, e.message
       end
     end
   end

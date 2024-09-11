@@ -2,16 +2,14 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: 5
-  host: <%= ENV['DATABASE_HOST'] || 'db' %>
+  host: <%= ENV['DATABASE_HOST'] || 'localhost' %>
   username: <%= ENV['DATABASE_USER'] || 'postgres' %>
-  password: <%= ENV['DATABASE_PASSWORD'] || 'postgres' %>
+  password: <%= ENV['DATABASE_PASSWORD'] || 'password' %>
   timeout: 5000
 
 test:
-  adapter: sqlite3
-  pool: 5
-  timeout: 5000
-  database: db/ourmaps_api_test.sqlite3
+  <<: *default
+  database: ourmaps_api_test
 
 development:
   <<: *default
@@ -19,4 +17,4 @@ development:
 
 production:
   <<: *default
-  database: ourmaps_api_development
+  database: ourmaps_api_production

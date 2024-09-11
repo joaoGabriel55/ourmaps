@@ -1,21 +1,19 @@
 # frozen_string_literal: true
 
-require './app/shared_kernel/id_provider'
-
 module Domain
   class InvalidUser < StandardError; end
 
   class User
     attr_accessor :id, :name, :password, :created_at, :updated_at
 
-    def initialize(id: nil, name: nil, password: nil)
+    def initialize(id: nil, name: nil, password: nil, created_at: nil, updated_at: nil)
       validate(name:, password:)
 
-      @id = id || IdProvider.next_id
+      @id = id
       @name = name
       @password = password
-      @created_at = DateTime.now
-      @updated_at = nil
+      @created_at = created_at || DateTime.now
+      @updated_at = updated_at || nil
     end
 
     def to_hash
@@ -26,6 +24,10 @@ module Domain
         created_at:,
         updated_at:
       }
+    end
+
+    def response
+      to_hash.except(:password).transform_keys(&:to_s).transform_keys(&:camelize)
     end
 
     private
