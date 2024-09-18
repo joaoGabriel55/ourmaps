@@ -33,12 +33,12 @@ _*Install `rubocop` gem first_
 
 ### Setup
 ```sh
-rake db:environment:set
-rake db:setup
-rake db:migrate
+bundle exec rake db:environment:set
+bundle exec rake db:setup
+bundle exec rake db:migrate
 ```
 
 ### Create Migration
 ```sh
-rake db:create_migration NAME=[migration_name]
+bundle exec rake db:create_migration NAME=[migration_name]
 ```
