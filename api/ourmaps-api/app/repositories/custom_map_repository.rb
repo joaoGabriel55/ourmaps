@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CustomMapRepository < ActiveRecord::Base
+class CustomMapRepository < ApplicationRecord
   self.table_name = 'custom_maps'
 
   belongs_to :owner, class_name: 'UserRepository', foreign_key: :owner_id

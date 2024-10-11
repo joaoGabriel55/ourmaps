@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UserRepository < ActiveRecord::Base
+class UserRepository < ApplicationRecord
   self.table_name = 'users'
 
   def self.get_all!(paginator:)

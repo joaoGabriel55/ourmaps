@@ -1,9 +1,4 @@
 # frozen_string_literal: true
-
-require './app/domain/user'
-require './app/domain/user_repository'
-require './app/shared_kernel/logger_provider'
-
 module Usecases
   module Users
     class UpdateError < StandardError; end

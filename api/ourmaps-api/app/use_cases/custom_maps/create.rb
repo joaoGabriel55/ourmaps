@@ -1,10 +1,4 @@
 # frozen_string_literal: true
-
-require './app/domain/custom_map'
-require './app/domain/custom_map_repository'
-require './app/shared_kernel/logger_provider'
-require './app/shared_kernel/id_provider'
-
 module Usecases
   module CustomMaps
     class CreateError < StandardError; end

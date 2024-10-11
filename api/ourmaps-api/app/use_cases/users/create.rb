@@ -1,8 +1,4 @@
 # frozen_string_literal: true
-
-require './app/domain/user'
-require './app/domain/user_repository'
-
 module Usecases
   module Users
     class CreateError < StandardError; end
