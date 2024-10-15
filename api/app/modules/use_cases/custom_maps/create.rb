@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module UseCases
   module CustomMaps
     class CreateError < StandardError; end
@@ -32,7 +33,7 @@ module UseCases
         raise CreateError, e.message
       rescue StandardError => e
         LoggerProvider.new.error(e)
-        raise CreateError, 'Error creating custom map'
+        raise CreateError, "Error creating custom map"
       end
     end
   end

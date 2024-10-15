@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'uuid'
+require "uuid"
 
 class IdProvider
   def initialize

@@ -26,9 +26,9 @@ module Domain
 
     def validate(id:, geometry:)
       if id.nil?
-        raise InvalidMapContent, 'Id is required'
+        raise InvalidMapContent, "Id is required"
       elsif geometry.nil?
-        raise InvalidMapContent, 'Geometry is required'
+        raise InvalidMapContent, "Geometry is required"
       end
     end
   end

@@ -15,14 +15,14 @@ module Domain
     end
 
     def to_hash
-      if type == 'GeometryCollection'
+      if type == "GeometryCollection"
         {
-          type: 'Feature',
+          type: "Feature",
           geometry: { type:, geometries: }
         }
       else
         {
-          type: 'Feature',
+          type: "Feature",
           geometry: { type:, coordinates: }
         }
       end
@@ -42,13 +42,13 @@ module Domain
       ].freeze
 
       if type.nil?
-        raise InvalidGeometry, 'Type is required'
+        raise InvalidGeometry, "Type is required"
       elsif valid_types.exclude?(type)
-        raise InvalidGeometry, 'Type is invalid'
-      elsif type != 'GeometryCollection' && coordinates.nil?
-        raise InvalidGeometry, 'Coordinates is required'
-      elsif type == 'GeometryCollection' && geometries.nil?
-        raise InvalidGeometry, 'Geometries is required'
+        raise InvalidGeometry, "Type is invalid"
+      elsif type != "GeometryCollection" && coordinates.nil?
+        raise InvalidGeometry, "Coordinates is required"
+      elsif type == "GeometryCollection" && geometries.nil?
+        raise InvalidGeometry, "Geometries is required"
       end
     end
   end

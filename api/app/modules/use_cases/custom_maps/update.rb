@@ -31,7 +31,7 @@ module UseCases
         raise UpdateError, e.message
       rescue StandardError => e
         LoggerProvider.new.error(e)
-        raise UpdateError, 'Error updating custom map'
+        raise UpdateError, "Error updating custom map"
       end
     end
   end

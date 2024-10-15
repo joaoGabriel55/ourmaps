@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Domain::MapContent do
-  let(:geometry) { Domain::Geometry.new(type: 'Point', coordinates: [0, 0]) }
+  let(:geometry) { Domain::Geometry.new(type: 'Point', coordinates: [ 0, 0 ]) }
   let(:image) { Domain::Image.new(id: 'abc123', url: 'https://example.com') }
 
   context 'valid map content' do

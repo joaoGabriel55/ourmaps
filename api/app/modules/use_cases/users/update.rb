@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module UseCases
   module Users
     class UpdateError < StandardError; end
@@ -30,7 +31,7 @@ module UseCases
         raise UpdateError, e.message
       rescue StandardError => e
         LoggerProvider.new.error(e)
-        raise UpdateError, 'Error updating user'
+        raise UpdateError, "Error updating user"
       end
     end
   end

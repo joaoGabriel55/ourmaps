@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module UseCases
   module CustomMaps
     class DeleteError < StandardError; end
@@ -17,7 +18,7 @@ module UseCases
         custom_map_repository.delete!(id:)
       rescue StandardError => e
         LoggerProvider.new.error(e)
-        raise DeleteError, 'Error deleting custom map'
+        raise DeleteError, "Error deleting custom map"
       end
     end
   end

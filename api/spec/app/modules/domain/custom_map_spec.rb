@@ -25,7 +25,7 @@ RSpec.describe Domain::CustomMap do
         id: 'abc1234',
         name: 'My Custom Map',
         owner: Domain::User.new(name: 'John', password: '123456'),
-        colaborators: [Domain::User.new(name: 'Luke', password: '123456')]
+        colaborators: [ Domain::User.new(name: 'Luke', password: '123456') ]
       ).to_hash
     end
 

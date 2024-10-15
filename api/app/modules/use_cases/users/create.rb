@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module UseCases
   module Users
     class CreateError < StandardError; end
@@ -24,7 +25,7 @@ module UseCases
         raise CreateError, e.message
       rescue StandardError => e
         LoggerProvider.new.error(e)
-        raise CreateError, 'Error creating user'
+        raise CreateError, "Error creating user"
       end
     end
   end

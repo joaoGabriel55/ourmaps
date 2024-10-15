@@ -45,11 +45,11 @@ module Domain
 
     def validate(id:, name:, owner:)
       if id.nil?
-        raise InvalidCustomMap, 'Id is required'
+        raise InvalidCustomMap, "Id is required"
       elsif name.nil?
-        raise InvalidCustomMap, 'Name is required'
+        raise InvalidCustomMap, "Name is required"
       elsif owner.nil?
-        raise InvalidCustomMap, 'Owner is required'
+        raise InvalidCustomMap, "Owner is required"
       end
     end
   end

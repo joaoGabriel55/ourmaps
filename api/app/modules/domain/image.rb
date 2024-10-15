@@ -26,9 +26,9 @@ module Domain
 
     def validate(id:, url:)
       if id.nil?
-        raise InvalidImage, 'Id is required'
+        raise InvalidImage, "Id is required"
       elsif url.nil?
-        raise InvalidImage, 'Image link is required'
+        raise InvalidImage, "Image link is required"
       end
     end
   end

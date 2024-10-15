@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module UseCases
   module Users
     class GetAllError < StandardError; end
@@ -26,7 +27,7 @@ module UseCases
         end
       rescue StandardError => e
         LoggerProvider.new.error(e)
-        raise GetAllError, 'Error fetching users'
+        raise GetAllError, "Error fetching users"
       end
     end
   end

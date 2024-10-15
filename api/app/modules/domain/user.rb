@@ -34,11 +34,11 @@ module Domain
 
     def validate(name:, password:)
       if name.nil?
-        raise InvalidUser, 'Name is required'
+        raise InvalidUser, "Name is required"
       elsif password.nil?
-        raise InvalidUser, 'Password is required'
+        raise InvalidUser, "Password is required"
       elsif password.length < 6
-        raise InvalidUser, 'Password must be at least 6 characters long'
+        raise InvalidUser, "Password must be at least 6 characters long"
       end
     end
   end
