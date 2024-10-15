@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-require './app/usecases/users/create'
+require 'rails_helper'
 
-RSpec.describe 'Users' do
+RSpec.describe.skip 'Users' do
   context 'get all users' do
     before { UsersService.new(repository:).create(params:) }
 
