@@ -16,9 +16,7 @@ module OurmapsApi
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
-    config.autoload_paths << "#{root}/app/domain"
-    config.autoload_paths << "#{root}/app/use_cases"
-
+    config.autoload_paths += %W[#{config.root}/domain]
 
     # Configuration for the application, engines, and railties goes here.
     #

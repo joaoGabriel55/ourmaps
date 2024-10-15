@@ -7,7 +7,14 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = Usecases::Users::Lookup.call(id: params[:id], repository_adapter: Domain::UserRepository.new)
+    lookup = UseCases::Users::Lookup.new(
+      id: params[:id],
+      repository_adapter: Domain::UserRepository.new(
+        repository: UserRepository
+      )
+    )
+
+    @user = lookup.call
 
     render json: @user
   end
