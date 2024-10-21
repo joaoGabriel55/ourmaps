@@ -1,0 +1,19 @@
+defaults: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  host: <%= ENV.fetch("DB_HOST", "localhost") %>
+  username: <%= ENV.fetch("DB_USER", "postgres") %>
+  password: <%= ENV.fetch("DB_PASSWORD", "password") %>
+
+test:
+  <<: *default
+  database: ourmaps_api_test
+
+development:
+  <<: *default
+  database: ourmaps_api_development
+
+production:
+  <<: *default
+  database: ourmaps_api_production

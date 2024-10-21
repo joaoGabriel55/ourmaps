@@ -1,23 +1,9 @@
-# frozen_string_literal: true
-
-require './app/usecases/users/create'
-require './app/adapters/repositories/index'
-require './app/shared_kernel/logger_provider'
-
-# TODO: Fix seed!
-LoggerProvider.new.info('Running seeds')
-
-create_user1 = Usecases::Users::Create.new(
-  params: { name: 'John', password: '123456' },
-  repository_adapter: repositories[:user_repository]
-)
-
-create_user2 = Usecases::Users::Create.new(
-  params: { name: 'Jane', password: '123456' },
-  repository_adapter: repositories[:user_repository]
-)
-
-create_user1.call
-create_user2.call
-
-LoggerProvider.new.info('Finished seeds')
+# This file should ensure the existence of records required to run the application in every environment (production,
+# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
+# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
+#
+# Example:
+#
+#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
+#     MovieGenre.find_or_create_by!(name: genre_name)
+#   end
