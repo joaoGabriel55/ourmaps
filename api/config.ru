@@ -1,9 +1,6 @@
-# frozen_string_literal: true
+# This file is used by Rack-based servers to start the application.
 
-require 'sinatra/activerecord/rake'
-require 'rack/unreloader'
+require_relative "config/environment"
 
-Unreloader = Rack::Unreloader.new { App }
-Unreloader.require './app.rb'
-
-run Unreloader
+run Rails.application
+Rails.application.load_server

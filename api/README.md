@@ -1,44 +1,24 @@
-# OurMaps API
+# README
 
-### Setup
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
-Start database
-```sh
-docker compose up
-```
+Things you may want to cover:
 
-Install dependencies
-```sh
-bundle install
-```
+* Ruby version
 
-### Deploy app locally
+* System dependencies
 
-```sh
-ruby app.rb
-```
+* Configuration
 
-### Run tests
-```sh
-bundle exec rspec
-```
+* Database creation
 
-### Format your code
-```sh
-bundle exec rubocop -A
-```
-_*Install `rubocop` gem first_
+* Database initialization
 
-## Database
+* How to run the test suite
 
-### Setup
-```sh
-rake db:environment:set
-rake db:setup
-rake db:migrate
-```
+* Services (job queues, cache servers, search engines, etc.)
 
-### Create Migration
-```sh
-rake db:create_migration NAME=[migration_name]
-```
+* Deployment instructions
+
+* ...
