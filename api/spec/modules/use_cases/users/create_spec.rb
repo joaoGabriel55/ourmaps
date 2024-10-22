@@ -13,7 +13,7 @@ RSpec.describe UseCases::Users::Create do
 
     it 'calls user repository' do
       allow(repository_adapter).to receive(:create!)
-        .and_return(Domain::User.new(name: 'John', password: '123456'))
+        .and_return(Domain::User.new(id: IdProvider.new.next_id, name: 'John', password: '123456'))
 
       create_user.call
 

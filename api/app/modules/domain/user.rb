@@ -7,7 +7,7 @@ module Domain
     attr_accessor :id, :name, :password, :created_at, :updated_at
 
     def initialize(id: nil, name: nil, password: nil, created_at: nil, updated_at: nil)
-      validate(name:, password:)
+      validate(id:, name:, password:)
 
       @id = id
       @name = name
@@ -35,8 +35,10 @@ module Domain
 
     private
 
-    def validate(name:, password:)
-      if name.nil?
+    def validate(id:, name:, password:)
+      if id.nil?
+        raise InvalidUser, "id is required"
+      elsif name.nil?
         raise InvalidUser, "name is required"
       elsif password.nil?
         raise InvalidUser, "password is required"

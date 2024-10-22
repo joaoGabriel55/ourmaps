@@ -9,7 +9,7 @@ RSpec.describe UseCases::CustomMaps::Create do
     {
       id: 'abc1234',
       name: 'My Custom Map',
-      owner: Domain::User.new(name: 'John', password: '123456')
+      owner: Domain::User.new(id: IdProvider.new.next_id, name: 'John', password: '123456')
     }
   end
 
