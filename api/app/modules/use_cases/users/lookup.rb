@@ -2,6 +2,8 @@
 
 module UseCases
   module Users
+    class NotFoundError < StandardError; end
+
     class LookupError < StandardError; end
 
     class Lookup
@@ -17,15 +19,16 @@ module UseCases
       def call
         user = user_repository.lookup!(id:)
 
-        raise LookupError, "User not found: #{id}" if user.nil?
-
         Domain::User.new(
           id: user.id,
           name: user.name,
           password: user.password,
           created_at: user.created_at,
           updated_at: user.updated_at
-        ).response
+        )
+      rescue NotFoundError => e
+        LoggerProvider.new.error(e)
+        raise NotFoundError, e.message
       rescue StandardError => e
         LoggerProvider.new.error(e)
         raise LookupError, e.message

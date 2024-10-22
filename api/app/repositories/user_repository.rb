@@ -9,6 +9,14 @@ class UserRepository < ApplicationRecord
 
   def self.lookup!(id:)
     find(id)
+  rescue ActiveRecord::RecordNotFound
+    raise UseCases::Users::NotFoundError, "User not found: #{id}"
+  end
+
+  def self.update!(user)
+    find(user[:id]).update!(user)
+  rescue ActiveRecord::RecordNotFound
+    raise UseCases::Users::UpdateError, "User not found: #{user[:id]}"
   end
 
   def self.delete!(id:)

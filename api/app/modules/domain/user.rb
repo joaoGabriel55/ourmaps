@@ -27,18 +27,21 @@ module Domain
     end
 
     def response
-      to_hash.except(:password).transform_keys(&:to_s).transform_keys(&:camelize)
+      to_hash
+        .except(:password)
+        .transform_keys(&:to_s)
+        .deep_transform_keys! { |key| key.camelize(:lower) }
     end
 
     private
 
     def validate(name:, password:)
       if name.nil?
-        raise InvalidUser, "Name is required"
+        raise InvalidUser, "name is required"
       elsif password.nil?
-        raise InvalidUser, "Password is required"
+        raise InvalidUser, "password is required"
       elsif password.length < 6
-        raise InvalidUser, "Password must be at least 6 characters long"
+        raise InvalidUser, "password must be at least 6 characters long"
       end
     end
   end

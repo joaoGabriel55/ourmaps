@@ -5,27 +5,25 @@ module UseCases
     class UpdateError < StandardError; end
 
     class Update
-      attr_accessor :user_repository, :user, :params
+      attr_accessor :user_repository, :params
 
-      def initialize(params:, repository_adapter:, user: Domain::User)
+      def initialize(params:, repository_adapter:)
         @params = params
-        @user = user
         @user_repository = Domain::UserRepository.new(
           repository: repository_adapter
         )
       end
 
       def call
-        updated_user = user.new(
+        updated_user =  Domain::User.new(
           id: params[:id],
           name: params[:name],
           password: params[:password],
+          created_at: params[:created_at],
           updated_at: DateTime.now
         )
 
         user_repository.update!(updated_user.to_hash)
-
-        updated_user.response
       rescue Domain::InvalidUser => e
         LoggerProvider.new.error(e)
         raise UpdateError, e.message

@@ -10,7 +10,7 @@ RSpec.describe UseCases::Users::GetAll do
 
   context 'get all users' do
     it 'calls user repository' do
-      allow(repository_adapter).to receive(:get_all!).and_return(nil)
+      allow(repository_adapter).to receive(:get_all!).and_return([])
 
       get_all_users.call
 
