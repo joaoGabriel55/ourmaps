@@ -32,7 +32,6 @@ module Domain
     end
 
     delegate :update!, to: :repository
-    delegate :lookup!, to: :repository
     delegate :delete!, to: :repository
 
     def get_all!(owner_id:, paginator:)
@@ -58,6 +57,29 @@ module Domain
           end
         )
       end
+    end
+
+    def lookup!(id:)
+      map = repository.lookup!(id:)
+
+      Domain::CustomMap.new(
+        id: map.id,
+        name: map.name,
+        description: map.description,
+        content: map.content,
+        owner: Domain::User.new(
+          id: map.owner.id,
+          name: map.owner.name,
+          password: map.owner.password
+        ),
+        colaborators: map.colaborators.map do |colaborator|
+          Domain::User.new(
+            id: map.owner.id,
+            name: map.owner.name,
+            password: map.owner.password
+          )
+        end
+      )
     end
   end
 end

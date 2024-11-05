@@ -33,22 +33,41 @@ RSpec.describe CustomMapsController, type: :request do
       end
     end
 
-    # it 'returns all custom maps' do
-    #   get '/custom_maps?owner_id=' + owner_id
+    it 'returns the 2 custom maps' do
+      get '/custom_maps?owner_id=' + owner.id
 
-    #   expect(JSON.parse(response.body)).to include({
-    #     'id' => String,
-    #     'name' => params[:name],
-    #     'createdAt' => String,
-    #     'updatedAt' => String
-    #   })
-    # end
+      expect(JSON.parse(response.body).size).to eq(2)
+    end
+  end
 
-    # it 'returns custom maps count' do
-    #   get '/users'
+  describe 'get map by id' do
+    let!(:owner) { FactoryBot.create(:user_repository, name: 'John', password: '123456') }
+    let!(:custom_map) { FactoryBot.create(:custom_map_repository, owner:) }
 
-    #   expect(JSON.parse(response.body).size).to eq(1)
-    # end
+    it 'returns 200 ok status' do
+      get '/custom_maps/' + custom_map.id
+
+      expect(response.status).to eq(200)
+    end
+
+    it 'returns custom map' do
+      get '/custom_maps/' + custom_map.id
+
+      expect(JSON.parse(response.body)).to include({
+        'id' => String,
+        'name' => custom_map.name,
+        'description' => custom_map.description,
+        'content' => custom_map.content
+      })
+    end
+
+    context 'when custom map s not found' do
+      it 'returns 404 not found status' do
+        get '/custom_maps/abc212'
+
+        expect(response.status).to eq(404)
+      end
+    end
   end
 
   describe 'create new custom map' do

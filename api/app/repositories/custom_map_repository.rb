@@ -23,13 +23,13 @@ class CustomMapRepository < ApplicationRecord
   def self.lookup!(id:)
     find(id)
   rescue ActiveRecord::RecordNotFound
-    raise UseCases::Users::NotFoundError, "Custom map not found: #{id}"
+    raise UseCases::CustomMaps::NotFoundError, "Custom map not found: #{id}"
   end
 
   def self.update!(map)
     find(map[:id]).update!(map)
   rescue ActiveRecord::RecordNotFound
-    raise UseCases::Users::UpdateError, "Custom map not found: #{map[:id]}"
+    raise UseCases::CustomMaps::UpdateError, "Custom map not found: #{map[:id]}"
   end
 
   def self.delete!(id:)

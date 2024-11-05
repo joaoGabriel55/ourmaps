@@ -19,6 +19,18 @@ class CustomMapsController < ApplicationController
     render json: { error: e.message }, status: 500
   end
 
+  def show
+    lookup = UseCases::CustomMaps::Lookup.new(id: params[:id], repository_adapter: custom_map_repository)
+
+    @map = lookup.call
+
+    render json: @map
+  rescue UseCases::CustomMaps::NotFoundError => e
+    render json: { error: e.message }, status: 404
+  rescue UseCases::CustomMaps::LookupError => e
+    render json: { error: e.message }, status: 500
+  end
+
   def create
     owner = lookup_owner.call
 

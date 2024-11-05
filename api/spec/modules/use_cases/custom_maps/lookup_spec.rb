@@ -12,7 +12,17 @@ RSpec.describe UseCases::CustomMaps::Lookup do
     end
 
     it 'calls custom map repository' do
-      allow(repository_adapter).to receive(:lookup!).and_return(nil)
+      allow(repository_adapter).to receive(:lookup!).and_return(
+        Domain::CustomMap.new(
+          id: custom_map_id,
+          name: 'My Custom Map',
+          owner: Domain::User.new(
+            id: IdProvider.new.next_id,
+            name: 'John',
+            password: '123456'
+          )
+        )
+      )
 
       lookup_custom_map.call
 
