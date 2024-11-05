@@ -90,4 +90,23 @@ RSpec.describe CustomMapsController, type: :request do
       expect(JSON.parse(response.body)['name']).to eq(body[:name])
     end
   end
+
+  describe 'delete custom map' do
+    let!(:owner) { FactoryBot.create(:user_repository, name: 'John', password: '123456') }
+    let!(:custom_map) { FactoryBot.create(:custom_map_repository, owner:) }
+
+    it 'returns 204 no content status' do
+      delete '/custom_maps/' + custom_map.id
+
+      expect(response.status).to eq(204)
+    end
+
+    context 'when custom map not found' do
+      it 'returns 404 not found status' do
+        delete '/custom_maps/abc212'
+
+        expect(response.status).to eq(404)
+      end
+    end
+  end
 end

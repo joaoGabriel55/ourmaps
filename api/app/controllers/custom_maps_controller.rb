@@ -20,8 +20,6 @@ class CustomMapsController < ApplicationController
   end
 
   def show
-    lookup = UseCases::CustomMaps::Lookup.new(id: params[:id], repository_adapter: custom_map_repository)
-
     @map = lookup.call
 
     render json: @map
@@ -52,6 +50,18 @@ class CustomMapsController < ApplicationController
     render json: { error: e.message }, status: 500
   end
 
+  def destroy
+    lookup.call
+
+    UseCases::CustomMaps::Delete.new(id: params[:id], repository_adapter: custom_map_repository).call
+
+    render status: 204
+  rescue UseCases::CustomMaps::NotFoundError => e
+    render json: { error: e.message }, status: 404
+  rescue UseCases::CustomMaps::DeleteError => e
+    render json: { error: e.message }, status: 500
+  end
+
   private
 
   def check_owner_id
@@ -68,5 +78,9 @@ class CustomMapsController < ApplicationController
 
   def lookup_owner
     UseCases::Users::Lookup.new(id: params[:owner_id], repository_adapter: user_repository)
+  end
+
+  def lookup
+    UseCases::CustomMaps::Lookup.new(id: params[:id], repository_adapter: custom_map_repository)
   end
 end

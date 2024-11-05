@@ -18,7 +18,7 @@ module UseCases
         custom_map_repository.delete!(id:)
       rescue StandardError => e
         LoggerProvider.new.error(e)
-        raise DeleteError, "Error deleting custom map"
+        raise DeleteError, "Error deleting custom map #{id}"
       end
     end
   end
