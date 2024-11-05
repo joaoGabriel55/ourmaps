@@ -15,7 +15,13 @@ RSpec.describe UseCases::CustomMaps::Create do
 
   context 'create new custom map' do
     it 'calls custom map repository' do
-      allow(repository_adapter).to receive(:create!).and_return(nil)
+      allow(repository_adapter).to receive(:create!).and_return(
+        Domain::CustomMap.new(
+          id: params[:id],
+          name: params[:name],
+          owner: params[:owner]
+        )
+      )
 
       create_custom_map.call
 

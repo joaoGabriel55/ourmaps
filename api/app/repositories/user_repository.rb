@@ -3,6 +3,8 @@
 class UserRepository < ApplicationRecord
   self.table_name = "users"
 
+  has_and_belongs_to_many :custom_maps, class_name: "CustomMapRepository"
+
   def self.get_all!(paginator:)
     paginate(per_page: paginator[:per_page], page: paginator[:page])
   end
@@ -20,6 +22,7 @@ class UserRepository < ApplicationRecord
   end
 
   def self.delete!(id:)
-    destroy(id)
+    # NOTE: This will delete the user and all of its custom maps (?)
+    delete(id)
   end
 end

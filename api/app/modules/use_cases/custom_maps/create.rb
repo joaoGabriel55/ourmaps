@@ -5,19 +5,18 @@ module UseCases
     class CreateError < StandardError; end
 
     class Create
-      attr_accessor :custom_map_repository, :custom_map, :params
+      attr_accessor :params, :custom_map_repository
 
-      def initialize(params:, repository_adapter:, custom_map: Domain::CustomMap)
+      def initialize(params:, repository_adapter:)
         @params = params
-        @custom_map = custom_map
         @custom_map_repository = Domain::CustomMapRepository.new(
           repository: repository_adapter
         )
       end
 
       def call
-        new_map = custom_map.new(
-          id: params[:id],
+        new_map = Domain::CustomMap.new(
+          id: IdProvider.new.next_id,
           name: params[:name],
           description: params[:description],
           content: params[:content],
@@ -26,8 +25,6 @@ module UseCases
         )
 
         custom_map_repository.create!(new_map.to_hash)
-
-        new_map.to_hash
       rescue Domain::InvalidCustomMap => e
         LoggerProvider.new.error(e)
         raise CreateError, e.message

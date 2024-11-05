@@ -13,7 +13,9 @@ module Domain
       description: nil,
       content: [],
       owner: nil,
-      colaborators: []
+      colaborators: [],
+      created_at: nil,
+      updated_at: nil
     )
 
       validate(id:, name:, owner:)
@@ -23,9 +25,9 @@ module Domain
       @description = description
       @content = content
       @owner = owner
-      @colaborators = colaborators
-      @created_at = DateTime.now
-      @updated_at = nil
+      @colaborators = colaborators || []
+      @created_at = created_at || DateTime.now
+      @updated_at = updated_at || nil
     end
 
     def to_hash

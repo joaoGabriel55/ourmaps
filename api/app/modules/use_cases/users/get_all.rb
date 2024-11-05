@@ -16,15 +16,7 @@ module UseCases
       end
 
       def call
-        user_repository.get_all!(paginator:)&.map do |user|
-          Domain::User.new(
-            id: user.id,
-            name: user.name,
-            password: user.password,
-            created_at: user.created_at,
-            updated_at: user.updated_at
-          ).response
-        end
+        user_repository.get_all!(paginator:)
       rescue StandardError => e
         LoggerProvider.new.error(e)
         raise GetAllError, "Error fetching users"
