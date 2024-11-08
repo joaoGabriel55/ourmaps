@@ -56,6 +56,7 @@ RSpec.describe CustomMapsController, type: :request do
       expect(JSON.parse(response.body)).to include({
         'id' => String,
         'name' => custom_map.name,
+        'center' => [ custom_map.lat_center, custom_map.lng_center ],
         'description' => custom_map.description,
         'content' => custom_map.content
       })
@@ -75,19 +76,57 @@ RSpec.describe CustomMapsController, type: :request do
     let(:body) { {
       name: 'New Custom Map',
       owner_id: owner.id,
+      center: [ 51.5074, -0.1278 ],
       description: 'New Custom Map Description'
     } }
 
     it 'returns 201 created status' do
-      post '/custom_maps', params: body
+      post '/custom_maps', params: body, as: :json
 
       expect(response.status).to eq(201)
     end
 
-    it 'returns created user' do
-      post '/custom_maps', params: body
+    it 'returns created custom map' do
+      post '/custom_maps', params: body, as: :json
 
       expect(JSON.parse(response.body)['name']).to eq(body[:name])
+    end
+
+    context 'when a geojson content is provided' do
+      let(:body) { {
+        name: 'New Custom Map',
+        owner_id: owner.id,
+        description: 'New Custom Map Description',
+        center: [ 51.5074, -0.1278 ],
+        content: {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [ 125.6, 10.1 ]
+          },
+          "properties": {
+            "name": "Dinagat Islands"
+          }
+        }
+      } }
+
+      it 'returns 201 created status' do
+        post '/custom_maps', params: body, as: :json
+
+        expect(response.status).to eq(201)
+      end
+
+      it 'returns created custom map content' do
+        post '/custom_maps', params: body, as: :json
+
+        expect(JSON.parse(response.body)['content'].deep_symbolize_keys).to eq(body[:content])
+      end
+
+      it 'changes the number of custom maps on database' do
+        expect do
+          post '/custom_maps', params: body, as: :json
+        end.to change { CustomMapRepository.count }.by(1)
+      end
     end
   end
 

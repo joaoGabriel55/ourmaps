@@ -16,6 +16,7 @@ RSpec.describe UseCases::CustomMaps::Lookup do
         Domain::CustomMap.new(
           id: custom_map_id,
           name: 'My Custom Map',
+          center: [ 51.5074, -0.1278 ],
           owner: Domain::User.new(
             id: IdProvider.new.next_id,
             name: 'John',

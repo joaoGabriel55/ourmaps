@@ -21,6 +21,7 @@ module UseCases
           name: params[:name],
           description: params[:description],
           content: params[:content],
+          center: params[:center],
           owner: params[:owner],
           colaborators: params[:colaborators]
         )

@@ -19,6 +19,7 @@ module UseCases
           id: IdProvider.new.next_id,
           name: params[:name],
           description: params[:description],
+          center: params[:center],
           content: params[:content],
           owner: params[:owner],
           colaborators: params[:colaborators]

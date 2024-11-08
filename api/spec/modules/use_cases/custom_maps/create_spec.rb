@@ -9,6 +9,7 @@ RSpec.describe UseCases::CustomMaps::Create do
     {
       id: 'abc1234',
       name: 'My Custom Map',
+      center: [ 51.5074, -0.1278 ],
       owner: Domain::User.new(id: IdProvider.new.next_id, name: 'John', password: '123456')
     }
   end
@@ -19,7 +20,8 @@ RSpec.describe UseCases::CustomMaps::Create do
         Domain::CustomMap.new(
           id: params[:id],
           name: params[:name],
-          owner: params[:owner]
+          owner: params[:owner],
+          center: params[:center]
         )
       )
 

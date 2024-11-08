@@ -4,13 +4,17 @@ module Domain
   class InvalidCustomMap < StandardError; end
 
   class CustomMap
-    attr_accessor :id, :name, :description,
+    attr_accessor :id,
+      :name,
+      :description,
+      :center,
       :content, :owner, :colaborators, :created_at, :updated_at
 
     def initialize(
       id: nil,
       name: nil,
       description: nil,
+      center: nil,
       content: [],
       owner: nil,
       colaborators: [],
@@ -18,11 +22,12 @@ module Domain
       updated_at: nil
     )
 
-      validate(id:, name:, owner:)
+      validate(id:, name:, owner:, center:)
 
       @id = id
       @name = name
       @description = description
+      @center = center
       @content = content
       @owner = owner
       @colaborators = colaborators || []
@@ -35,6 +40,7 @@ module Domain
         id:,
         name:,
         description:,
+        center:,
         content:,
         owner: owner.to_hash,
         colaborators: colaborators&.map(&:to_hash),
@@ -45,14 +51,15 @@ module Domain
 
     private
 
-    def validate(id:, name:, owner:)
-      if id.nil?
-        raise InvalidCustomMap, "Id is required"
-      elsif name.nil?
-        raise InvalidCustomMap, "Name is required"
-      elsif owner.nil?
-        raise InvalidCustomMap, "Owner is required"
-      end
+    def validate(id:, name:, owner:, center:)
+      raise InvalidCustomMap, "Id is required" if id.nil?
+      raise InvalidCustomMap, "Name is required" if name.nil?
+      raise InvalidCustomMap, "Owner is required" if owner.nil?
+      raise InvalidCustomMap, "Center is required" unless valid_center?(center)
+    end
+
+    def valid_center?(center)
+      center&.length == 2 && center[0].is_a?(Float) && center[1].is_a?(Float)
     end
   end
 end
