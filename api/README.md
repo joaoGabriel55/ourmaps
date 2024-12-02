@@ -1,24 +1,28 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Setup
+Start database container
+```bash
+docker compose up -d
+```
 
-Things you may want to cover:
+Setup database
+```bash
+rails db:create db:migrate
+```
 
-* Ruby version
+## Run server
+```bash
+rails s
+```
 
-* System dependencies
+## Run tests
+All tests
+```bash
+rspec
+```
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Single test. e.g.:
+```bash
+rspec spec/models/user_spec.rb
+```
