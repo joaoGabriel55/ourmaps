@@ -4,9 +4,9 @@ class CustomMapRepository < ApplicationRecord
   self.table_name = "custom_maps"
 
   belongs_to :owner, class_name: "UserRepository", foreign_key: :owner_id
-  has_and_belongs_to_many :colaborators,
+  has_and_belongs_to_many :collaborators,
     class_name: "UserRepository",
-    association_foreign_key: :colaborator_id,
+    association_foreign_key: :collaborator_id,
     foreign_key: :custom_map_id
 
   def self.create!(map)

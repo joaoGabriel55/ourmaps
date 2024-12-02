@@ -28,10 +28,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_08_185109) do
 
   create_table "custom_maps_users", force: :cascade do |t|
     t.uuid "custom_map_id"
-    t.uuid "colaborator_id"
+    t.uuid "collaborator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["colaborator_id"], name: "index_custom_maps_users_on_colaborator_id"
+    t.index ["collaborator_id"], name: "index_custom_maps_users_on_collaborator_id"
     t.index ["custom_map_id"], name: "index_custom_maps_users_on_custom_map_id"
   end
 
@@ -44,5 +44,5 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_08_185109) do
 
   add_foreign_key "custom_maps", "users", column: "owner_id"
   add_foreign_key "custom_maps_users", "custom_maps"
-  add_foreign_key "custom_maps_users", "users", column: "colaborator_id"
+  add_foreign_key "custom_maps_users", "users", column: "collaborator_id"
 end

@@ -8,16 +8,20 @@ module Domain
       :name,
       :description,
       :center,
-      :content, :owner, :colaborators, :created_at, :updated_at
+      :content,
+      :owner,
+      :collaborators,
+      :created_at,
+      :updated_at
 
     def initialize(
       id: nil,
       name: nil,
       description: nil,
       center: nil,
-      content: [],
+      content: nil,
       owner: nil,
-      colaborators: [],
+      collaborators: [],
       created_at: nil,
       updated_at: nil
     )
@@ -28,9 +32,9 @@ module Domain
       @name = name
       @description = description
       @center = center
-      @content = content
+      @content = content ? Domain::Geometry.new(geometry: JSON.parse(content.to_json)) : nil
       @owner = owner
-      @colaborators = colaborators || []
+      @collaborators = collaborators || []
       @created_at = created_at || DateTime.now
       @updated_at = updated_at || nil
     end
@@ -41,9 +45,9 @@ module Domain
         name:,
         description:,
         center:,
-        content:,
+        content: content ? content.to_hash : nil,
         owner: owner.to_hash,
-        colaborators: colaborators&.map(&:to_hash),
+        collaborators: collaborators&.map(&:to_hash),
         created_at:,
         updated_at:
       }

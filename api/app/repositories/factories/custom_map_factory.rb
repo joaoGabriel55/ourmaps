@@ -5,18 +5,18 @@ module Factories
         id: map.id,
         name: map.name,
         description: map.description,
-        content: map.content,
+        content: map.content ? Domain::Geometry.new(geometry: map.content) : nil,
         center: [ map.lat_center, map.lng_center ],
         owner: Domain::User.new(
           id: map.owner.id,
           name: map.owner.name,
           password: map.owner.password
         ),
-        colaborators: map.colaborators.map do |colaborator|
+        collaborators: map.collaborators.map do |collaborator|
           Domain::User.new(
-            id: colaborator.id,
-            name: colaborator.name,
-            password: colaborator.password
+            id: collaborator.id,
+            name: collaborator.name,
+            password: collaborator.password
           )
         end
       )

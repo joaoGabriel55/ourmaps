@@ -45,21 +45,23 @@ RSpec.describe CustomMapsController, type: :request do
     let!(:custom_map) { FactoryBot.create(:custom_map_repository, owner:) }
 
     it 'returns 200 ok status' do
-      get '/custom_maps/' + custom_map.id
+      get "/custom_maps/#{custom_map.id}"
 
       expect(response.status).to eq(200)
     end
 
     it 'returns custom map' do
-      get '/custom_maps/' + custom_map.id
+      get "/custom_maps/#{custom_map.id}"
 
-      expect(JSON.parse(response.body)).to include({
+      response_body = JSON.parse(response.body)
+
+      expect(response_body).to include({
         'id' => String,
         'name' => custom_map.name,
         'center' => [ custom_map.lat_center, custom_map.lng_center ],
-        'description' => custom_map.description,
-        'content' => custom_map.content
+        'description' => custom_map.description
       })
+      expect(response_body['content']).to eq(custom_map.content)
     end
 
     context 'when custom map s not found' do
@@ -99,13 +101,13 @@ RSpec.describe CustomMapsController, type: :request do
         description: 'New Custom Map Description',
         center: [ 51.5074, -0.1278 ],
         content: {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [ 125.6, 10.1 ]
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [ 125.6, 10.1 ]
           },
-          "properties": {
-            "name": "Dinagat Islands"
+          properties: {
+            name: "Dinagat Islands"
           }
         }
       } }
@@ -119,7 +121,12 @@ RSpec.describe CustomMapsController, type: :request do
       it 'returns created custom map content' do
         post '/custom_maps', params: body, as: :json
 
-        expect(JSON.parse(response.body)['content'].deep_symbolize_keys).to eq(body[:content])
+        expect(JSON.parse(response.body)['content']).to eq({
+          "geometry"=>{
+            "coordinates"=>[ 125.6, 10.1 ], "type"=>"Point" },
+            "properties"=>{ "name"=>"Dinagat Islands" },
+            "type"=>"Feature"
+          })
       end
 
       it 'changes the number of custom maps on database' do
@@ -135,7 +142,7 @@ RSpec.describe CustomMapsController, type: :request do
     let!(:custom_map) { FactoryBot.create(:custom_map_repository, owner:) }
 
     it 'returns 204 no content status' do
-      delete '/custom_maps/' + custom_map.id
+      delete "/custom_maps/#{custom_map.id}"
 
       expect(response.status).to eq(204)
     end

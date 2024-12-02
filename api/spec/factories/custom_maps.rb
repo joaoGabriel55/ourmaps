@@ -4,8 +4,23 @@ FactoryBot.define do
     description { Faker::Lorem.sentence }
     lat_center { Faker::Address.latitude }
     lng_center { Faker::Address.longitude }
-    content { { 'key' => 'value' } }
+    content { {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            coordinates: [
+              14.467459460702372,
+              50.065357461330194
+            ],
+            type: "Point"
+          }
+        }
+      ]
+    } }
     owner { FactoryBot.create(:user_repository) }
-    colaborators { [ FactoryBot.create(:user_repository) ] }
+    collaborators { [ FactoryBot.create(:user_repository) ] }
   end
 end

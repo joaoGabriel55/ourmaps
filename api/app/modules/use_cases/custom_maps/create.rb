@@ -22,7 +22,7 @@ module UseCases
           center: params[:center],
           content: params[:content],
           owner: params[:owner],
-          colaborators: params[:colaborators]
+          collaborators: params[:collaborators]
         )
 
         custom_map_repository.create!(new_map.to_hash)
