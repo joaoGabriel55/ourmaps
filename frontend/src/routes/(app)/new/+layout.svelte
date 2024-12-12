@@ -1,4 +1,8 @@
-<h1 class="text-3xl font-bold underline">Hello world!</h1>
+<script>
+  let { children } = $props();
+</script>
+
+{@render children()}
 
 <style lang="postcss">
   :global(html) {
