@@ -13,6 +13,7 @@
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
+		"@types/leaflet": "^1.9.14",
 		"autoprefixer": "^10.4.20",
 		"postcss": "^8.4.49",
 		"svelte": "^5.0.0",
@@ -22,5 +23,8 @@
 		"vite": "^5.0.3"
 	},
 	"dependencies": {
+		"daisyui": "^4.12.20",
+		"leaflet": "^1.9.4",
+		"lucide-svelte": "^0.464.0"
 	}
 }
