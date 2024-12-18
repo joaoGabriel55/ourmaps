@@ -2,6 +2,8 @@
 
 module UseCases
   module CustomMaps
+    class NotFoundError < StandardError; end
+
     class LookupError < StandardError; end
 
     class Lookup
@@ -16,9 +18,12 @@ module UseCases
 
       def call
         custom_map_repository.lookup!(id:)
+      rescue NotFoundError => e
+        LoggerProvider.new.error(e)
+        raise NotFoundError, e.message
       rescue StandardError => e
         LoggerProvider.new.error(e)
-        raise LookupError, "Error looking up custom map #{id}"
+        raise LookupError, e.message
       end
     end
   end

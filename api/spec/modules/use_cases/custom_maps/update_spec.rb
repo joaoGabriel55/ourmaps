@@ -7,9 +7,10 @@ RSpec.describe UseCases::CustomMaps::Update do
   let(:update_custom_map) { described_class.new(params:, repository_adapter:) }
   let(:params) do
     {
-      id: 'abc1234',
+      id: IdProvider.new.next_id,
       name: 'My Custom Map',
-      owner: Domain::User.new(name: 'John', password: '123456')
+      center: [ 51.5074, -0.1278 ],
+      owner: Domain::User.new(id: IdProvider.new.next_id, name: 'John', password: '123456')
     }
   end
 
@@ -21,6 +22,7 @@ RSpec.describe UseCases::CustomMaps::Update do
 
       expect(repository_adapter).to have_received(:update!).with(include({
         name: params[:name],
+        center: params[:center],
         owner: include({ name: params[:owner].name, password: params[:owner].password })
       }))
     end

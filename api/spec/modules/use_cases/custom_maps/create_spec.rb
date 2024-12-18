@@ -9,13 +9,21 @@ RSpec.describe UseCases::CustomMaps::Create do
     {
       id: 'abc1234',
       name: 'My Custom Map',
-      owner: Domain::User.new(name: 'John', password: '123456')
+      center: [ 51.5074, -0.1278 ],
+      owner: Domain::User.new(id: IdProvider.new.next_id, name: 'John', password: '123456')
     }
   end
 
   context 'create new custom map' do
     it 'calls custom map repository' do
-      allow(repository_adapter).to receive(:create!).and_return(nil)
+      allow(repository_adapter).to receive(:create!).and_return(
+        Domain::CustomMap.new(
+          id: params[:id],
+          name: params[:name],
+          owner: params[:owner],
+          center: params[:center]
+        )
+      )
 
       create_custom_map.call
 

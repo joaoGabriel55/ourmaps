@@ -4,32 +4,71 @@ require 'rails_helper'
 
 RSpec.describe Domain::Geometry do
   context 'valid geometry' do
-    it { expect { described_class.new(type: 'Point', coordinates: [ 0, 0 ]) }.not_to raise_error(Domain::InvalidGeometry) }
-    it { expect { described_class.new(type: 'LineString', coordinates: [ 0, 0 ]) }.not_to raise_error(Domain::InvalidGeometry) }
-    it { expect { described_class.new(type: 'Polygon', coordinates: [ 0, 0 ]) }.not_to raise_error(Domain::InvalidGeometry) }
-    it { expect { described_class.new(type: 'MultiPoint', coordinates: [ 0, 0 ]) }.not_to raise_error(Domain::InvalidGeometry) }
-    it { expect { described_class.new(type: 'MultiLineString', coordinates: [ 0, 0 ]) }.not_to raise_error(Domain::InvalidGeometry) }
-    it { expect { described_class.new(type: 'MultiPolygon', coordinates: [ 0, 0 ]) }.not_to raise_error(Domain::InvalidGeometry) }
-    it { expect { described_class.new(type: 'GeometryCollection', geometries: [ [ 0, 0 ] ]) }.not_to raise_error(Domain::InvalidGeometry) }
+    let(:geometry) do
+      {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            properties: {},
+            geometry: {
+              coordinates: [
+                14.467459460702372,
+                50.065357461330194
+              ],
+              type: "Point"
+            }
+          }
+        ]
+      }
+    end
+
+    it { expect { described_class.new(geometry:) }.not_to raise_error(Domain::InvalidGeometry) }
   end
 
-  context 'invalid geometry type' do
-    it { expect { described_class.new(type: 'Foint', coordinates: [ 0, 0 ]) }.to raise_error(Domain::InvalidGeometry) }
-  end
+  context 'invalid geometry' do
+    let(:geometry) do
+      {
+        type: "FeatureCollection22",
+        features: [
+          {
+            type: "Feature",
+            properties: {},
+            geometry: {
+              coordinates: [
+                14.467459460702372,
+                50.065357461330194
+              ],
+              type: "Point"
+            }
+          }
+        ]
+      }
+    end
 
-  context 'missing coordinates' do
-    it { expect { described_class.new(type: 'Point') }.to raise_error(Domain::InvalidGeometry) }
-  end
-
-  context 'missing geometries' do
-    it { expect { described_class.new(type: 'GeometryCollection') }.to raise_error(Domain::InvalidGeometry) }
+    it { expect { described_class.new(geometry:) }.to raise_error(Domain::InvalidGeometry) }
   end
 
   describe '.to_hash' do
     let(:geometry) do
-      described_class.new(type: 'Point', coordinates: [ 0, 0 ])
+      {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            properties: {},
+            geometry: {
+              coordinates: [
+                14.467459460702372,
+                50.065357461330194
+              ],
+              type: "Point"
+            }
+          }
+        ]
+      }
     end
 
-    it { expect(geometry.to_hash).to eq({ type: 'Feature', geometry: { type: 'Point', coordinates: [ 0, 0 ] } }) }
+    it { expect(described_class.new(geometry:).to_hash).to eq(geometry) }
   end
 end

@@ -10,9 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_15_124015) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_08_185109) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "custom_maps", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.jsonb "content"
+    t.uuid "owner_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "lat_center"
+    t.float "lng_center"
+    t.index ["owner_id"], name: "index_custom_maps_on_owner_id"
+  end
+
+  create_table "custom_maps_users", force: :cascade do |t|
+    t.uuid "custom_map_id"
+    t.uuid "collaborator_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collaborator_id"], name: "index_custom_maps_users_on_collaborator_id"
+    t.index ["custom_map_id"], name: "index_custom_maps_users_on_custom_map_id"
+  end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
@@ -20,4 +41,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_15_124015) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "custom_maps", "users", column: "owner_id"
+  add_foreign_key "custom_maps_users", "custom_maps"
+  add_foreign_key "custom_maps_users", "users", column: "collaborator_id"
 end

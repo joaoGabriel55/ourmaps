@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Users', type: :request do
+RSpec.describe UsersController, type: :request do
   context 'get all users' do
     before do
       FactoryBot.create(:user_repository, name: 'John', password: '123456')

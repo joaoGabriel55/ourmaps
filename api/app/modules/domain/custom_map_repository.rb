@@ -8,13 +8,19 @@ module Domain
       @repository = repository
     end
 
-    delegate :create!, to: :repository
-    delegate :update!, to: :repository
-    delegate :lookup!, to: :repository
-    delegate :delete!, to: :repository
+    def create!(map)
+      repository.create!(map)
+    end
 
     def get_all!(owner_id:, paginator:)
       repository.get_all!(owner_id:, paginator:)
     end
+
+    def lookup!(id:)
+      repository.lookup!(id:)
+    end
+
+    delegate :update!, to: :repository
+    delegate :delete!, to: :repository
   end
 end

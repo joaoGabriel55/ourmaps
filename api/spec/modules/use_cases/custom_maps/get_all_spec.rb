@@ -11,7 +11,7 @@ RSpec.describe UseCases::CustomMaps::GetAll do
 
   context 'get all custom maps' do
     it 'calls custom map repository' do
-      allow(repository_adapter).to receive(:get_all!).and_return(nil)
+      allow(repository_adapter).to receive(:get_all!).and_return([])
 
       get_all_maps.call
 

@@ -5,7 +5,9 @@ class UsersController < ApplicationController
       paginator: { per_page: params[:per_page], page: params[:page] }
     )
 
-    @users = get_all.call
+    @users = get_all.call.map do |user|
+      user.response
+    end
 
     render json: @users
   rescue UseCases::Users::GetAllError => e
@@ -64,9 +66,7 @@ class UsersController < ApplicationController
   def destroy
     lookup.call
 
-    destroy = UseCases::Users::Delete.new(id: params[:id], repository_adapter: repository)
-
-    destroy.call
+    UseCases::Users::Delete.new(id: params[:id], repository_adapter: repository).call
 
     render status: 204
   rescue UseCases::Users::NotFoundError => e

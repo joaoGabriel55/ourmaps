@@ -17,15 +17,7 @@ module UseCases
       end
 
       def call
-        user = user_repository.lookup!(id:)
-
-        Domain::User.new(
-          id: user.id,
-          name: user.name,
-          password: user.password,
-          created_at: user.created_at,
-          updated_at: user.updated_at
-        )
+        user_repository.lookup!(id:)
       rescue NotFoundError => e
         LoggerProvider.new.error(e)
         raise NotFoundError, e.message
