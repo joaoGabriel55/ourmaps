@@ -1,13 +1,12 @@
 <script lang="ts">
-  import LeafletMap from "$lib/components/LeafletMap.svelte";
-  import type { LatLngExpression } from "leaflet";
+  import MapViewer from "$lib/components/MapViewer.svelte";
   import BackIcon from "lucide-svelte/icons/arrow-left";
 
-  const initialView: LatLngExpression = [51.514244, 7.468429]; // Dortmund, Germany
+  const initialView = [7.468429, 51.514244]; // Dortmund, Germany
 </script>
 
 <div class="w-full h-full relative">
-  <header class="p-2 flex gap-4 items-center justify-between  ">
+  <header class="p-2 flex gap-4 items-center justify-between">
     <a href="/" class="btn btn-circle btn-ghost">
       <BackIcon size={18} />
     </a>
@@ -22,5 +21,5 @@
       <h1 class="text-2xl font-bold">OurMaps</h1>
     </div>
   </header>
-  <LeafletMap view={initialView} zoom={14}></LeafletMap>
+  <MapViewer view={initialView} zoom={10}></MapViewer>
 </div>

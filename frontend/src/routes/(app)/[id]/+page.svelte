@@ -1,5 +1,5 @@
 <script lang="ts">
-  import LeafletMap from "$lib/components/LeafletMap.svelte";
+  import MapViewer from "$lib/components/MapViewer.svelte";
   import type { LatLngExpression } from "leaflet";
 
   const initialView: LatLngExpression = [51.514244, 7.468429]; // Dortmund, Germany
@@ -9,5 +9,5 @@
 </script>
 
 <div class="w-full h-full">
-  <LeafletMap view={initialView} zoom={14}></LeafletMap>
+  <MapViewer view={initialView} zoom={14}></MapViewer>
 </div>
