@@ -1,6 +1,6 @@
 class CustomMapsController < ApplicationController
   def index
-    return render json: { error: "owner_id is required" }, status: 400 if check_owner_id
+    return render json: { error: "owner_id is required" }, status: 400 if missing_owner_id?
 
     lookup_owner.call
 
@@ -53,9 +53,9 @@ class CustomMapsController < ApplicationController
   end
 
   def destroy
-    lookup.call
+    map = lookup.call
 
-    UseCases::CustomMaps::Delete.new(id: params[:id], repository_adapter: custom_map_repository).call
+    UseCases::CustomMaps::Delete.new(id: map.id, repository_adapter: custom_map_repository).call
 
     render status: 204
   rescue UseCases::CustomMaps::NotFoundError => e
@@ -66,7 +66,7 @@ class CustomMapsController < ApplicationController
 
   private
 
-  def check_owner_id
+  def missing_owner_id?
     params[:owner_id].nil? || params[:owner_id].empty?
   end
 
