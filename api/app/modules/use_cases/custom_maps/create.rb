@@ -22,7 +22,8 @@ module UseCases
           center: params[:center],
           content: params[:content],
           owner: params[:owner],
-          collaborators: params[:collaborators]
+          collaborators: params[:collaborators],
+          visibility: params[:visibility]
         )
 
         custom_map_repository.create!(new_map.to_hash)

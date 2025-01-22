@@ -38,7 +38,8 @@ class CustomMapsController < ApplicationController
         description: params[:description],
         owner:,
         center: params[:center],
-        content: params[:content]
+        content: params[:content],
+        visibility: params[:visibility]
       },
       repository_adapter: custom_map_repository,
     )

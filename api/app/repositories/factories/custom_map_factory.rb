@@ -5,6 +5,7 @@ module Factories
         id: map.id,
         name: map.name,
         description: map.description,
+        visibility: map.visibility,
         content: map.content ? Domain::Geometry.new(geometry: map.content) : nil,
         center: [ map.lat_center, map.lng_center ],
         owner: Domain::User.new(
