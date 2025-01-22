@@ -12,17 +12,20 @@
   }
 
   async function handleCreateCustomMap(formData: FormData) {
-    await createCustomMap({
+    const customMap = await createCustomMap({
       // TODO: Get the owner ID from the session
       ownerId: "61682ddc-08da-4eef-921c-65db6143ff36",
       name: formData.get("name") as string,
       description: formData.get("description") as string,
       center,
+      visibility: "public",
       content: {
         type: "FeatureCollection",
         features: featureCollection,
       },
     });
+
+    window.location.href = `/${customMap.id}`;
   }
 </script>
 

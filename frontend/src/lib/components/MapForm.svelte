@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { LockKeyhole } from "lucide-svelte";
   import type { CustomMap } from "../../core/custom-map";
 
   type Props = {
@@ -45,5 +46,18 @@
       value={map?.description}
     ></textarea>
   </label>
+  <div class="form-control mt-4">
+    <label class="label cursor-pointer">
+      <div class="flex items-center gap-2">
+        <LockKeyhole size={18} />
+        <span class="label-text">Private</span>
+      </div>
+      <input
+        type="checkbox"
+        class="toggle toggle-primary"
+        checked={map?.visibility === "private"}
+      />
+    </label>
+  </div>
   <button type="submit" class="btn btn-primary w-full mt-4">Save</button>
 </form>

@@ -21,7 +21,7 @@
     <div class="collapse collapse-arrow border border-base-300">
       <input type="checkbox" />
       <div class="collapse-title text-xl flex items-center gap-2 font-medium">
-        <LockKeyhole />
+        <LockKeyhole class="text-primary" />
         <h2>My maps</h2>
       </div>
       <div class="collapse-content">
@@ -32,7 +32,7 @@
     <div class="collapse collapse-arrow border border-base-300">
       <input type="checkbox" />
       <div class="collapse-title text-xl flex items-center gap-2 font-medium">
-        <Earth />
+        <Earth class="text-primary" />
         <h2>Public maps</h2>
       </div>
       <div class="collapse-content">
