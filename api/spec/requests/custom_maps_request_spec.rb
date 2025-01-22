@@ -79,7 +79,8 @@ RSpec.describe CustomMapsController, type: :request do
       name: 'New Custom Map',
       owner_id: owner.id,
       center: [ 51.5074, -0.1278 ],
-      description: 'New Custom Map Description'
+      description: 'New Custom Map Description',
+      visibility: 'public'
     } }
 
     it 'returns 201 created status' do
@@ -99,6 +100,7 @@ RSpec.describe CustomMapsController, type: :request do
         name: 'New Custom Map',
         owner_id: owner.id,
         description: 'New Custom Map Description',
+        visibility: 'public',
         center: [ 51.5074, -0.1278 ],
         content: {
           type: "Feature",
