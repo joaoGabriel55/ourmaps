@@ -47,6 +47,6 @@
 
 <style>
   :global(.map) {
-    height: calc(100vh - 64px);
+    height: 100vh;
   }
 </style>
