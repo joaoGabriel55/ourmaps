@@ -3,12 +3,22 @@
 
   import "@watergis/maplibre-gl-terradraw/dist/maplibre-gl-terradraw.css";
 
-  import { createMapBoxDraw, onAddFeature } from "$lib/map-viewer";
-  import type maplibregl from "maplibre-gl";
+  import {
+    createMapBoxDraw,
+    onAddFeature,
+    onRemoveFeature,
+  } from "$lib/map-viewer";
+  import maplibregl from "maplibre-gl";
+
+  type Props = {
+    view: [number, number];
+    zoom: number;
+    onFeaturesChange?: (features: any) => void;
+  };
 
   let map: maplibregl.Map | undefined = $state();
 
-  const { view, zoom } = $props();
+  const { view, zoom, onFeaturesChange }: Props = $props();
 
   const draw = createMapBoxDraw();
 
@@ -18,9 +28,10 @@
     map.addControl(draw);
 
     map.once("load", () => {
-      onAddFeature(draw, (feature) => {
-        console.log(feature);
-      });
+      if (onFeaturesChange) {
+        onAddFeature(draw, onFeaturesChange);
+        onRemoveFeature(draw, onFeaturesChange);
+      }
     });
   });
 </script>
@@ -36,6 +47,6 @@
 
 <style>
   :global(.map) {
-    height: calc(100vh - 64px);
+    height: 100vh;
   }
 </style>

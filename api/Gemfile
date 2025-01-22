@@ -65,3 +65,5 @@ group :test do
 end
 
 gem "geojsonlint", "~> 0.1.4"
+
+gem "rack-cors", "~> 2.0"

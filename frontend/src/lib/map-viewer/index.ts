@@ -31,10 +31,24 @@ export function onAddFeature(
 
   if (!drawInstance) return;
 
-  drawInstance?.on("finish", (id) => {
+  drawInstance.on("finish", (id, context: { action: string; mode: string }) => {
     const snapshot = drawInstance.getSnapshot();
-    const feature = snapshot?.find((f) => f.id === id);
 
-    if (feature) callback(feature);
+    callback(snapshot);
+  });
+}
+
+export function onRemoveFeature(
+  draw: MaplibreTerradrawControl,
+  callback: (features: any) => void
+) {
+  const drawInstance = draw.getTerraDrawInstance();
+
+  if (!drawInstance) return;
+
+  draw.on("feature-deleted", () => {
+    const snapshot = drawInstance.getSnapshot();
+
+    callback(snapshot);
   });
 }
