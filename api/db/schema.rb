@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_08_185109) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_22_230007) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -23,6 +23,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_08_185109) do
     t.datetime "updated_at", null: false
     t.float "lat_center"
     t.float "lng_center"
+    t.string "visibility", default: "public"
     t.index ["owner_id"], name: "index_custom_maps_on_owner_id"
   end
 
