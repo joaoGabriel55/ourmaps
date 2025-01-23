@@ -1,13 +1,11 @@
 import { ourMapsAPI } from "$lib/api/http-client";
 import type { CustomMap } from "$core/custom-map";
 
-export type CreateCustomMapInput = Omit<
-  CustomMap,
-  "id" | "createdAt" | "updatedAt"
->;
+export type UpdateCustomMapInput = Omit<CustomMap, "createdAt" | "updatedAt">;
 
-export const createCustomMap = async (map: CreateCustomMapInput) => {
-  return await ourMapsAPI.post("/custom_maps", {
+export const updateCustomMap = async (map: UpdateCustomMapInput) => {
+  return await ourMapsAPI.put(`/custom_maps/${map.id}`, {
+    id: map.id,
     name: map.name,
     owner_id: map.ownerId,
     center: map.center,

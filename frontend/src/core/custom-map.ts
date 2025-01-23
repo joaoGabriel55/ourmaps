@@ -1,12 +1,13 @@
+export type CustomMapVisibility = "public" | "private";
+
 export interface CustomMap {
-  id: number;
+  id: string;
   name: string;
   ownerId: string;
   description?: string;
   center: [number, number];
-  visibility: "public" | "private";
-  // TODO: Avoid ANY PLEASE!
-  content?: any;
+  visibility: CustomMapVisibility;
+  content?: GeoJSON.FeatureCollection;
   createdAt: Date;
   updatedAt?: Date;
 }

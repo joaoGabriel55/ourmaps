@@ -16,6 +16,10 @@ const makeHttpClient = (baseUrl: string) => {
       const response = await axiosInstance.post(url, data);
       return response.data;
     },
+    put: async (url: string, data: any) => {
+      const response = await axiosInstance.put(url, data);
+      return response.data;
+    },
   };
 };
 
