@@ -3,8 +3,10 @@ import type { CustomMap } from "$core/custom-map";
 
 export type CreateCustomMapInput = Omit<
   CustomMap,
-  "id" | "createdAt" | "updatedAt"
->;
+  "id" | "createdAt" | "updatedAt" | "owner"
+> & {
+  ownerId: string;
+};
 
 export const createCustomMap = async (map: CreateCustomMapInput) => {
   const { data } = await ourMapsAPI.post("/custom_maps", {

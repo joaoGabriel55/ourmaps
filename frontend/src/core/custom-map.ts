@@ -1,9 +1,11 @@
+import type { User } from "./user";
+
 export type CustomMapVisibility = "public" | "private";
 
 export interface CustomMap {
   id: string;
   name: string;
-  ownerId: string;
+  owner: User;
   description?: string;
   center: [number, number];
   visibility: CustomMapVisibility;

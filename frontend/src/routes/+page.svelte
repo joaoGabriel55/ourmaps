@@ -1,7 +1,7 @@
 <script>
   import Header from "$lib/components/Header.svelte";
   import MapsList from "$lib/components/MapsList.svelte";
-  import { Earth, LockKeyhole } from "lucide-svelte";
+  import { Earth, LockKeyhole, Users } from "lucide-svelte";
   import "../app.css";
 
   let { data } = $props();
@@ -22,7 +22,7 @@
       <input type="checkbox" />
       <div class="collapse-title text-xl flex items-center gap-2 font-medium">
         <LockKeyhole class="text-primary" />
-        <h2>My maps</h2>
+        <h2>Private Maps</h2>
       </div>
       <div class="collapse-content">
         <MapsList maps={userMaps} />
@@ -33,10 +33,21 @@
       <input type="checkbox" />
       <div class="collapse-title text-xl flex items-center gap-2 font-medium">
         <Earth class="text-primary" />
-        <h2>Public maps</h2>
+        <h2>Public Maps</h2>
       </div>
       <div class="collapse-content">
         <MapsList maps={sharedMaps} />
+      </div>
+    </div>
+    <hr class="my-4" />
+    <div class="collapse collapse-arrow border border-base-300">
+      <input type="checkbox" />
+      <div class="collapse-title text-xl flex items-center gap-2 font-medium">
+        <Users class="text-primary" />
+        <h2>Collaborative Maps</h2>
+      </div>
+      <div class="collapse-content">
+        <MapsList maps={[]} />
       </div>
     </div>
   </section>
