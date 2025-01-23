@@ -53,6 +53,33 @@ class CustomMapsController < ApplicationController
     render json: { error: e.message }, status: 500
   end
 
+  def update
+    map = lookup.call
+
+    update = UseCases::CustomMaps::Update.new(
+      params: {
+        id: params[:id],
+        name: params[:name],
+        description: params[:description],
+        center: params[:center],
+        content: params[:content],
+        owner: map.owner,
+        visibility: params[:visibility],
+        created_at: map.created_at,
+        updated_at: map.updated_at
+      },
+      repository_adapter: custom_map_repository,
+    )
+
+    @map = update.call
+
+    render json: @map
+  rescue UseCases::CustomMaps::NotFoundError => e
+    render json: { error: e.message }, status: 404
+  rescue UseCases::CustomMaps::UpdateError => e
+    render json: { error: e.message }, status: 500
+  end
+
   def destroy
     map = lookup.call
 

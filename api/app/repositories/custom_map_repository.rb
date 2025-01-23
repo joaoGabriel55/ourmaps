@@ -39,7 +39,14 @@ class CustomMapRepository < ApplicationRecord
   end
 
   def self.update!(map)
-    updated_map = find(map[:id]).update!(map)
+    map[:owner_id] = map[:owner][:id]
+    map[:lat_center] = map[:center][0]
+    map[:lng_center] = map[:center][1]
+
+    map.delete(:center)
+    map.delete(:owner)
+
+    updated_map = update(map).first
 
     Factories::CustomMapFactory.create(updated_map)
   rescue ActiveRecord::RecordNotFound
