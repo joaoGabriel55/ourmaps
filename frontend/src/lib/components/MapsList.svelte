@@ -1,27 +1,46 @@
 <script lang="ts">
+  import type { CustomMap } from "$core/custom-map";
   import TrashIcon from "lucide-svelte/icons/trash";
 
-  export let maps: { id: number; name: string; description: string }[] = [];
+  export let maps: Array<CustomMap> = [];
 </script>
+
+{#if maps.length === 0}
+  <p>No maps found</p>
+{/if}
 
 <ul>
   {#each maps as map}
-    <a data-sveltekit-reload href="/{map.id}" class="no-underline">
-      <li
-        class="p-4 cursor-pointer rounded-md flex justify-between hover:bg-gray-100 transition duration-300"
-      >
-        <div class="flex flex-col">
-          <strong class="font-medium">{map.name}</strong>
-          <span class="text-sm">{map.description}</span>
+    <li
+      class="p-4 cursor-pointer rounded-md flex justify-between hover:bg-gray-100 transition duration-300"
+    >
+      <div class="flex flex-col gap-4">
+        <a
+          data-sveltekit-reload
+          href="/{map.id}"
+          class="link link-primary font-medium text-lg"
+        >
+          {map.name}
+        </a>
+        <p class="text-md">{map.description}</p>
+        <div class="grid">
+          <span class="text-xs text-gray-500">
+            Created at: {new Date(map.createdAt).toLocaleString()}
+          </span>
+          {#if map.updatedAt}
+            <span class="text-xs text-gray-500">
+              Updated at: {new Date(map.updatedAt).toLocaleString()}
+            </span>
+          {/if}
         </div>
-        <div class="flex">
-          <button
-            class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 transition duration-300"
-          >
-            <TrashIcon size={18} class="text-red-500" />
-          </button>
-        </div>
-      </li>
-    </a>
+      </div>
+      <div class="flex">
+        <button
+          class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 transition duration-300"
+        >
+          <TrashIcon size={18} class="text-red-500" />
+        </button>
+      </div>
+    </li>
   {/each}
 </ul>

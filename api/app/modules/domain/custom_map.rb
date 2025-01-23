@@ -49,7 +49,7 @@ module Domain
         description:,
         center:,
         content: content ? content.to_hash : nil,
-        owner: owner.to_hash,
+        owner: owner.response,
         collaborators: collaborators&.map(&:to_hash),
         visibility:,
         created_at:,
