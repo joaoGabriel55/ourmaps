@@ -139,6 +139,37 @@ RSpec.describe CustomMapsController, type: :request do
     end
   end
 
+  describe 'update custom map' do
+    let!(:owner) { FactoryBot.create(:user_repository, name: 'John', password: '123456') }
+    let!(:custom_map) { FactoryBot.create(:custom_map_repository, owner:) }
+    let(:body) { {
+      name: 'Updated Custom Map',
+      center: [ 51.5074, -0.1278 ],
+      description: 'Updated Custom Map Description',
+      visibility: 'public'
+    } }
+
+    it 'returns 200 ok status' do
+      patch "/custom_maps/#{custom_map.id}", params: body, as: :json
+
+      expect(response.status).to eq(200)
+    end
+
+    it 'returns updated custom map' do
+      patch "/custom_maps/#{custom_map.id}", params: body, as: :json
+
+      expect(JSON.parse(response.body)['name']).to eq(body[:name])
+    end
+
+    context 'when custom map not found' do
+      it 'returns 404 not found status' do
+        patch '/custom_maps/abc212', params: body, as: :json
+
+        expect(response.status).to eq(404)
+      end
+    end
+  end
+
   describe 'delete custom map' do
     let!(:owner) { FactoryBot.create(:user_repository, name: 'John', password: '123456') }
     let!(:custom_map) { FactoryBot.create(:custom_map_repository, owner:) }

@@ -10,7 +10,8 @@ RSpec.describe UseCases::CustomMaps::Update do
       id: IdProvider.new.next_id,
       name: 'My Custom Map',
       center: [ 51.5074, -0.1278 ],
-      owner: Domain::User.new(id: IdProvider.new.next_id, name: 'John', password: '123456')
+      owner: Domain::User.new(id: IdProvider.new.next_id, name: 'John', password: '123456'),
+      visibility: 'public'
     }
   end
 
