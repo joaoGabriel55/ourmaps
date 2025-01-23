@@ -1,6 +1,6 @@
 <script lang="ts">
   import { LockKeyhole } from "lucide-svelte";
-  import type { CustomMap } from "../../core/custom-map";
+  import type { CustomMap } from "$core/custom-map";
 
   type Props = {
     map?: CustomMap;
@@ -16,8 +16,6 @@
     const formData = new FormData(form);
 
     onSubmit(formData);
-
-    form.reset();
   }
 </script>
 
@@ -53,8 +51,9 @@
         <span class="label-text">Private</span>
       </div>
       <input
-        type="checkbox"
         class="toggle toggle-primary"
+        type="checkbox"
+        name="visibility"
         checked={map?.visibility === "private"}
       />
     </label>

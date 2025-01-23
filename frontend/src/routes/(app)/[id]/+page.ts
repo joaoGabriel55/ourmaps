@@ -1,10 +1,8 @@
-import { getPrivateMaps } from "$lib/api";
+import { findCustomMap } from "$lib/api/custom-maps/find";
 import { error } from "@sveltejs/kit";
 
 export const load = async ({ params }: { params: { id: string } }) => {
-  const map = (await getPrivateMaps()).find(
-    (map) => map.id === Number(params.id)
-  );
+  const map = await findCustomMap(params.id);
 
   if (map) return map;
 

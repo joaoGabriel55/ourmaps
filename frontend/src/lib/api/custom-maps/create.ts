@@ -7,7 +7,7 @@ export type CreateCustomMapInput = Omit<
 >;
 
 export const createCustomMap = async (map: CreateCustomMapInput) => {
-  return await ourMapsAPI.post("/custom_maps", {
+  const { data } = await ourMapsAPI.post("/custom_maps", {
     name: map.name,
     owner_id: map.ownerId,
     center: map.center,
@@ -15,4 +15,6 @@ export const createCustomMap = async (map: CreateCustomMapInput) => {
     content: map.content,
     visibility: map.visibility,
   });
+
+  return data;
 };
