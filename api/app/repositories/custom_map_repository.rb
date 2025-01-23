@@ -46,7 +46,7 @@ class CustomMapRepository < ApplicationRecord
     map.delete(:center)
     map.delete(:owner)
 
-    updated_map =  where(id: map[:id]).update(map).first
+    updated_map = update(map).first
 
     Factories::CustomMapFactory.create(updated_map)
   rescue ActiveRecord::RecordNotFound
