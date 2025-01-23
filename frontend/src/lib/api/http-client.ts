@@ -10,11 +10,18 @@ const makeHttpClient = (baseUrl: string) => {
   return {
     get: async (url: string) => {
       const response = await axiosInstance.get(url);
-      return response.data;
+
+      return { data: response.data, status: response.status };
     },
     post: async (url: string, data: any) => {
       const response = await axiosInstance.post(url, data);
-      return response.data;
+
+      return { data: response.data, status: response.status };
+    },
+    put: async (url: string, data: any) => {
+      const response = await axiosInstance.put(url, data);
+
+      return { data: response.data, status: response.status };
     },
   };
 };

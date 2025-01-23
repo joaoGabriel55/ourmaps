@@ -14,6 +14,7 @@
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
     "@watergis/maplibre-gl-terradraw": "^0.6.4",
+    "@zerodevx/svelte-toast": "^0.9.6",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
     "svelte": "^5.0.0",

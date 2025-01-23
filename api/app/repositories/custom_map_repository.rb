@@ -46,9 +46,13 @@ class CustomMapRepository < ApplicationRecord
     map.delete(:center)
     map.delete(:owner)
 
-    updated_map = update(map).first
+    db_map = find(map[:id])
 
-    Factories::CustomMapFactory.create(updated_map)
+    db_map.update(map)
+
+    db_map.reload
+
+    Factories::CustomMapFactory.create(db_map)
   rescue ActiveRecord::RecordNotFound
     raise UseCases::CustomMaps::UpdateError, "Custom map not found: #{map[:id]}"
   end
