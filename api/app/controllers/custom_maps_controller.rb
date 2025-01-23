@@ -10,7 +10,9 @@ class CustomMapsController < ApplicationController
       paginator: { per_page: params[:per_page], page: params[:page] }
     )
 
-    @maps = get_all.call
+    @maps = get_all.call.map do |map|
+      map.to_hash
+    end
 
     render json: @maps
   rescue UseCases::Users::NotFoundError => e
@@ -22,7 +24,7 @@ class CustomMapsController < ApplicationController
   def show
     @map = lookup.call
 
-    render json: @map
+    render json: @map.to_hash
   rescue UseCases::CustomMaps::NotFoundError => e
     render json: { error: e.message }, status: 404
   rescue UseCases::CustomMaps::LookupError => e
