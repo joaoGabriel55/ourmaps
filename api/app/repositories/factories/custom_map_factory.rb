@@ -19,7 +19,9 @@ module Factories
             name: collaborator.name,
             password: collaborator.password
           )
-        end
+        end,
+        created_at: map.created_at,
+        updated_at: map.updated_at
       )
     end
   end

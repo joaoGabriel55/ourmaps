@@ -7,23 +7,25 @@ module UseCases
     class Update
       attr_accessor :custom_map_repository, :custom_map, :params
 
-      def initialize(params:, repository_adapter:, custom_map: Domain::CustomMap)
+      def initialize(params:, repository_adapter:)
         @params = params
-        @custom_map = custom_map
         @custom_map_repository = Domain::CustomMapRepository.new(
           repository: repository_adapter
         )
       end
 
       def call
-        updated_map = custom_map.new(
+        updated_map = Domain::CustomMap.new(
           id: params[:id],
           name: params[:name],
           description: params[:description],
-          content: params[:content],
           center: params[:center],
+          content: params[:content],
           owner: params[:owner],
-          collaborators: params[:collaborators]
+          collaborators: params[:collaborators],
+          visibility: params[:visibility],
+          created_at: params[:created_at],
+          updated_at: params[:updated_at]
         )
 
         custom_map_repository.update!(updated_map.to_hash)
