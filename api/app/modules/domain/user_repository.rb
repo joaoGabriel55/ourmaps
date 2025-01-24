@@ -9,15 +9,7 @@ module Domain
     end
 
     def create!(user)
-      created_user = repository.create!(user)
-
-      Domain::User.new(
-        id: created_user.id,
-        name: created_user.name,
-        password: created_user.password,
-        created_at: created_user.created_at,
-        updated_at: nil
-      )
+      repository.create!(user)
     end
 
     def update!(user)
@@ -31,27 +23,17 @@ module Domain
     def lookup!(id:)
       user = repository.lookup!(id:)
 
-      Domain::User.new(
-        id: user.id,
-        name: user.name,
-        password: user.password,
-        created_at: user.created_at,
-        updated_at: user.updated_at
-      )
+      user unless user.nil?
+    end
+
+    def lookup_by_email!(email:)
+      user = repository.lookup_by_email!(email: email)
+
+      user unless user.nil?
     end
 
     def get_all!(paginator:)
-      users = repository.get_all!(paginator:)
-
-      users.map do |user|
-        Domain::User.new(
-          id: user.id,
-          name: user.name,
-          password: user.password,
-          created_at: user.created_at,
-          updated_at: user.updated_at
-        )
-      end
+      repository.get_all!(paginator:)
     end
   end
 end

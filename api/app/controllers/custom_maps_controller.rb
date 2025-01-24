@@ -19,6 +19,8 @@ class CustomMapsController < ApplicationController
     render json: { error: e.message }, status: 404
   rescue UseCases::CustomMaps::GetAllError => e
     render json: { error: e.message }, status: 500
+  rescue StandardError => e
+    render json: { error: e.message }, status: 500
   end
 
   def show

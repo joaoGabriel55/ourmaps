@@ -16,6 +16,7 @@ module UseCases
         new_user = Domain::User.new(
           id: IdProvider.new.next_id,
           name: params[:name],
+          email: params[:email],
           password: params[:password]
         )
 

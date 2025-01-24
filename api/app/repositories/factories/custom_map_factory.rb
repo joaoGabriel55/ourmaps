@@ -11,13 +11,15 @@ module Factories
         owner: Domain::User.new(
           id: map.owner.id,
           name: map.owner.name,
-          password: map.owner.password
+          email: map.owner.email,
+          password: map.owner.password || "password_encrypted"
         ),
         collaborators: map.collaborators.map do |collaborator|
           Domain::User.new(
             id: collaborator.id,
             name: collaborator.name,
-            password: collaborator.password
+            email: collaborator.email,
+            password: collaborator.password || "password_encrypted"
           )
         end,
         created_at: map.created_at,

@@ -18,6 +18,7 @@ module UseCases
         updated_user =  Domain::User.new(
           id: params[:id],
           name: params[:name],
+          email: params[:email],
           password: params[:password],
           created_at: params[:created_at],
           updated_at: DateTime.now
