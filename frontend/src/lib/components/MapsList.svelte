@@ -2,7 +2,12 @@
   import type { CustomMap } from "$core/custom-map";
   import TrashIcon from "lucide-svelte/icons/trash";
 
-  export let maps: Array<CustomMap> = [];
+  type Props = {
+    maps: Array<CustomMap>;
+    onDelete: (map: CustomMap) => void;
+  };
+
+  let { maps, onDelete }: Props = $props();
 </script>
 
 {#if maps.length === 0}
@@ -12,7 +17,7 @@
 <ul>
   {#each maps as map}
     <li
-      class="p-4 cursor-pointer rounded-md flex justify-between hover:bg-gray-100 transition duration-300"
+      class="p-4 rounded-md flex justify-between hover:bg-gray-100 transition duration-300"
     >
       <div class="flex flex-col gap-4">
         <a
@@ -37,6 +42,7 @@
       <div class="flex">
         <button
           class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 transition duration-300"
+          onclick={() => onDelete(map)}
         >
           <TrashIcon size={18} class="text-red-500" />
         </button>

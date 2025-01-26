@@ -15,6 +15,7 @@ export const load = async ({ cookies }) => {
   const maps = await getAllCustomMaps(userId, ourMapsAPI);
 
   return {
+    token,
     userMaps: maps.filter((map) => map.visibility === "private"),
     sharedMaps: maps.filter((map) => map.visibility === "public"),
   };
