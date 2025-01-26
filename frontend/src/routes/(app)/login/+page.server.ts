@@ -1,4 +1,5 @@
 import { signIn } from "$lib/api/auth";
+import { makeOurMapsAPI } from "$lib/api/http-client.js";
 
 import { redirect } from "@sveltejs/kit";
 
@@ -19,18 +20,34 @@ export const actions = {
       };
     }
 
-    const token = await signIn(email.toString(), password.toString());
+    const response = await signIn(
+      {
+        email: email.toString(),
+        password: password.toString(),
+      },
+      makeOurMapsAPI()
+    );
 
-    if (token) {
-      cookies.set("auth_token", token, { httpOnly: true, path: "/" });
-      cookies.set("user", JSON.stringify({ email }), {
-        httpOnly: true,
-        path: "/",
-      });
-
-      throw redirect(303, "/");
+    if (!response.data || response.status !== 200) {
+      return {
+        status: 400,
+        body: {
+          error: "Invalid credentials",
+          success: false,
+        },
+      };
     }
 
-    return { success: false, error: "Invalid credentials" };
+    cookies.set("auth_token", response.data.token, {
+      httpOnly: true,
+      path: "/",
+    });
+
+    cookies.set("user", JSON.stringify({ email }), {
+      httpOnly: true,
+      path: "/",
+    });
+
+    throw redirect(303, "/");
   },
 };

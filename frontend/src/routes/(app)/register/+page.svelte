@@ -1,5 +1,7 @@
 <script lang="ts">
   import AppLogo from "$lib/components/AppLogo.svelte";
+
+  export let form: { error: string };
 </script>
 
 <div class="h-screen bg-gradient-to-r from-primary to-accent">
@@ -10,6 +12,17 @@
         <h2 class="card-title text-3xl">Register</h2>
         <form method="POST">
           <div class="grid gap-6">
+            <label class="form-control w-full max-w-xs">
+              <div class="label">
+                <span class="label-text">Name</span>
+              </div>
+              <input
+                name="name"
+                type="text"
+                class="input input-bordered w-full max-w-xs"
+                required
+              />
+            </label>
             <label class="form-control w-full max-w-xs">
               <div class="label">
                 <span class="label-text">Email</span>
@@ -43,6 +56,9 @@
                 required
               />
             </label>
+            {#if form?.error}
+              <p class="text-error text-xs">{form.error}</p>
+            {/if}
             <div class="flex flex-col">
               <button class="btn btn-primary" type="submit">
                 Create my account

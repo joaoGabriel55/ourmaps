@@ -1,17 +1,18 @@
+import { getUserIdByToken } from "$lib";
 import { getAllCustomMaps } from "$lib/api/custom-maps/get-all.js";
-import { userStore } from "$lib/stores/user.js";
+import { makeOurMapsAPI } from "$lib/api/http-client";
 import { redirect } from "@sveltejs/kit";
-import { get } from "svelte/store";
 
 export const load = async ({ cookies }) => {
-  const token = cookies.get("auth_token") || "";
-  const user = get(userStore);
+  const token = cookies.get("auth_token");
 
-  if (!token || !user) {
-    throw redirect(303, "/login");
-  }
+  if (!token) throw redirect(303, "/login");
 
-  const maps = await getAllCustomMaps(user.id);
+  const ourMapsAPI = makeOurMapsAPI(token);
+
+  const userId = getUserIdByToken(token);
+
+  const maps = await getAllCustomMaps(userId, ourMapsAPI);
 
   return {
     userMaps: maps.filter((map) => map.visibility === "private"),

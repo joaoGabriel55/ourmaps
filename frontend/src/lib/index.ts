@@ -1,1 +1,7 @@
-// place files you want to import through the `$lib` alias in this folder.
+import { jwtDecode } from "jwt-decode";
+
+export const getUserIdByToken = (token: string) => {
+  const decoded = jwtDecode<{ user_id: string }>(token);
+
+  return decoded.user_id;
+};
