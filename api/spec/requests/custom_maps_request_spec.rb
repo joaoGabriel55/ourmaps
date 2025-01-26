@@ -45,6 +45,33 @@ RSpec.describe CustomMapsController, type: :request do
 
       expect(JSON.parse(response.body).size).to eq(2)
     end
+
+    context 'when visibility filter is provided' do
+      let!(:second_owner) { FactoryBot.create(:user, name: 'Carlos') }
+
+      before do
+        FactoryBot.create_list(:custom_map, 2, owner: second_owner, visibility: 'public')
+        FactoryBot.create_list(:custom_map, 10, owner: second_owner, visibility: 'private')
+      end
+
+      it 'returns 200 ok status' do
+        get '/custom_maps?owner_id=' + second_owner.id + '&visibility=private', headers: @headers
+
+        expect(response.status).to eq(200)
+      end
+
+      it 'returns the 2 public custom maps' do
+        get '/custom_maps?owner_id=' + second_owner.id + '&visibility=public', headers: @headers
+
+        expect(JSON.parse(response.body).size).to eq(2)
+      end
+
+      it 'returns the 10 private custom maps' do
+        get '/custom_maps?owner_id=' + second_owner.id + '&visibility=private', headers: @headers
+
+        expect(JSON.parse(response.body).size).to eq(10)
+      end
+    end
   end
 
   describe 'get map by id' do
