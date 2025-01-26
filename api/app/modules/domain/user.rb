@@ -4,13 +4,14 @@ module Domain
   class InvalidUser < StandardError; end
 
   class User
-    attr_accessor :id, :name, :password, :created_at, :updated_at
+    attr_accessor :id, :name, :email, :password, :created_at, :updated_at
 
-    def initialize(id: nil, name: nil, password: nil, created_at: nil, updated_at: nil)
-      validate(id:, name:, password:)
+    def initialize(id: nil, name: nil, email: nil, password: nil, created_at: nil, updated_at: nil)
+      validate(id:, name:, email:, password:)
 
       @id = id
       @name = name
+      @email = email
       @password = password
       @created_at = created_at || DateTime.now
       @updated_at = updated_at || nil
@@ -20,6 +21,7 @@ module Domain
       {
         id:,
         name:,
+        email:,
         password:,
         created_at:,
         updated_at:
@@ -27,24 +29,32 @@ module Domain
     end
 
     def response
-      to_hash
-        .except(:password)
-        .transform_keys(&:to_s)
-        .deep_transform_keys! { |key| key.camelize(:lower) }
+      {
+        id:,
+        name:,
+        email:,
+        created_at:,
+        updated_at:
+      }
     end
 
     private
 
-    def validate(id:, name:, password:)
+    def validate(id:, name:, email:, password:)
       if id.nil?
         raise InvalidUser, "id is required"
       elsif name.nil?
         raise InvalidUser, "name is required"
+      elsif email.nil?
+        raise InvalidUser, "email is required"
       elsif password.nil?
         raise InvalidUser, "password is required"
       elsif password.length < 6
         raise InvalidUser, "password must be at least 6 characters long"
       end
     end
+  end
+
+  class UserDTO
   end
 end

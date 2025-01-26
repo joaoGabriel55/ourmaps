@@ -20,6 +20,7 @@ RSpec.describe UseCases::CustomMaps::Lookup do
           owner: Domain::User.new(
             id: IdProvider.new.next_id,
             name: 'John',
+            email: 'j@j.com',
             password: '123456'
           )
         )

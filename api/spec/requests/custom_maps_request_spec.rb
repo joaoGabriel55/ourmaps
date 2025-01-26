@@ -3,22 +3,29 @@
 require 'rails_helper'
 
 RSpec.describe CustomMapsController, type: :request do
+  let(:user) { FactoryBot.create(:user) }
+  let(:token) { JsonWebToken.encode({ user_id: user.id }) }
+
+  before(:each) do
+    @headers = { 'Authorization' => "Bearer #{token}" }
+  end
+
   describe 'get all maps' do
     before do
-      FactoryBot.create_list(:custom_map_repository, 2, owner:)
+      FactoryBot.create_list(:custom_map, 2, owner:)
     end
 
-    let!(:owner) { FactoryBot.create(:user_repository, name: 'John', password: '123456') }
+    let!(:owner) { FactoryBot.create(:user, name: 'John', password: '123456') }
 
     it 'returns 200 ok status' do
-      get '/custom_maps?owner_id=' + owner.id
+      get '/custom_maps?owner_id=' + owner.id, headers: @headers
 
       expect(response.status).to eq(200)
     end
 
     context 'when owner id is not provided' do
       it 'returns 400 bad request status' do
-        get '/custom_maps'
+        get '/custom_maps', headers: @headers
 
         expect(response.status).to eq(400)
         expect(JSON.parse(response.body)).to include({ 'error' => 'owner_id is required' })
@@ -27,31 +34,31 @@ RSpec.describe CustomMapsController, type: :request do
 
     context 'when owner id is not found' do
       it 'returns 404 not found status' do
-        get '/custom_maps?owner_id=abc212'
+        get '/custom_maps?owner_id=abc212', headers: @headers
 
         expect(response.status).to eq(404)
       end
     end
 
     it 'returns the 2 custom maps' do
-      get '/custom_maps?owner_id=' + owner.id
+      get '/custom_maps?owner_id=' + owner.id, headers: @headers
 
       expect(JSON.parse(response.body).size).to eq(2)
     end
   end
 
   describe 'get map by id' do
-    let!(:owner) { FactoryBot.create(:user_repository, name: 'John', password: '123456') }
-    let!(:custom_map) { FactoryBot.create(:custom_map_repository, owner:) }
+    let!(:owner) { FactoryBot.create(:user, name: 'John', password: '123456') }
+    let!(:custom_map) { FactoryBot.create(:custom_map, owner:) }
 
     it 'returns 200 ok status' do
-      get "/custom_maps/#{custom_map.id}"
+      get "/custom_maps/#{custom_map.id}", headers: @headers
 
       expect(response.status).to eq(200)
     end
 
     it 'returns custom map' do
-      get "/custom_maps/#{custom_map.id}"
+      get "/custom_maps/#{custom_map.id}", headers: @headers
 
       response_body = JSON.parse(response.body)
 
@@ -66,7 +73,7 @@ RSpec.describe CustomMapsController, type: :request do
 
     context 'when custom map s not found' do
       it 'returns 404 not found status' do
-        get '/custom_maps/abc212'
+        get '/custom_maps/abc212', headers: @headers
 
         expect(response.status).to eq(404)
       end
@@ -74,7 +81,7 @@ RSpec.describe CustomMapsController, type: :request do
   end
 
   describe 'create new custom map' do
-    let!(:owner) { FactoryBot.create(:user_repository, name: 'John', password: '123456') }
+    let!(:owner) { FactoryBot.create(:user, name: 'John', password: '123456') }
     let(:body) { {
       name: 'New Custom Map',
       owner_id: owner.id,
@@ -84,13 +91,13 @@ RSpec.describe CustomMapsController, type: :request do
     } }
 
     it 'returns 201 created status' do
-      post '/custom_maps', params: body, as: :json
+      post '/custom_maps', params: body, as: :json, headers: @headers
 
       expect(response.status).to eq(201)
     end
 
     it 'returns created custom map' do
-      post '/custom_maps', params: body, as: :json
+      post '/custom_maps', params: body, as: :json, headers: @headers
 
       expect(JSON.parse(response.body)['name']).to eq(body[:name])
     end
@@ -115,13 +122,13 @@ RSpec.describe CustomMapsController, type: :request do
       } }
 
       it 'returns 201 created status' do
-        post '/custom_maps', params: body, as: :json
+        post '/custom_maps', params: body, as: :json, headers: @headers
 
         expect(response.status).to eq(201)
       end
 
       it 'returns created custom map content' do
-        post '/custom_maps', params: body, as: :json
+        post '/custom_maps', params: body, as: :json, headers: @headers
 
         expect(JSON.parse(response.body)['content']).to eq({
           "geometry"=>{
@@ -133,15 +140,15 @@ RSpec.describe CustomMapsController, type: :request do
 
       it 'changes the number of custom maps on database' do
         expect do
-          post '/custom_maps', params: body, as: :json
-        end.to change { CustomMapRepository.count }.by(1)
+          post '/custom_maps', params: body, as: :json, headers: @headers
+        end.to change { CustomMap.count }.by(1)
       end
     end
   end
 
   describe 'update custom map' do
-    let!(:owner) { FactoryBot.create(:user_repository, name: 'John', password: '123456') }
-    let!(:custom_map) { FactoryBot.create(:custom_map_repository, owner:) }
+    let!(:owner) { FactoryBot.create(:user, name: 'John', password: '123456') }
+    let!(:custom_map) { FactoryBot.create(:custom_map, owner:) }
     let(:body) { {
       name: 'Updated Custom Map',
       center: [ 51.5074, -0.1278 ],
@@ -150,20 +157,20 @@ RSpec.describe CustomMapsController, type: :request do
     } }
 
     it 'returns 200 ok status' do
-      patch "/custom_maps/#{custom_map.id}", params: body, as: :json
+      patch "/custom_maps/#{custom_map.id}", params: body, as: :json, headers: @headers
 
       expect(response.status).to eq(200)
     end
 
     it 'returns updated custom map' do
-      patch "/custom_maps/#{custom_map.id}", params: body, as: :json
+      patch "/custom_maps/#{custom_map.id}", params: body, as: :json, headers: @headers
 
       expect(JSON.parse(response.body)['name']).to eq(body[:name])
     end
 
     context 'when custom map not found' do
       it 'returns 404 not found status' do
-        patch '/custom_maps/abc212', params: body, as: :json
+        patch '/custom_maps/abc212', params: body, as: :json, headers: @headers
 
         expect(response.status).to eq(404)
       end
@@ -171,18 +178,18 @@ RSpec.describe CustomMapsController, type: :request do
   end
 
   describe 'delete custom map' do
-    let!(:owner) { FactoryBot.create(:user_repository, name: 'John', password: '123456') }
-    let!(:custom_map) { FactoryBot.create(:custom_map_repository, owner:) }
+    let!(:owner) { FactoryBot.create(:user, name: 'John', password: '123456') }
+    let!(:custom_map) { FactoryBot.create(:custom_map, owner:) }
 
     it 'returns 204 no content status' do
-      delete "/custom_maps/#{custom_map.id}"
+      delete "/custom_maps/#{custom_map.id}", headers: @headers
 
       expect(response.status).to eq(204)
     end
 
     context 'when custom map not found' do
       it 'returns 404 not found status' do
-        delete '/custom_maps/abc212'
+        delete '/custom_maps/abc212', headers: @headers
 
         expect(response.status).to eq(404)
       end

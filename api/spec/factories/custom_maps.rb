@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :custom_map_repository do
+  factory :custom_map do
     name { Faker::Name.name }
     description { Faker::Lorem.sentence }
     lat_center { Faker::Address.latitude }
@@ -20,7 +20,7 @@ FactoryBot.define do
         }
       ]
     } }
-    owner { FactoryBot.create(:user_repository) }
-    collaborators { [ FactoryBot.create(:user_repository) ] }
+    owner { FactoryBot.create(:user) }
+    collaborators { [ FactoryBot.create(:user) ] }
   end
 end

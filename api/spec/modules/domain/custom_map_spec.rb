@@ -9,7 +9,7 @@ RSpec.describe Domain::CustomMap do
         described_class.new(
           id: 'abc1234',
           name: 'My Custom Map',
-          owner: Domain::User.new(name: 'John', password: '123456'),
+          owner: Domain::User.new(name: 'John', email: 'j@j.com', password: '123456'),
           center: [ 51.5074, -0.1278 ],
           visibility: 'private'
         )
@@ -39,8 +39,8 @@ RSpec.describe Domain::CustomMap do
         id: 'abc1234',
         name: 'My Custom Map',
         center: [ 51.5074, -0.1278 ],
-        owner: Domain::User.new(id: IdProvider.new.next_id, name: 'John', password: '123456'),
-        collaborators: [ Domain::User.new(id: IdProvider.new.next_id, name: 'Luke', password: '123456') ],
+        owner: Domain::User.new(id: IdProvider.new.next_id, name: 'John', email: 'j@j.com', password: '123456'),
+        collaborators: [ Domain::User.new(id: IdProvider.new.next_id, name: 'Luke', email: 'j@j.com', password: '123456') ],
         visibility: 'public',
         content: Domain::Geometry.new(
           geometry: {

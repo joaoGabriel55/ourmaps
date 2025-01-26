@@ -9,6 +9,7 @@ RSpec.describe UseCases::Users::Update do
     {
       id: 'abc1234',
       name: 'My Custom Map',
+      email: 'j@j.com',
       password: '123456'
     }
   end
@@ -21,6 +22,7 @@ RSpec.describe UseCases::Users::Update do
 
       expect(repository_adapter).to have_received(:update!).with(include({
         name: params[:name],
+        email: params[:email],
         password: params[:password]
       }))
     end

@@ -67,3 +67,9 @@ end
 gem "geojsonlint", "~> 0.1.4"
 
 gem "rack-cors", "~> 2.0"
+
+gem "jsonapi-serializer", "~> 2.2"
+
+gem "jwt", "~> 2.10"
+
+gem "bcrypt", "~> 3.1"

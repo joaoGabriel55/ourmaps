@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  skip_before_action :authenticate_request, only: [ :create ]
+
   def index
     get_all = UseCases::Users::GetAll.new(
       repository_adapter: repository,
@@ -29,6 +31,7 @@ class UsersController < ApplicationController
       params: {
         id: params[:id],
         name: params[:name],
+        email: params[:email],
         password: params[:password]
       },
       repository_adapter: repository
@@ -46,6 +49,7 @@ class UsersController < ApplicationController
 
     user_params = user.to_hash.merge({
       name: params[:name],
+      email: params[:email],
       password: params[:password]
     })
 

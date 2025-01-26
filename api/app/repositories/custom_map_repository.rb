@@ -1,14 +1,6 @@
 # frozen_string_literal: true
 
 class CustomMapRepository < ApplicationRecord
-  self.table_name = "custom_maps"
-
-  belongs_to :owner, class_name: "UserRepository", foreign_key: :owner_id
-  has_and_belongs_to_many :collaborators,
-    class_name: "UserRepository",
-    association_foreign_key: :collaborator_id,
-    foreign_key: :custom_map_id
-
   def self.create!(map)
     map[:owner_id] = map[:owner][:id]
     map[:lat_center] = map[:center][0]
@@ -17,13 +9,15 @@ class CustomMapRepository < ApplicationRecord
     map.delete(:center)
     map.delete(:owner)
 
-    created_map = create(map)
+    created_map = CustomMap.create(map)
 
     Factories::CustomMapFactory.create(created_map)
   end
 
   def self.get_all!(owner_id:, paginator:)
-    maps = where(owner_id: owner_id).paginate(per_page: paginator[:per_page], page: paginator[:page])
+    maps = CustomMap
+      .where(owner_id: owner_id)
+      .paginate(per_page: paginator[:per_page], page: paginator[:page])
 
     maps.map do |map|
       Factories::CustomMapFactory.create(map)
@@ -31,7 +25,7 @@ class CustomMapRepository < ApplicationRecord
   end
 
   def self.lookup!(id:)
-    map = find(id)
+    map = CustomMap.find(id)
 
     Factories::CustomMapFactory.create(map)
   rescue ActiveRecord::RecordNotFound
@@ -46,7 +40,7 @@ class CustomMapRepository < ApplicationRecord
     map.delete(:center)
     map.delete(:owner)
 
-    db_map = find(map[:id])
+    db_map = CustomMap.find(map[:id])
 
     db_map.update(map)
 
@@ -58,6 +52,6 @@ class CustomMapRepository < ApplicationRecord
   end
 
   def self.delete!(id:)
-    destroy(id)
+    CustomMap.destroy(id)
   end
 end

@@ -1,1 +1,1 @@
-FactoryBot.create(:user_repository, name: 'John', password: 'password')
+FactoryBot.create(:user, name: 'John', email: 'j@j.com', password: 'password')
