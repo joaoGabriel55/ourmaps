@@ -1,16 +1,17 @@
 import { signUp } from "$lib/api/auth";
 import { userStore } from "$lib/stores/user";
-import { redirect } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 
 export const actions = {
-  default: async ({ cookies, request }) => {
+  default: async ({ request }) => {
     const formData = await request.formData();
 
+    const name = formData.get("name");
     const email = formData.get("email");
     const password = formData.get("password");
     const confirmPassword = formData.get("confirmPassword");
 
-    if (!email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       return {
         status: 400,
         body: { error: "All fields are required", success: false },
@@ -27,26 +28,21 @@ export const actions = {
       };
     }
 
-    const response = await signUp(email.toString(), password.toString());
+    const response = await signUp({
+      name: name.toString(),
+      email: email.toString(),
+      password: password.toString(),
+    });
 
-    if (response) {
-      cookies.set("user", JSON.stringify(response), {
-        httpOnly: true,
-        path: "/",
-      });
+    if (response.status !== 201) {
+      console.error(response.data);
 
-      userStore.set(response);
-
-      //redirect user to the protected page
-      throw redirect(302, "/login");
-    } else {
-      return {
-        status: 400,
-        body: {
-          error: "Invalid credentials",
-          success: false,
-        },
-      };
+      return fail(response.status || 500, { error: 'Error!' });
     }
+
+    userStore.set(response.data);
+
+    //redirect user to the protected page
+    throw redirect(302, "/login");
   },
 };

@@ -1,10 +1,13 @@
-import { findCustomMap } from "$lib/api/custom-maps/find";
 import { error } from "@sveltejs/kit";
 
-export const load = async ({ params }: { params: { id: string } }) => {
-  const map = await findCustomMap(params.id);
-
-  if (map) return map;
+export const load = async ({ data }) => {
+  if (data.map) {
+    return {
+      map: data.map,
+      token: data.token,
+      userId: data.userId,
+    };
+  }
 
   error(404, "Not found");
 };

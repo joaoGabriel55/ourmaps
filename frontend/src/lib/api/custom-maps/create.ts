@@ -1,5 +1,5 @@
-import { ourMapsAPI } from "$lib/api/http-client";
 import type { CustomMap } from "$core/custom-map";
+import { type HTTPClient } from "$lib/api/http-client";
 
 export type CreateCustomMapInput = Omit<
   CustomMap,
@@ -8,8 +8,11 @@ export type CreateCustomMapInput = Omit<
   ownerId: string;
 };
 
-export const createCustomMap = async (map: CreateCustomMapInput) => {
-  const { data } = await ourMapsAPI.post("/custom_maps", {
+export const createCustomMap = async (
+  map: CreateCustomMapInput,
+  httpClient: HTTPClient
+) => {
+  const { data } = await httpClient.post("/custom_maps", {
     name: map.name,
     owner_id: map.ownerId,
     center: map.center,

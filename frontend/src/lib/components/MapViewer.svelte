@@ -3,6 +3,7 @@
 
   import "@watergis/maplibre-gl-terradraw/dist/maplibre-gl-terradraw.css";
 
+  import type { CustomMap } from "$core/custom-map";
   import {
     createMapBoxDraw,
     onAddFeature,
@@ -11,6 +12,7 @@
   import maplibregl from "maplibre-gl";
 
   type Props = {
+    content?: CustomMap["content"];
     view: [number, number];
     zoom: number;
     onFeaturesChange?: (features: any) => void;
@@ -18,7 +20,7 @@
 
   let map: maplibregl.Map | undefined = $state();
 
-  const { view, zoom, onFeaturesChange }: Props = $props();
+  const { content, view, zoom, onFeaturesChange }: Props = $props();
 
   const draw = createMapBoxDraw();
 
@@ -28,6 +30,12 @@
     map.addControl(draw);
 
     map.once("load", () => {
+      if (content) {
+        const drawInstance = draw.getTerraDrawInstance();
+
+        drawInstance.addFeatures(content.features as any);
+      }
+
       if (onFeaturesChange) {
         onAddFeature(draw, onFeaturesChange);
         onRemoveFeature(draw, onFeaturesChange);
