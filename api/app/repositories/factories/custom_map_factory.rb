@@ -1,6 +1,6 @@
 module Factories
   class CustomMapFactory
-    def self.create(map)
+    def self.build(map)
       Domain::CustomMap.new(
         id: map.id,
         name: map.name,

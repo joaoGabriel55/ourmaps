@@ -1,6 +1,6 @@
 module Factories
   class UserFactory
-    def self.create(user)
+    def self.build(user)
       Domain::User.new(
         id: user.id,
         name: user.name,
