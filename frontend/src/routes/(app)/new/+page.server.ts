@@ -1,4 +1,4 @@
-import { getUserIdByToken } from "$lib";
+import { getUserIdByToken } from "$lib/jwt";
 import { redirect } from "@sveltejs/kit";
 
 export const load = async ({ cookies }) => {

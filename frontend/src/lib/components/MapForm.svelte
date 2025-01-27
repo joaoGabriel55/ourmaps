@@ -1,13 +1,15 @@
 <script lang="ts">
   import { LockKeyhole } from "lucide-svelte";
+  import BackIcon from "lucide-svelte/icons/arrow-left";
   import type { CustomMap } from "$core/custom-map";
 
   type Props = {
+    title: string;
     map?: CustomMap;
     onSubmit: (formData: FormData) => void;
   };
 
-  let { map, onSubmit }: Props = $props();
+  let { title, map, onSubmit }: Props = $props();
 
   function handleSubmit(event: SubmitEvent) {
     event.preventDefault();
@@ -19,6 +21,15 @@
   }
 </script>
 
+<header class="flex items-center gap-2">
+  <button
+    class="btn btn-sm btn-circle btn-ghost"
+    onclick={() => history.back()}
+  >
+    <BackIcon size={18} />
+  </button>
+  <h2 class="card-title">{title}</h2>
+</header>
 <form onsubmit={handleSubmit} class="flex flex-col">
   <label class="form-control w-full max-w-xs">
     <div class="label">

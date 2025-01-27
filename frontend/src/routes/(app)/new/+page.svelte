@@ -5,7 +5,6 @@
   import MapForm from "$lib/components/MapForm.svelte";
   import MapViewer from "$lib/components/MapViewer.svelte";
   import { showToast } from "$lib/toast";
-  import BackIcon from "lucide-svelte/icons/arrow-left";
 
   import type { PageData } from "./$types";
 
@@ -54,13 +53,7 @@
     />
     <div class="absolute bottom-10 left-5 card bg-base-100 shadow w-96 z-10">
       <div class="card-body">
-        <header class="flex items-center gap-2">
-          <a href="/" class="btn btn-sm btn-circle btn-ghost">
-            <BackIcon size={18} />
-          </a>
-          <h2 class="card-title">Create a new map</h2>
-        </header>
-        <MapForm onSubmit={handleCreateCustomMap} />
+        <MapForm title="Create a New Map" onSubmit={handleCreateCustomMap} />
       </div>
     </div>
   </div>

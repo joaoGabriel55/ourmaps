@@ -52,13 +52,11 @@
     />
     <div class="absolute bottom-10 left-5 card bg-base-100 shadow w-96 z-10">
       <div class="card-body">
-        <header class="flex items-center gap-2">
-          <a href="/" class="btn btn-sm btn-circle btn-ghost">
-            <BackIcon size={18} />
-          </a>
-          <h2 class="card-title">Edit map</h2>
-        </header>
-        <MapForm map={data.map} onSubmit={handleUpdateCustomMap} />
+        <MapForm
+          title="Edit Map"
+          map={data.map}
+          onSubmit={handleUpdateCustomMap}
+        />
       </div>
     </div>
   </div>

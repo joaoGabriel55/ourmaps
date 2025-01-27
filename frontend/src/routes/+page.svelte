@@ -1,19 +1,39 @@
 <script lang="ts">
-  import Header from "$lib/components/Header.svelte";
-  import MapsList from "$lib/components/MapsList.svelte";
-  import { Earth, LockKeyhole, Users } from "lucide-svelte";
   import "../app.css";
+
   import type { CustomMap } from "$core/custom-map";
   import { deleteCustomMap } from "$lib/api/custom-maps/delete";
   import { makeOurMapsAPI } from "$lib/api/http-client";
+  import Header from "$lib/components/Header.svelte";
+  import MapsList from "$lib/components/MapsList.svelte";
   import { showToast } from "$lib/toast";
+  import { Earth, LockKeyhole, Users } from "lucide-svelte";
+  import { twMerge } from "tailwind-merge";
+  import { page } from "$app/stores";
 
   let { data } = $props();
 
-  let userMaps = $state(data.userMaps);
-  let sharedMaps = data.sharedMaps;
-
+  let visibilityParam = $page.url.searchParams.get("visibility") || "private";
+  let customMaps = $state(data.customMaps);
   let mapToBeDeleted = $state<CustomMap>();
+
+  let tabs = [
+    {
+      name: "Private Maps",
+      href: "?visibility=private",
+      icon: LockKeyhole,
+    },
+    {
+      name: "Public Maps",
+      href: "?visibility=public",
+      icon: Earth,
+    },
+    {
+      name: "Collaborative Maps",
+      href: "?visibility=collaborative",
+      icon: Users,
+    },
+  ];
 
   const openDeleteMapModal = (map: CustomMap) => {
     const modal = document.getElementById("delete-modal") as HTMLDialogElement;
@@ -24,7 +44,7 @@
   };
 
   const handleDelete = (id: string) => {
-    userMaps = userMaps.filter((map) => map.id !== id);
+    customMaps = customMaps.filter((map) => map.id !== id);
 
     deleteCustomMap(id, makeOurMapsAPI(data.token)).catch((error) => {
       showToast("Error deleting map. Please try again", "error");
@@ -39,39 +59,26 @@
       New Map
     </a>
   </div>
-  <section class="my-4">
-    <div class="collapse collapse-arrow border border-base-300">
-      <input type="checkbox" />
-      <div class="collapse-title text-xl flex items-center gap-2 font-medium">
-        <LockKeyhole class="text-primary" />
-        <h2>Private Maps</h2>
-      </div>
-      <div class="collapse-content">
-        <MapsList maps={userMaps} onDelete={openDeleteMapModal} />
-      </div>
-    </div>
-    <hr class="my-4" />
-    <div class="collapse collapse-arrow border border-base-300">
-      <input type="checkbox" />
-      <div class="collapse-title text-xl flex items-center gap-2 font-medium">
-        <Earth class="text-primary" />
-        <h2>Public Maps</h2>
-      </div>
-      <div class="collapse-content">
-        <MapsList maps={sharedMaps} onDelete={openDeleteMapModal} />
-      </div>
-    </div>
-    <hr class="my-4" />
-    <div class="collapse collapse-arrow border border-base-300">
-      <input type="checkbox" />
-      <div class="collapse-title text-xl flex items-center gap-2 font-medium">
-        <Users class="text-primary" />
-        <h2>Collaborative Maps</h2>
-      </div>
-      <div class="collapse-content">
-        <MapsList maps={[]} onDelete={openDeleteMapModal} />
-      </div>
-    </div>
+  <div role="tablist" class="tabs tabs-bordered w-fit my-4">
+    {#each tabs as tab}
+      <a
+        data-sveltekit-reload
+        role="tab"
+        class={twMerge(
+          "tab",
+          tab.href.includes(visibilityParam) && "tab-active"
+        )}
+        href={tab.href}
+      >
+        <div class="text-base flex items-center gap-2 font-medium">
+          <tab.icon class="text-primary" size={18} />
+          <h2>{tab.name}</h2>
+        </div>
+      </a>
+    {/each}
+  </div>
+  <section class="pb-4">
+    <MapsList maps={customMaps} onDelete={openDeleteMapModal} />
   </section>
   <dialog id="delete-modal" class="modal modal-bottom sm:modal-middle">
     <div class="modal-box">
