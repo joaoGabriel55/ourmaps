@@ -17,7 +17,7 @@
 <ul>
   {#each maps as map}
     <li
-      class="p-4 rounded-md flex justify-between hover:bg-gray-100 transition duration-300"
+      class="p-4 rounded-md border border-solid border-gray-200 flex justify-between hover:bg-gray-100 transition duration-300"
     >
       <div class="flex flex-col gap-4">
         <a
@@ -28,10 +28,11 @@
           {map.name}
         </a>
         <p class="text-md">{map.description}</p>
-        <div class="grid">
+        <div class="align-bottom">
           <span class="text-xs text-gray-500">
             Created at: {new Date(map.createdAt).toLocaleString()}
           </span>
+          <span class="text-gray-500">|</span>
           {#if map.updatedAt}
             <span class="text-xs text-gray-500">
               Updated at: {new Date(map.updatedAt).toLocaleString()}
@@ -39,14 +40,12 @@
           {/if}
         </div>
       </div>
-      <div class="flex">
-        <button
-          class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 transition duration-300"
-          onclick={() => onDelete(map)}
-        >
-          <TrashIcon size={18} class="text-red-500" />
-        </button>
-      </div>
+      <button
+        class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 transition duration-300"
+        onclick={() => onDelete(map)}
+      >
+        <TrashIcon size={18} class="text-red-500" />
+      </button>
     </li>
   {/each}
 </ul>

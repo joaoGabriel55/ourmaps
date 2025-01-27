@@ -11,8 +11,8 @@ const makeHttpClient = (baseUrl: string, token?: string) => {
   });
 
   return {
-    get: async <T = any>(url: string) => {
-      const response = await axiosInstance.get<T>(url);
+    get: async <T = any>(url: string, params?: Record<string, unknown>) => {
+      const response = await axiosInstance.get<T>(url, { params });
 
       return { data: response.data, status: response.status };
     },
@@ -36,4 +36,5 @@ const makeHttpClient = (baseUrl: string, token?: string) => {
 
 export type HTTPClient = ReturnType<typeof makeHttpClient>;
 
-export const makeOurMapsAPI = (token?: string) => makeHttpClient(env.PUBLIC_API_URL, token);
+export const makeOurMapsAPI = (token?: string) =>
+  makeHttpClient(env.PUBLIC_API_URL, token);

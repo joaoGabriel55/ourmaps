@@ -1,4 +1,4 @@
-import { getUserIdByToken } from "$lib";
+import { getUserIdByToken } from "$lib/jwt";
 import { findCustomMap } from "$lib/api/custom-maps/find";
 import { makeOurMapsAPI } from "$lib/api/http-client";
 import { redirect } from "@sveltejs/kit";
