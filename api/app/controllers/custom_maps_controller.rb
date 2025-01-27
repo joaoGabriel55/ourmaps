@@ -7,6 +7,7 @@ class CustomMapsController < ApplicationController
     get_all = UseCases::CustomMaps::GetAll.new(
       owner_id: params[:owner_id],
       repository_adapter: custom_map_repository,
+      filters: { visibility: params[:visibility] },
       paginator: { per_page: params[:per_page], page: params[:page] }
     )
 

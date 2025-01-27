@@ -12,8 +12,8 @@ module Domain
       repository.create!(map)
     end
 
-    def get_all!(owner_id:, paginator:)
-      repository.get_all!(owner_id:, paginator:)
+    def get_all!(owner_id:, filters:, paginator:)
+      repository.get_all!(owner_id:, filters:, paginator:)
     end
 
     def lookup!(id:)

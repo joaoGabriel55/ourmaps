@@ -4,21 +4,21 @@ class UserRepository
   def self.create!(user)
     created_user = User.create!(user)
 
-    Factories::UserFactory.create(created_user)
+    Factories::UserFactory.build(created_user)
   end
 
   def self.get_all!(paginator:)
     users = User.paginate(per_page: paginator[:per_page], page: paginator[:page])
 
     users.map do |user|
-      Factories::UserFactory.create(user)
+      Factories::UserFactory.build(user)
     end
   end
 
   def self.lookup!(id:)
     user = User.find(id)
 
-    Factories::UserFactory.create(user)
+    Factories::UserFactory.build(user)
   rescue ActiveRecord::RecordNotFound
     raise UseCases::Users::NotFoundError, "User not found: #{id}"
   end
@@ -26,7 +26,7 @@ class UserRepository
   def self.lookup_by_email!(email:)
     user = User.find_by(email: email)
 
-    Factories::UserFactory.create(user)
+    Factories::UserFactory.build(user)
   rescue ActiveRecord::RecordNotFound
     raise UseCases::Users::NotFoundError, "User not found: #{email}"
   end

@@ -15,7 +15,11 @@ RSpec.describe UseCases::CustomMaps::GetAll do
 
       get_all_maps.call
 
-      expect(repository_adapter).to have_received(:get_all!).with(owner_id:, paginator: { per_page: 10, page: 1 })
+      expect(repository_adapter).to have_received(:get_all!).with(
+        owner_id:,
+        filters: { visibility: 'public' },
+        paginator: { per_page: 10, page: 1 }
+      )
     end
   end
 

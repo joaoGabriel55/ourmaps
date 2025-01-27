@@ -11,23 +11,28 @@ class CustomMapRepository < ApplicationRecord
 
     created_map = CustomMap.create(map)
 
-    Factories::CustomMapFactory.create(created_map)
+    Factories::CustomMapFactory.build(created_map)
   end
 
-  def self.get_all!(owner_id:, paginator:)
+  def self.get_all!(owner_id:, filters:, paginator:)
+    filters = {
+      owner_id: owner_id,
+      visibility: filters[:visibility] || "public"
+    }
+
     maps = CustomMap
-      .where(owner_id: owner_id)
+      .where(filters)
       .paginate(per_page: paginator[:per_page], page: paginator[:page])
 
     maps.map do |map|
-      Factories::CustomMapFactory.create(map)
+      Factories::CustomMapFactory.build(map)
     end
   end
 
   def self.lookup!(id:)
     map = CustomMap.find(id)
 
-    Factories::CustomMapFactory.create(map)
+    Factories::CustomMapFactory.build(map)
   rescue ActiveRecord::RecordNotFound
     raise UseCases::CustomMaps::NotFoundError, "Custom map not found: #{id}"
   end
@@ -46,7 +51,7 @@ class CustomMapRepository < ApplicationRecord
 
     db_map.reload
 
-    Factories::CustomMapFactory.create(db_map)
+    Factories::CustomMapFactory.build(db_map)
   rescue ActiveRecord::RecordNotFound
     raise UseCases::CustomMaps::UpdateError, "Custom map not found: #{map[:id]}"
   end
