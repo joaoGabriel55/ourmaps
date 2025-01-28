@@ -32,7 +32,7 @@ module UseCases
       rescue Domain::InvalidCustomMap => e
         LoggerProvider.new.error(e)
         raise UpdateError, e.message
-      rescue StandardError => e
+      rescue => e
         LoggerProvider.new.error(e)
         raise UpdateError, "Error updating custom map"
       end

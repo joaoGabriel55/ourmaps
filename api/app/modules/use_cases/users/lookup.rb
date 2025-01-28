@@ -21,7 +21,7 @@ module UseCases
       rescue NotFoundError => e
         LoggerProvider.new.error(e)
         raise NotFoundError, e.message
-      rescue StandardError => e
+      rescue => e
         LoggerProvider.new.error(e)
         raise LookupError, e.message
       end

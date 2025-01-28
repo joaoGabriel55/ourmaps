@@ -7,11 +7,11 @@ class ApplicationController < ActionController::API
     header = request.headers["Authorization"]
     header = header.split(" ").last if header
 
-    return render json: { error: "Missing token" }, status: :unauthorized unless header
+    return render json: {error: "Missing token"}, status: :unauthorized unless header
 
     decoded = JsonWebToken.decode(header)
 
-    return render json: { error: "Invalid token" }, status: :unauthorized unless decoded
+    return render json: {error: "Invalid token"}, status: :unauthorized unless decoded
 
     repository = Domain::UserRepository.new(repository: UserRepository)
 

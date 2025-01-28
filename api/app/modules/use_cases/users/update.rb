@@ -15,7 +15,7 @@ module UseCases
       end
 
       def call
-        updated_user =  Domain::User.new(
+        updated_user = Domain::User.new(
           id: params[:id],
           name: params[:name],
           email: params[:email],
@@ -28,7 +28,7 @@ module UseCases
       rescue Domain::InvalidUser => e
         LoggerProvider.new.error(e)
         raise UpdateError, e.message
-      rescue StandardError => e
+      rescue => e
         LoggerProvider.new.error(e)
         raise UpdateError, "Error updating user"
       end

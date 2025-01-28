@@ -1,10 +1,10 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: [ :create ]
+  skip_before_action :authenticate_request, only: [:create]
 
   def index
     get_all = UseCases::Users::GetAll.new(
       repository_adapter: repository,
-      paginator: { per_page: params[:per_page], page: params[:page] }
+      paginator: {per_page: params[:per_page], page: params[:page]}
     )
 
     @users = get_all.call.map do |user|
@@ -13,7 +13,7 @@ class UsersController < ApplicationController
 
     render json: @users
   rescue UseCases::Users::GetAllError => e
-    render json: { error: e.message }, status: 500
+    render json: {error: e.message}, status: 500
   end
 
   def show
@@ -21,9 +21,9 @@ class UsersController < ApplicationController
 
     render json: @user.response
   rescue UseCases::Users::NotFoundError => e
-    render json: { error: e.message }, status: 404
+    render json: {error: e.message}, status: 404
   rescue UseCases::Users::LookupError => e
-    render json: { error: e.message }, status: 500
+    render json: {error: e.message}, status: 500
   end
 
   def create
@@ -41,7 +41,7 @@ class UsersController < ApplicationController
 
     render json: @user.response, status: 201
   rescue UseCases::Users::CreateError => e
-    render json: { error: e.message }, status: 500
+    render json: {error: e.message}, status: 500
   end
 
   def update
@@ -62,9 +62,9 @@ class UsersController < ApplicationController
 
     render status: 204
   rescue UseCases::Users::NotFoundError => e
-    render json: { error: e.message }, status: 404
+    render json: {error: e.message}, status: 404
   rescue UseCases::Users::UpdateError => e
-    render json: { error: e.message }, status: 500
+    render json: {error: e.message}, status: 500
   end
 
   def destroy
@@ -74,9 +74,9 @@ class UsersController < ApplicationController
 
     render status: 204
   rescue UseCases::Users::NotFoundError => e
-    render json: { error: e.message }, status: 404
+    render json: {error: e.message}, status: 404
   rescue UseCases::Users::DeleteError => e
-    render json: { error: e.message }, status: 500
+    render json: {error: e.message}, status: 500
   end
 
   private

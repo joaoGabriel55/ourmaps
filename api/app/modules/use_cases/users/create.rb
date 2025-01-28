@@ -24,7 +24,7 @@ module UseCases
       rescue Domain::InvalidUser => e
         LoggerProvider.new.error(e)
         raise CreateError, e.message
-      rescue StandardError => e
+      rescue => e
         LoggerProvider.new.error(e)
         raise CreateError, "Error creating user"
       end

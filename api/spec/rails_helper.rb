@@ -1,13 +1,13 @@
-ENV['RAILS_ENV'] ||= 'test'
+ENV["RAILS_ENV"] ||= "test"
 
-require_relative '../config/environment'
-require 'database_cleaner/active_record'
+require_relative "../config/environment"
+require "database_cleaner/active_record"
 
-abort('The Rails environment is running in production mode!') if Rails.env.production?
+abort("The Rails environment is running in production mode!") if Rails.env.production?
 
-require 'rspec/rails'
+require "rspec/rails"
 
-Rails.root.glob('spec/support/**/*.rb').sort.each { |f| require f }
+Rails.root.glob("spec/support/**/*.rb").sort.each { |f| require f }
 
 begin
   ActiveRecord::Migration.maintain_test_schema!
@@ -17,7 +17,7 @@ end
 
 RSpec.configure do |config|
   config.fixture_paths = [
-    Rails.root.join('spec/fixtures')
+    Rails.root.join("spec/fixtures")
   ]
 
   config.use_transactional_fixtures = true
