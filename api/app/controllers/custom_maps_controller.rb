@@ -73,7 +73,7 @@ class CustomMapsController < ApplicationController
         owner: map.owner,
         visibility: params[:visibility],
         created_at: map.created_at,
-        updated_at: map.updated_at
+        updated_at: DateTime.now
       },
       repository_adapter: custom_map_repository,
     )
@@ -83,6 +83,8 @@ class CustomMapsController < ApplicationController
     render json: @map
   rescue UseCases::CustomMaps::NotFoundError => e
     render json: { error: e.message }, status: 404
+  rescue UseCases::CustomMaps::NotMapOwnerError => e
+    render json: { error: e.message }, status: 403
   rescue UseCases::CustomMaps::UpdateError => e
     render json: { error: e.message }, status: 500
   end
@@ -95,6 +97,8 @@ class CustomMapsController < ApplicationController
     render status: 204
   rescue UseCases::CustomMaps::NotFoundError => e
     render json: { error: e.message }, status: 404
+  rescue UseCases::CustomMaps::NotMapOwnerError => e
+    render json: { error: e.message }, status: 403
   rescue UseCases::CustomMaps::DeleteError => e
     render json: { error: e.message }, status: 500
   end
