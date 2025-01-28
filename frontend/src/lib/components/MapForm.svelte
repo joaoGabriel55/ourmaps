@@ -22,12 +22,9 @@
 </script>
 
 <header class="flex items-center gap-2">
-  <button
-    class="btn btn-sm btn-circle btn-ghost"
-    onclick={() => history.back()}
-  >
+  <a class="btn btn-sm btn-circle btn-ghost" href="/">
     <BackIcon size={18} />
-  </button>
+  </a>
   <h2 class="card-title">{title}</h2>
 </header>
 <form onsubmit={handleSubmit} class="flex flex-col">
