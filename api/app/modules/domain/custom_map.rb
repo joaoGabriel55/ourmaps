@@ -48,7 +48,7 @@ module Domain
         name:,
         description:,
         center:,
-        content: content ? content.to_hash : nil,
+        content: content&.to_hash,
         owner: owner.response,
         collaborators: collaborators&.map(&:to_hash),
         visibility:,

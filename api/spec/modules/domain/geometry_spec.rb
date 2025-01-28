@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Domain::Geometry do
-  context 'valid geometry' do
+  context "valid geometry" do
     let(:geometry) do
       {
         type: "FeatureCollection",
@@ -26,7 +26,7 @@ RSpec.describe Domain::Geometry do
     it { expect { described_class.new(geometry:) }.not_to raise_error(Domain::InvalidGeometry) }
   end
 
-  context 'invalid geometry' do
+  context "invalid geometry" do
     let(:geometry) do
       {
         type: "FeatureCollection22",
@@ -49,7 +49,7 @@ RSpec.describe Domain::Geometry do
     it { expect { described_class.new(geometry:) }.to raise_error(Domain::InvalidGeometry) }
   end
 
-  describe '.to_hash' do
+  describe ".to_hash" do
     let(:geometry) do
       {
         type: "FeatureCollection",

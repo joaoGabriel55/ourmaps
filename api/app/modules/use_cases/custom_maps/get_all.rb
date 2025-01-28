@@ -13,7 +13,7 @@ module UseCases
         filters: {
           visibility: "public"
         },
-        paginator: { per_page: 10, page: 1 }
+        paginator: {per_page: 10, page: 1}
       )
         @owner_id = owner_id
         @filters = filters
@@ -25,7 +25,7 @@ module UseCases
 
       def call
         custom_map_repository.get_all!(owner_id:, filters:, paginator:)
-      rescue StandardError => e
+      rescue => e
         LoggerProvider.new.error(e)
         raise GetAllError, "Error fetching custom maps for owner #{owner_id}"
       end

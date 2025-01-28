@@ -33,7 +33,7 @@ module UseCases
       rescue NotMapOwnerError => e
         LoggerProvider.new.error(e)
         raise NotMapOwnerError, e.message
-      rescue StandardError => e
+      rescue => e
         LoggerProvider.new.error(e)
         raise LookupError, e.message
       end
