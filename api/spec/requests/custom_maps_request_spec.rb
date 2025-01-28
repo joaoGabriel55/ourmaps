@@ -105,6 +105,52 @@ RSpec.describe CustomMapsController, type: :request do
         expect(response.status).to eq(404)
       end
     end
+
+    context 'when private custom map owner id is not the same of current user' do
+      let(:user) { FactoryBot.create(:user) }
+      let(:token) { JsonWebToken.encode({ user_id: user.id }) }
+      let!(:custom_map) { FactoryBot.create(:custom_map, owner: user, visibility: 'private') }
+      let(:user_two) { FactoryBot.create(:user) }
+      let(:token_two) { JsonWebToken.encode({ user_id: user_two.id }) }
+
+      before(:each) do
+        @headers = { 'Authorization' => "Bearer #{token}" }
+      end
+
+      it 'returns 403 forbidden status' do
+        get "/custom_maps/#{custom_map.id}", headers: {
+          'Authorization' => "Bearer #{token_two}"
+        }
+
+        expect(response.status).to eq(403)
+      end
+
+      it 'returns error message' do
+        get "/custom_maps/#{custom_map.id}", headers: {
+          'Authorization' => "Bearer #{token_two}"
+        }
+
+        expect(JSON.parse(response.body)).to include({
+          'error' => "You don't have permission to access this map"
+        })
+      end
+    end
+
+    context 'when private custom map owner id is the same of current user' do
+      let(:user) { FactoryBot.create(:user) }
+      let(:token) { JsonWebToken.encode({ user_id: user.id }) }
+      let!(:custom_map) { FactoryBot.create(:custom_map, owner: user, visibility: 'private') }
+
+      before(:each) do
+        @headers = { 'Authorization' => "Bearer #{token}" }
+      end
+
+      it 'returns 200 ok status' do
+        get "/custom_maps/#{custom_map.id}", headers: @headers
+
+        expect(response.status).to eq(200)
+      end
+    end
   end
 
   describe 'create new custom map' do
