@@ -52,7 +52,7 @@
   };
 </script>
 
-<Header />
+<Header user={data.userProfile} />
 <div class="max-w-4xl mx-auto mt-8 p-2">
   <div class="flex justify-end">
     <a data-sveltekit-reload class="btn btn-primary w-fit" href="/new">

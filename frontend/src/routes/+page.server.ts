@@ -2,6 +2,7 @@ import { getUserIdByToken } from "$lib/jwt";
 import { getAllCustomMaps } from "$lib/api/custom-maps/get-all.js";
 import { makeOurMapsAPI } from "$lib/api/http-client";
 import { redirect } from "@sveltejs/kit";
+import { findUserById } from "$lib/api/users/find-by-id";
 
 const getVisibility = (visibility: string | null) => {
   switch (visibility) {
@@ -25,10 +26,13 @@ export const load = async ({ cookies, url }) => {
 
   const visibility = getVisibility(url.searchParams.get("visibility"));
 
+  const userProfile = await findUserById(userId, ourMapsAPI);
+
   const customMaps = await getAllCustomMaps(userId, visibility, ourMapsAPI);
 
   return {
     token,
+    userProfile,
     customMaps,
   };
 };
