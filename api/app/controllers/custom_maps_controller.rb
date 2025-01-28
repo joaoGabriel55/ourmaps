@@ -30,6 +30,8 @@ class CustomMapsController < ApplicationController
     render json: @map.to_hash
   rescue UseCases::CustomMaps::NotFoundError => e
     render json: { error: e.message }, status: 404
+  rescue UseCases::CustomMaps::NotMapOwnerError => e
+    render json: { error: e.message }, status: 403
   rescue UseCases::CustomMaps::LookupError => e
     render json: { error: e.message }, status: 500
   end
@@ -116,6 +118,10 @@ class CustomMapsController < ApplicationController
   end
 
   def lookup
-    UseCases::CustomMaps::Lookup.new(id: params[:id], repository_adapter: custom_map_repository)
+    UseCases::CustomMaps::Lookup.new(
+      id: params[:id],
+      current_user_id: @current_user.id,
+      repository_adapter: custom_map_repository
+    )
   end
 end
