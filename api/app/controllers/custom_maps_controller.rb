@@ -112,6 +112,27 @@ class CustomMapsController < ApplicationController
     render json: {error: e.message}, status: 500
   end
 
+  def remove_collaborators
+    map = lookup.call
+
+    remove_collaborators = UseCases::CustomMaps::RemoveCollaborators.new(
+      map:,
+      owner_id: @current_user.id,
+      removed_collaborators: params[:collaborators],
+      adapter: custom_map_repository
+    )
+
+    remove_collaborators.call
+
+    render status: 204
+  rescue UseCases::CustomMaps::NotFoundError => e
+    render json: {error: e.message}, status: 404
+  rescue UseCases::CustomMaps::NotMapOwnerError => e
+    render json: {error: e.message}, status: 403
+  rescue UseCases::CustomMaps::RemoveCollaboratorsError => e
+    render json: {error: e.message}, status: 500
+  end
+
   def destroy
     map = lookup.call
 

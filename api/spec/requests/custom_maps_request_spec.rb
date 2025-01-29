@@ -415,4 +415,37 @@ RSpec.describe CustomMapsController, type: :request do
       end
     end
   end
+
+  describe "remove collaborators to custom map" do
+    let!(:owner) { FactoryBot.create(:user, name: "John", password: "123456") }
+    let!(:collaborators) { FactoryBot.create_list(:user, 2) }
+    let!(:custom_map) { FactoryBot.create(:custom_map, owner: user, collaborators:) }
+    let(:removed_collaborators_body) {
+      {
+        collaborators: [collaborators.first.id]
+      }
+    }
+
+    it "returns 204 no content status" do
+      delete "/custom_maps/#{custom_map.id}/collaborators",
+        params: removed_collaborators_body, as: :json, headers: @headers
+
+      expect(response.status).to eq(204)
+    end
+
+    it "removes collaborators to custom map" do
+      delete "/custom_maps/#{custom_map.id}/collaborators",
+        params: removed_collaborators_body, as: :json, headers: @headers
+
+      expect(CustomMap.find(custom_map.id).collaborators).to_not include(collaborators.first)
+    end
+
+    context "when custom map not found" do
+      it "returns 404 not found status" do
+        patch "/custom_maps/abc212/collaborators", params: body, as: :json, headers: @headers
+
+        expect(response.status).to eq(404)
+      end
+    end
+  end
 end

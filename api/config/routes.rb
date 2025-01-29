@@ -10,5 +10,6 @@ Rails.application.routes.draw do
   resources :users
   resources :custom_maps, only: [:index, :show, :create, :update, :destroy] do
     patch "/collaborators", to: "custom_maps#add_collaborators"
+    delete "/collaborators", to: "custom_maps#remove_collaborators"
   end
 end

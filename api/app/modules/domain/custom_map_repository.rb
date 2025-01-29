@@ -24,6 +24,10 @@ module Domain
       adapter.add_collaborators!(map_id:, collaborators:)
     end
 
+    def remove_collaborators!(map_id:, removed_collaborators:)
+      adapter.remove_collaborators!(map_id:, removed_collaborators:)
+    end
+
     delegate :update!, to: :adapter
     delegate :delete!, to: :adapter
   end

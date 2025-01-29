@@ -63,4 +63,12 @@ class CustomMapRepository < ApplicationRecord
   def self.add_collaborators!(map_id:, collaborators:)
     CustomMap.find(map_id).update(collaborators: User.find(collaborators))
   end
+
+  def self.remove_collaborators!(map_id:, removed_collaborators:)
+    map = CustomMap.find(map_id)
+
+    updated_collaborators = map.collaborators.reject { |collaborator| removed_collaborators.include?(collaborator.id) }
+
+    map.update(collaborators: updated_collaborators)
+  end
 end
