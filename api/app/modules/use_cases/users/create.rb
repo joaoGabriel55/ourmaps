@@ -7,9 +7,9 @@ module UseCases
     class Create
       attr_accessor :user_repository, :params
 
-      def initialize(params:, repository_adapter:)
+      def initialize(params:, adapter:)
         @params = params
-        @user_repository = Domain::UserRepository.new(repository: repository_adapter)
+        @user_repository = Domain::UserRepository.new(adapter:)
       end
 
       def call

@@ -3,17 +3,17 @@
 require "rails_helper"
 
 RSpec.describe UseCases::CustomMaps::Lookup do
-  let(:repository_adapter) { instance_double("CustomMapRepositoryAdapter") }
+  let(:adapter) { instance_double("CustomMapRepositoryAdapter") }
   let(:custom_map_id) { "abc1234" }
   let(:current_user_id) { "abc1234" }
 
   context "lookup a custom map" do
     let(:lookup_custom_map) do
-      described_class.new(id: custom_map_id, current_user_id:, repository_adapter:)
+      described_class.new(id: custom_map_id, current_user_id:, adapter:)
     end
 
     it "calls custom map repository" do
-      allow(repository_adapter).to receive(:lookup!).and_return(
+      allow(adapter).to receive(:lookup!).and_return(
         Domain::CustomMap.new(
           id: custom_map_id,
           name: "My Custom Map",
@@ -30,27 +30,27 @@ RSpec.describe UseCases::CustomMaps::Lookup do
 
       lookup_custom_map.call
 
-      expect(repository_adapter).to have_received(:lookup!).with(id: custom_map_id)
+      expect(adapter).to have_received(:lookup!).with(id: custom_map_id)
     end
   end
 
   context "lookup a custom map raise error" do
     let(:lookup_custom_map) do
-      described_class.new(id: custom_map_id, current_user_id:, repository_adapter:)
+      described_class.new(id: custom_map_id, current_user_id:, adapter:)
     end
 
-    before { allow(repository_adapter).to receive(:lookup!).and_raise(StandardError) }
+    before { allow(adapter).to receive(:lookup!).and_raise(StandardError) }
 
     it { expect { lookup_custom_map.call }.to raise_error(UseCases::CustomMaps::LookupError) }
   end
 
   context "when private custom map owner id is not the same of current user" do
     let(:lookup_custom_map) do
-      described_class.new(id: custom_map_id, current_user_id: "def1234", repository_adapter:)
+      described_class.new(id: custom_map_id, current_user_id: "def1234", adapter:)
     end
 
     it "raises not map owner error" do
-      allow(repository_adapter).to receive(:lookup!).and_return(
+      allow(adapter).to receive(:lookup!).and_return(
         Domain::CustomMap.new(
           id: custom_map_id,
           name: "My Custom Map",
@@ -71,11 +71,11 @@ RSpec.describe UseCases::CustomMaps::Lookup do
 
   context "when private custom map owner id is the same of current user" do
     let(:lookup_custom_map) do
-      described_class.new(id: custom_map_id, current_user_id:, repository_adapter:)
+      described_class.new(id: custom_map_id, current_user_id:, adapter:)
     end
 
     it "does not raise not map owner error" do
-      allow(repository_adapter).to receive(:lookup!).and_return(
+      allow(adapter).to receive(:lookup!).and_return(
         Domain::CustomMap.new(
           id: custom_map_id,
           name: "My Custom Map",

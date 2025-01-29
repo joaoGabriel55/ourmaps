@@ -9,13 +9,11 @@ module UseCases
     class AddCollaborators
       attr_accessor :map, :collaborators, :owner_id, :custom_map_repository
 
-      def initialize(map:, owner_id:, repository_adapter:, collaborators: [])
+      def initialize(map:, owner_id:, adapter:, collaborators: [])
         @map = map
         @owner_id = owner_id
         @collaborators = collaborators
-        @custom_map_repository = Domain::CustomMapRepository.new(
-          repository: repository_adapter
-        )
+        @custom_map_repository = Domain::CustomMapRepository.new(adapter:)
       end
 
       def call

@@ -6,7 +6,7 @@ class CustomMapsController < ApplicationController
 
     get_all = UseCases::CustomMaps::GetAll.new(
       owner_id: params[:owner_id],
-      repository_adapter: custom_map_repository,
+      adapter: custom_map_repository,
       filters: {visibility: params[:visibility]},
       paginator: {per_page: params[:per_page], page: params[:page]}
     )
@@ -48,7 +48,7 @@ class CustomMapsController < ApplicationController
         content: params[:content],
         visibility: params[:visibility]
       },
-      repository_adapter: custom_map_repository
+      adapter: custom_map_repository
     )
 
     @map = create.call
@@ -75,7 +75,7 @@ class CustomMapsController < ApplicationController
         created_at: map.created_at,
         updated_at: DateTime.now
       },
-      repository_adapter: custom_map_repository
+      adapter: custom_map_repository
     )
 
     @map = update.call
@@ -96,7 +96,7 @@ class CustomMapsController < ApplicationController
       map:,
       owner_id: @current_user.id,
       collaborators: params[:collaborators],
-      repository_adapter: custom_map_repository
+      adapter: custom_map_repository
     )
 
     add_collaborators.call
@@ -115,7 +115,7 @@ class CustomMapsController < ApplicationController
   def destroy
     map = lookup.call
 
-    UseCases::CustomMaps::Delete.new(id: map.id, repository_adapter: custom_map_repository).call
+    UseCases::CustomMaps::Delete.new(id: map.id, adapter: custom_map_repository).call
 
     render status: 204
   rescue UseCases::CustomMaps::NotFoundError => e
@@ -133,22 +133,22 @@ class CustomMapsController < ApplicationController
   end
 
   def custom_map_repository
-    Domain::CustomMapRepository.new(repository: CustomMapRepository)
+    Domain::CustomMapRepository.new(adapter: CustomMapRepository)
   end
 
   def user_repository
-    Domain::UserRepository.new(repository: UserRepository)
+    Domain::UserRepository.new(adapter: UserRepository)
   end
 
   def lookup_owner
-    UseCases::Users::Lookup.new(id: params[:owner_id], repository_adapter: user_repository)
+    UseCases::Users::Lookup.new(id: params[:owner_id], adapter: user_repository)
   end
 
   def lookup
     UseCases::CustomMaps::Lookup.new(
       id: params[:id] || params[:custom_map_id],
       current_user_id: @current_user.id,
-      repository_adapter: custom_map_repository
+      adapter: custom_map_repository
     )
   end
 end

@@ -3,8 +3,8 @@
 require "rails_helper"
 
 RSpec.describe UseCases::CustomMaps::Update do
-  let(:repository_adapter) { instance_double("CustomMapRepositoryAdapter") }
-  let(:update_custom_map) { described_class.new(params:, repository_adapter:) }
+  let(:adapter) { instance_double("CustomMapRepositoryAdapter") }
+  let(:update_custom_map) { described_class.new(params:, adapter:) }
   let(:params) do
     {
       id: IdProvider.new.next_id,
@@ -17,11 +17,11 @@ RSpec.describe UseCases::CustomMaps::Update do
 
   context "update custom map" do
     it "calls custom map repository" do
-      allow(repository_adapter).to receive(:update!).and_return(nil)
+      allow(adapter).to receive(:update!).and_return(nil)
 
       update_custom_map.call
 
-      expect(repository_adapter).to have_received(:update!).with(include({
+      expect(adapter).to have_received(:update!).with(include({
         name: params[:name],
         center: params[:center]
       }))
@@ -29,7 +29,7 @@ RSpec.describe UseCases::CustomMaps::Update do
   end
 
   context "update custom map raise error" do
-    before { allow(repository_adapter).to receive(:update!).and_raise(StandardError) }
+    before { allow(adapter).to receive(:update!).and_raise(StandardError) }
 
     it { expect { update_custom_map.call }.to raise_error(UseCases::CustomMaps::UpdateError) }
   end

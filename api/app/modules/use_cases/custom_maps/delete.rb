@@ -7,11 +7,9 @@ module UseCases
     class Delete
       attr_accessor :id, :custom_map_repository
 
-      def initialize(id:, repository_adapter:)
+      def initialize(id:, adapter:)
         @id = id
-        @custom_map_repository = Domain::CustomMapRepository.new(
-          repository: repository_adapter
-        )
+        @custom_map_repository = Domain::CustomMapRepository.new(adapter:)
       end
 
       def call

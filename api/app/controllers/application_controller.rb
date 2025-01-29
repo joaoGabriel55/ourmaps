@@ -13,7 +13,7 @@ class ApplicationController < ActionController::API
 
     return render json: {error: "Invalid token"}, status: :unauthorized unless decoded
 
-    repository = Domain::UserRepository.new(repository: UserRepository)
+    repository = Domain::UserRepository.new(adapter: UserRepository)
 
     @current_user = repository.lookup!(id: decoded[:user_id])
   end

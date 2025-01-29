@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def index
     get_all = UseCases::Users::GetAll.new(
-      repository_adapter: repository,
+      adapter: repository,
       paginator: {per_page: params[:per_page], page: params[:page]}
     )
 
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
         email: params[:email],
         password: params[:password]
       },
-      repository_adapter: repository
+      adapter: repository
     )
 
     @user = create.call
@@ -55,7 +55,7 @@ class UsersController < ApplicationController
 
     update = UseCases::Users::Update.new(
       params: user_params,
-      repository_adapter: repository
+      adapter: repository
     )
 
     update.call
@@ -70,7 +70,7 @@ class UsersController < ApplicationController
   def destroy
     lookup.call
 
-    UseCases::Users::Delete.new(id: params[:id], repository_adapter: repository).call
+    UseCases::Users::Delete.new(id: params[:id], adapter: repository).call
 
     render status: 204
   rescue UseCases::Users::NotFoundError => e
@@ -82,10 +82,10 @@ class UsersController < ApplicationController
   private
 
   def repository
-    Domain::UserRepository.new(repository: UserRepository)
+    Domain::UserRepository.new(adapter: UserRepository)
   end
 
   def lookup
-    UseCases::Users::Lookup.new(id: params[:id], repository_adapter: repository)
+    UseCases::Users::Lookup.new(id: params[:id], adapter: repository)
   end
 end
