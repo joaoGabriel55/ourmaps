@@ -32,8 +32,8 @@ module Domain
       user unless user.nil?
     end
 
-    def get_all!(paginator:)
-      adapter.get_all!(paginator:)
+    def get_all!(query:, paginator:)
+      adapter.get_all!(query:, paginator:)
     end
   end
 end

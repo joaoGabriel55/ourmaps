@@ -7,8 +7,12 @@ class UserRepository
     Factories::UserFactory.build(created_user)
   end
 
-  def self.get_all!(paginator:)
-    users = User.paginate(per_page: paginator[:per_page], page: paginator[:page])
+  def self.get_all!(query:, paginator:)
+    users = if query.present?
+      User.query_search(query).order(created_at: :desc)
+    else
+      User.paginate(per_page: paginator[:per_page], page: paginator[:page]).order(created_at: :desc)
+    end
 
     users.map do |user|
       Factories::UserFactory.build(user)

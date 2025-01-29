@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   def index
     get_all = UseCases::Users::GetAll.new(
       adapter: repository,
+      query: params[:query],
       paginator: {per_page: params[:per_page], page: params[:page]}
     )
 
