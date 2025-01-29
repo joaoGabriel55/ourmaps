@@ -62,6 +62,62 @@ RSpec.describe UsersController, type: :request do
     end
   end
 
+  context "get users by name" do
+    before do
+      FactoryBot.create(:user, name: "John", email: "email@email.com")
+      FactoryBot.create(:user, name: "Jane", email: "email2@email.com")
+      FactoryBot.create(:user, name: "Luke", email: "email3@email.com")
+    end
+
+    it "returns 200 ok status" do
+      get "/users?query=J", headers: @headers
+
+      expect(response.status).to eq(200)
+    end
+
+    it "returns users count" do
+      get "/users?query=J", headers: @headers
+
+      expect(JSON.parse(response.body).size).to eq(2)
+    end
+
+    context "when user not found" do
+      it "returns empty array" do
+        get "/users?query=Z", headers: @headers
+
+        expect(JSON.parse(response.body).size).to eq(0)
+      end
+    end
+  end
+
+  context "get users by email" do
+    before do
+      FactoryBot.create(:user, email: "zemail@email.com")
+      FactoryBot.create(:user, email: "youmail@email.com")
+      FactoryBot.create(:user, email: "youmailer@email.com")
+    end
+
+    it "returns 200 ok status" do
+      get "/users?query=you", headers: @headers
+
+      expect(response.status).to eq(200)
+    end
+
+    it "returns users count" do
+      get "/users?query=you", headers: @headers
+
+      expect(JSON.parse(response.body).size).to eq(2)
+    end
+
+    context "when user not found" do
+      it "returns empty array" do
+        get "/users?query=Rtz", headers: @headers
+
+        expect(JSON.parse(response.body).size).to eq(0)
+      end
+    end
+  end
+
   context "get user by id" do
     let!(:user_id) { FactoryBot.create(:user, name: "John", email: "j@j.com", password: "123456").id }
     let(:params) { {name: "John", password: "123456"} }

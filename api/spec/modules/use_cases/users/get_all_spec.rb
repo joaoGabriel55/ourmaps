@@ -14,7 +14,7 @@ RSpec.describe UseCases::Users::GetAll do
 
       get_all_users.call
 
-      expect(adapter).to have_received(:get_all!).with(paginator: {per_page: 10, page: 1})
+      expect(adapter).to have_received(:get_all!).with(paginator: {per_page: 10, page: 1}, query: nil)
     end
   end
 
