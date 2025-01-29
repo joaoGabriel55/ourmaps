@@ -11,12 +11,10 @@ module UseCases
     class Lookup
       attr_accessor :id, :current_user_id, :custom_map_repository
 
-      def initialize(id:, current_user_id:, repository_adapter:)
+      def initialize(id:, current_user_id:, adapter:)
         @id = id
         @current_user_id = current_user_id
-        @custom_map_repository = Domain::CustomMapRepository.new(
-          repository: repository_adapter
-        )
+        @custom_map_repository = Domain::CustomMapRepository.new(adapter:)
       end
 
       def call

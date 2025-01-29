@@ -2,38 +2,38 @@
 
 module Domain
   class UserRepository
-    attr_accessor :repository
+    attr_accessor :adapter
 
-    def initialize(repository:)
-      @repository = repository
+    def initialize(adapter:)
+      @adapter = adapter
     end
 
     def create!(user)
-      repository.create!(user)
+      adapter.create!(user)
     end
 
     def update!(user)
-      repository.update!(user)
+      adapter.update!(user)
     end
 
     def delete!(id:)
-      repository.delete!(id:)
+      adapter.delete!(id:)
     end
 
     def lookup!(id:)
-      user = repository.lookup!(id:)
+      user = adapter.lookup!(id:)
 
       user unless user.nil?
     end
 
     def lookup_by_email!(email:)
-      user = repository.lookup_by_email!(email: email)
+      user = adapter.lookup_by_email!(email: email)
 
       user unless user.nil?
     end
 
     def get_all!(paginator:)
-      repository.get_all!(paginator:)
+      adapter.get_all!(paginator:)
     end
   end
 end

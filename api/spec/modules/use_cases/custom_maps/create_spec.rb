@@ -3,8 +3,8 @@
 require "rails_helper"
 
 RSpec.describe UseCases::CustomMaps::Create do
-  let(:repository_adapter) { instance_double("CustomMapRepositoryAdapter") }
-  let(:create_custom_map) { described_class.new(params:, repository_adapter:) }
+  let(:adapter) { instance_double("CustomMapRepositoryAdapter") }
+  let(:create_custom_map) { described_class.new(params:, adapter:) }
   let(:params) do
     {
       id: "abc1234",
@@ -25,18 +25,18 @@ RSpec.describe UseCases::CustomMaps::Create do
         visibility: params[:visibility]
       )
 
-      allow(repository_adapter).to receive(:create!).and_return(map)
+      allow(adapter).to receive(:create!).and_return(map)
 
       create_custom_map.call
 
-      expect(repository_adapter).to have_received(:create!).with(include({
+      expect(adapter).to have_received(:create!).with(include({
         name: "My Custom Map"
       }))
     end
   end
 
   context "create custom map raise error" do
-    before { allow(repository_adapter).to receive(:create!).and_raise(StandardError) }
+    before { allow(adapter).to receive(:create!).and_raise(StandardError) }
 
     it { expect { create_custom_map.call }.to raise_error(UseCases::CustomMaps::CreateError) }
   end

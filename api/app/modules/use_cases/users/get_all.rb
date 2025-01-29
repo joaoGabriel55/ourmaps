@@ -7,12 +7,10 @@ module UseCases
     class GetAll
       attr_accessor :paginator, :user_repository
 
-      def initialize(repository_adapter:,
+      def initialize(adapter:,
         paginator: {per_page: 10, page: 1})
         @paginator = paginator
-        @user_repository = Domain::UserRepository.new(
-          repository: repository_adapter
-        )
+        @user_repository = Domain::UserRepository.new(adapter:)
       end
 
       def call

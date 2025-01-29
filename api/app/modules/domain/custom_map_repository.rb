@@ -2,29 +2,33 @@
 
 module Domain
   class CustomMapRepository
-    attr_accessor :repository
+    attr_accessor :adapter
 
-    def initialize(repository:)
-      @repository = repository
+    def initialize(adapter:)
+      @adapter = adapter
     end
 
     def create!(map)
-      repository.create!(map)
+      adapter.create!(map)
     end
 
     def get_all!(owner_id:, filters:, paginator:)
-      repository.get_all!(owner_id:, filters:, paginator:)
+      adapter.get_all!(owner_id:, filters:, paginator:)
     end
 
     def lookup!(id:)
-      repository.lookup!(id:)
+      adapter.lookup!(id:)
     end
 
     def add_collaborators!(map_id:, collaborators:)
-      repository.add_collaborators!(map_id:, collaborators:)
+      adapter.add_collaborators!(map_id:, collaborators:)
     end
 
-    delegate :update!, to: :repository
-    delegate :delete!, to: :repository
+    def remove_collaborators!(map_id:, removed_collaborators:)
+      adapter.remove_collaborators!(map_id:, removed_collaborators:)
+    end
+
+    delegate :update!, to: :adapter
+    delegate :delete!, to: :adapter
   end
 end

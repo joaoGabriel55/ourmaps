@@ -7,11 +7,9 @@ module UseCases
     class Create
       attr_accessor :params, :custom_map_repository
 
-      def initialize(params:, repository_adapter:)
+      def initialize(params:, adapter:)
         @params = params
-        @custom_map_repository = Domain::CustomMapRepository.new(
-          repository: repository_adapter
-        )
+        @custom_map_repository = Domain::CustomMapRepository.new(adapter:)
       end
 
       def call

@@ -7,11 +7,9 @@ module UseCases
     class Delete
       attr_accessor :id, :user_repository
 
-      def initialize(id:, repository_adapter:)
+      def initialize(id:, adapter:)
         @id = id
-        @user_repository = Domain::UserRepository.new(
-          repository: repository_adapter
-        )
+        @user_repository = Domain::UserRepository.new(adapter:)
       end
 
       def call

@@ -9,7 +9,7 @@ module UseCases
 
       def initialize(
         owner_id:,
-        repository_adapter:,
+        adapter:,
         filters: {
           visibility: "public"
         },
@@ -18,9 +18,7 @@ module UseCases
         @owner_id = owner_id
         @filters = filters
         @paginator = paginator
-        @custom_map_repository = Domain::CustomMapRepository.new(
-          repository: repository_adapter
-        )
+        @custom_map_repository = Domain::CustomMapRepository.new(adapter:)
       end
 
       def call
