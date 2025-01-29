@@ -20,6 +20,10 @@ module Domain
       repository.lookup!(id:)
     end
 
+    def add_collaborators!(map_id:, collaborators:)
+      repository.add_collaborators!(map_id:, collaborators:)
+    end
+
     delegate :update!, to: :repository
     delegate :delete!, to: :repository
   end

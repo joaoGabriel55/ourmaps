@@ -59,4 +59,8 @@ class CustomMapRepository < ApplicationRecord
   def self.delete!(id:)
     CustomMap.destroy(id)
   end
+
+  def self.add_collaborators!(map_id:, collaborators:)
+    CustomMap.find(map_id).update(collaborators: User.find(collaborators))
+  end
 end

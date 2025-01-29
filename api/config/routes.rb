@@ -8,5 +8,7 @@ Rails.application.routes.draw do
   post "/auth/login", to: "authentication#login"
 
   resources :users
-  resources :custom_maps
+  resources :custom_maps, only: [:index, :show, :create, :update, :destroy] do
+    patch "/collaborators", to: "custom_maps#add_collaborators"
+  end
 end

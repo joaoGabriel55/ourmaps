@@ -89,6 +89,29 @@ class CustomMapsController < ApplicationController
     render json: {error: e.message}, status: 500
   end
 
+  def add_collaborators
+    map = lookup.call
+
+    add_collaborators = UseCases::CustomMaps::AddCollaborators.new(
+      map:,
+      owner_id: @current_user.id,
+      collaborators: params[:collaborators],
+      repository_adapter: custom_map_repository
+    )
+
+    add_collaborators.call
+
+    render status: 204
+  rescue UseCases::CustomMaps::NotFoundError => e
+    render json: {error: e.message}, status: 404
+  rescue UseCases::CustomMaps::NotMapOwnerError => e
+    render json: {error: e.message}, status: 403
+  rescue UseCases::CustomMaps::NotAddYourselfError => e
+    render json: {error: e.message}, status: 400
+  rescue UseCases::CustomMaps::AddCollaboratorsError => e
+    render json: {error: e.message}, status: 500
+  end
+
   def destroy
     map = lookup.call
 
@@ -123,7 +146,7 @@ class CustomMapsController < ApplicationController
 
   def lookup
     UseCases::CustomMaps::Lookup.new(
-      id: params[:id],
+      id: params[:id] || params[:custom_map_id],
       current_user_id: @current_user.id,
       repository_adapter: custom_map_repository
     )
