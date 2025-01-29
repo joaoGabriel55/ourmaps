@@ -347,4 +347,72 @@ RSpec.describe CustomMapsController, type: :request do
       end
     end
   end
+
+  describe "add collaborators to custom map" do
+    let!(:owner) { FactoryBot.create(:user, name: "John", password: "123456") }
+    let!(:custom_map) { FactoryBot.create(:custom_map, owner: user) }
+    let!(:collaborators) { FactoryBot.create_list(:user, 2) }
+    let(:body) {
+      {
+        collaborators: collaborators.map(&:id)
+      }
+    }
+
+    it "returns 204 no content status" do
+      patch "/custom_maps/#{custom_map.id}/collaborators", params: body, as: :json, headers: @headers
+
+      expect(response.status).to eq(204)
+    end
+
+    it "adds collaborators to custom map" do
+      patch "/custom_maps/#{custom_map.id}/collaborators", params: body, as: :json, headers: @headers
+
+      expect(CustomMap.find(custom_map.id).collaborators).to include(*collaborators)
+    end
+
+    context "when custom map not found" do
+      it "returns 404 not found status" do
+        patch "/custom_maps/abc212/collaborators", params: body, as: :json, headers: @headers
+
+        expect(response.status).to eq(404)
+      end
+    end
+
+    context "when private custom map owner id is not the same of current user" do
+      let(:user) { FactoryBot.create(:user) }
+      let!(:custom_map) { FactoryBot.create(:custom_map, owner: user, visibility: "private") }
+      let(:user_two) { FactoryBot.create(:user) }
+      let(:token_two) { JsonWebToken.encode({user_id: user_two.id}) }
+      let(:header_from_user_two) { {"Authorization" => "Bearer #{token_two}"} }
+
+      it "returns 403 forbidden status" do
+        patch "/custom_maps/#{custom_map.id}/collaborators", params: body, as: :json, headers: header_from_user_two
+
+        expect(response.status).to eq(403)
+      end
+
+      it "returns error message" do
+        patch "/custom_maps/#{custom_map.id}/collaborators", params: body, as: :json, headers: header_from_user_two
+
+        expect(JSON.parse(response.body)).to include({
+          "error" => "You don't have permission to access this map"
+        })
+      end
+    end
+
+    context "when try to add owner as collaborator" do
+      let(:body) {
+        {
+          collaborators: [user.id]
+        }
+      }
+
+      it "returns 400 bad request status" do
+        patch "/custom_maps/#{custom_map.id}/collaborators", params: body, as: :json, headers: @headers
+
+        expect(response.status).to eq(400)
+        expect(JSON.parse(response.body)).to include({"error" => "You can't add yourself as a collaborator"})
+      end
+    end
+  end
 end
