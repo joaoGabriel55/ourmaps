@@ -10,12 +10,15 @@
   import { Earth, LockKeyhole, Users } from "lucide-svelte";
   import { twMerge } from "tailwind-merge";
   import { page } from "$app/stores";
+  import Dialog from "$lib/components/Dialog.svelte";
+  import AddCollaborators from "$lib/components/AddCollaborators.svelte";
+  import { goto } from "$app/navigation";
 
   let { data } = $props();
 
   let visibilityParam = $page.url.searchParams.get("visibility") || "private";
   let customMaps = $state(data.customMaps);
-  let mapToBeDeleted = $state<CustomMap>();
+  let mapSelected = $state<CustomMap>();
 
   let tabs = [
     {
@@ -35,12 +38,17 @@
     },
   ];
 
+  const handleAddCollaborators = (map: CustomMap) => {
+    goto("#add-collaborator");
+    mapSelected = map;
+  };
+
   const openDeleteMapModal = (map: CustomMap) => {
     const modal = document.getElementById("delete-modal") as HTMLDialogElement;
 
     if (modal) modal.showModal();
 
-    mapToBeDeleted = map;
+    mapSelected = map;
   };
 
   const handleDelete = (id: string) => {
@@ -78,28 +86,30 @@
     {/each}
   </div>
   <section class="pb-4">
-    <MapsList maps={customMaps} onDelete={openDeleteMapModal} />
+    <MapsList
+      maps={customMaps}
+      onAddCollaborators={handleAddCollaborators}
+      onDelete={openDeleteMapModal}
+    />
   </section>
-  <dialog id="delete-modal" class="modal modal-bottom sm:modal-middle">
-    <div class="modal-box">
-      <h3 class="text-lg font-bold">Delete Map {mapToBeDeleted?.name}</h3>
-      <p class="py-4">This action cannot be undone</p>
-      <div class="modal-action">
-        <form method="dialog">
-          <button
-            class="btn btn-error"
-            onclick={() => handleDelete(mapToBeDeleted?.id || "")}
-            >Delete</button
-          >
-          <button class="btn">Cancel</button>
-        </form>
-      </div>
-    </div>
-  </dialog>
+  <Dialog
+    id="delete-modal"
+    danger
+    title={`Delete Map ${mapSelected?.name}`}
+    description="This action cannot be undone"
+    submitLabel="Delete"
+    onConfirm={() => handleDelete(mapSelected?.id || "")}
+  />
+  {#if $page.url.hash === "#add-collaborator" && mapSelected}
+    <AddCollaborators token={data.token} map={mapSelected} />
+  {/if}
 </div>
 
 <style lang="postcss">
   :global(html) {
     background-color: theme(colors.gray.100);
+  }
+  :global([data-svelte-search] input, form) {
+    width: 100%;
   }
 </style>

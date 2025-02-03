@@ -2,13 +2,17 @@
   import { updateCustomMap } from "$lib/api/custom-maps/update";
   import { makeOurMapsAPI } from "$lib/api/http-client";
   import MapForm from "$lib/components/MapForm.svelte";
+  import MapInfo from "$lib/components/MapInfo.svelte";
   import MapViewer from "$lib/components/MapViewer.svelte";
   import { showToast } from "$lib/toast";
-  import BackIcon from "lucide-svelte/icons/arrow-left";
   import type { PageData } from "./$types";
 
   let center = $state<[number, number]>([7.468429, 51.514244]);
   const { data }: { data: PageData } = $props();
+
+  const isCollaborator = data.map.collaborators?.find(
+    (collaborator) => collaborator.id === data.userId
+  );
 
   let featureCollection = $state<any[]>([]);
 
@@ -52,11 +56,15 @@
     />
     <div class="absolute bottom-10 left-5 card bg-base-100 shadow w-96 z-10">
       <div class="card-body">
-        <MapForm
-          title="Edit Map"
-          map={data.map}
-          onSubmit={handleUpdateCustomMap}
-        />
+        {#if isCollaborator || data.map.owner.id === data.userId}
+          <MapForm
+            title="Edit Map"
+            map={data.map}
+            onSubmit={handleUpdateCustomMap}
+          />
+        {:else}
+          <MapInfo map={data.map} />
+        {/if}
       </div>
     </div>
   </div>

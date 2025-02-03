@@ -21,12 +21,7 @@
   }
 </script>
 
-<header class="flex items-center gap-2">
-  <a class="btn btn-sm btn-circle btn-ghost" href="/">
-    <BackIcon size={18} />
-  </a>
-  <h2 class="card-title">{title}</h2>
-</header>
+<h2 class="card-title">{title}</h2>
 <form onsubmit={handleSubmit} class="flex flex-col">
   <label class="form-control w-full max-w-xs">
     <div class="label">
@@ -40,17 +35,6 @@
       value={map?.name}
       required
     />
-  </label>
-  <label class="form-control">
-    <div class="label">
-      <span class="label-text">Description</span>
-    </div>
-    <textarea
-      class="textarea textarea-bordered h-24"
-      placeholder="My cool description..."
-      name="description"
-      value={map?.description}
-    ></textarea>
   </label>
   <div class="form-control mt-4">
     <label class="label cursor-pointer">
@@ -66,5 +50,20 @@
       />
     </label>
   </div>
-  <button type="submit" class="btn btn-primary w-full mt-4">Save</button>
+  <label class="form-control">
+    <div class="label">
+      <span class="label-text">Description</span>
+    </div>
+    <textarea
+      class="textarea textarea-bordered h-24"
+      placeholder="My cool description..."
+      name="description"
+      value={map?.description}
+    ></textarea>
+  </label>
+  <hr class="my-4" />
+  <div class="grid gap-2">
+    <button type="submit" class="btn btn-primary w-full">Save</button>
+    <a class="btn btn-sm btn-ghost" href="/">Cancel</a>
+  </div>
 </form>

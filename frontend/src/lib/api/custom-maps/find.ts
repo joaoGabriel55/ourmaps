@@ -1,20 +1,17 @@
 import type { CustomMap } from "$core/custom-map";
 import { type HTTPClient } from "$lib/api/http-client";
+import { errorHandler } from "../helpers/errors";
 import { toCustomMap } from "./parser";
 
 export const findCustomMap = async (
   id: string,
   httpClient: HTTPClient
-): Promise<CustomMap | null> => {
+): Promise<{ data?: CustomMap; status: number }> => {
   try {
-    const { data } = await httpClient.get(`/custom_maps/${id}`);
+    const response = await httpClient.get(`/custom_maps/${id}`);
 
-    return toCustomMap(data);
+    return { ...response, data: toCustomMap(response.data) };
   } catch (error: any) {
-    if ("status" in error && error.status === 404) {
-      return null;
-    }
-
-    throw error;
+    return errorHandler(error);
   }
 };
