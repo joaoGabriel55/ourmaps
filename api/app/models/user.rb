@@ -7,7 +7,8 @@ class User < ApplicationRecord
 
   has_secure_password
 
-  has_and_belongs_to_many :custom_maps, dependent: :destroy
+  has_many :custom_map_collaborators
+  has_many :custom_maps, through: :custom_map_collaborators, dependent: :destroy
 
   pg_search_scope :query_search,
     against: [:name, :email],
