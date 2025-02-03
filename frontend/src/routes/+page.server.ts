@@ -28,7 +28,11 @@ export const load = async ({ cookies, url }) => {
 
   const userProfile = await findUserById(userId, ourMapsAPI);
 
-  const customMaps = await getAllCustomMaps(userId, visibility, ourMapsAPI);
+  if (!userProfile) {
+    throw redirect(303, "/login");
+  }
+
+  const customMaps = await getAllCustomMaps(userId, { visibility }, ourMapsAPI);
 
   return {
     token,

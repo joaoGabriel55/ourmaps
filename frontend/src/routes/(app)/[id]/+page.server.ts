@@ -11,7 +11,11 @@ export const load = async ({ cookies, params }) => {
     throw redirect(303, "/login");
   }
 
-  const map = await findCustomMap(params.id, makeOurMapsAPI(token));
+  const response = await findCustomMap(params.id, makeOurMapsAPI(token));
 
-  return { map, token, userId };
+  if (response.status === 200 && response.data) {
+    return { map: response.data, token, userId };
+  } else if (response.status === 403) {
+    throw redirect(303, "/not-allowed");
+  }
 };

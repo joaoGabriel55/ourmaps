@@ -1,13 +1,15 @@
 <script lang="ts">
   import type { CustomMap } from "$core/custom-map";
+  import { UserPlus } from "lucide-svelte";
   import TrashIcon from "lucide-svelte/icons/trash";
 
   type Props = {
     maps: Array<CustomMap>;
+    onAddCollaborators: (map: CustomMap) => void;
     onDelete: (map: CustomMap) => void;
   };
 
-  let { maps, onDelete }: Props = $props();
+  let { maps, onAddCollaborators, onDelete }: Props = $props();
 </script>
 
 {#if maps.length === 0}
@@ -40,12 +42,20 @@
           {/if}
         </div>
       </div>
-      <button
-        class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 transition duration-300"
-        onclick={() => onDelete(map)}
-      >
-        <TrashIcon size={18} class="text-red-500" />
-      </button>
+      <div class="flex gap-2">
+        <button
+          class="btn btn-sm btn-circle btn-ghost hover:bg-primary-100 transition duration-300"
+          onclick={() => onAddCollaborators(map)}
+        >
+          <UserPlus size={18} class="text-primary" />
+        </button>
+        <button
+          class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 transition duration-300"
+          onclick={() => onDelete(map)}
+        >
+          <TrashIcon size={18} class="text-red-500" />
+        </button>
+      </div>
     </li>
   {/each}
 </ul>

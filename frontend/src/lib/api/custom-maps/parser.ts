@@ -8,6 +8,7 @@ export const toCustomMap = (map: any): CustomMap => {
     description: map.description,
     center: map.center,
     visibility: map.visibility,
+    collaborators: map.collaborators,
     content: map.content,
     createdAt: map.created_at,
     updatedAt: map.updated_at,

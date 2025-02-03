@@ -10,6 +10,7 @@ export interface CustomMap {
   center: [number, number];
   visibility: CustomMapVisibility;
   content?: GeoJSON.FeatureCollection;
+  collaborators?: Array<User>;
   createdAt: Date;
   updatedAt?: Date;
 }
