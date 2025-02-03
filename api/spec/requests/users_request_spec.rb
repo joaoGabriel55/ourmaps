@@ -64,19 +64,19 @@ RSpec.describe UsersController, type: :request do
 
   context "get users by name" do
     before do
-      FactoryBot.create(:user, name: "John", email: "email@email.com")
-      FactoryBot.create(:user, name: "Jane", email: "email2@email.com")
+      FactoryBot.create(:user, name: "Tyler", email: "email@email.com")
+      FactoryBot.create(:user, name: "Tom", email: "email2@email.com")
       FactoryBot.create(:user, name: "Luke", email: "email3@email.com")
     end
 
     it "returns 200 ok status" do
-      get "/users?query=J", headers: @headers
+      get "/users?query=T", headers: @headers
 
       expect(response.status).to eq(200)
     end
 
     it "returns users count" do
-      get "/users?query=J", headers: @headers
+      get "/users?query=T", headers: @headers
 
       expect(JSON.parse(response.body).size).to eq(2)
     end
