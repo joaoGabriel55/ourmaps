@@ -1,20 +1,23 @@
 <script lang="ts">
-  import type { CustomMap } from "$core/custom-map";
   import type { User } from "$core/user";
   import { makeOurMapsAPI } from "$lib/api/http-client";
   import { searchUsers } from "$lib/api/users/search";
+  import * as Dialog from "$lib/components/ui/dialog";
   import { TrashIcon } from "lucide-svelte";
-  import SearchInput, { type Option } from "./SearchInput.svelte";
+
+  import type { CustomMap } from "$core/custom-map";
   import { addCustomMapCollaborators } from "$lib/api/custom-maps/add-collaborators";
+  import { removeCustomMapCollaborators } from "$lib/api/custom-maps/remove-collaborators";
+  import SearchInput, { type Option } from "$lib/components/SearchInput.svelte";
+  import { showToast } from "$lib/toast";
 
   type Props = {
-    token: string;
     map: CustomMap;
+    token: string;
+    onClose: () => void;
   };
 
-  let { token, map }: Props = $props();
-
-  console.log(map)
+  let { map, token, onClose }: Props = $props();
 
   const toOption = (user: User) => ({
     value: user.id,
@@ -23,6 +26,14 @@
 
   let collaborators = $state<Array<User>>([]);
   let selectedCollaborators = $state<Array<User>>(map.collaborators || []);
+  let searchOptions = $derived(
+    collaborators.flatMap((collaborator) => {
+      if (selectedCollaborators.find((c) => c.id === collaborator.id))
+        return [];
+
+      return toOption(collaborator);
+    })
+  );
 
   async function searchCollaborators(value: string) {
     try {
@@ -50,74 +61,66 @@
     );
 
     if (map.collaborators?.find((c) => c.id === collaborator.id)) {
-      // TODO: remove collaborator from API
+      removeCustomMapCollaborators(
+        map.id,
+        [collaborator.id],
+        makeOurMapsAPI(token)
+      );
     }
   }
 
-  function submitCollaborators() {
-    addCustomMapCollaborators(
-      map.id,
-      selectedCollaborators.map((c) => c.id),
-      makeOurMapsAPI(token)
-    );
+  async function submitCollaborators() {
+    try {
+      await addCustomMapCollaborators(
+        map.id,
+        selectedCollaborators.map((c) => c.id),
+        makeOurMapsAPI(token)
+      );
+
+      onClose();
+    } catch (e: any) {
+      showToast(e.response.data.error, "error");
+    }
   }
 </script>
 
-<dialog
-  open
-  class="modal modal-bottom sm:modal-middle backdrop-brightness-[20%]"
->
-  <div class="modal-box h-2/3 flex flex-col justify-between">
-    <section>
-      <h3 class="text-lg font-bold">Share map "{map.name}"</h3>
-      <div class="py-4 relative">
-        <SearchInput
-          options={collaborators.flatMap((collaborator) => {
-            if (selectedCollaborators.find((c) => c.id === collaborator.id))
-              return [];
-
-            return toOption(collaborator);
-          })}
-          onChange={searchCollaborators}
-          onSelect={addCollaborator}
-        />
-      </div>
-      <section>
-        <h3 class="text-md font-semibold">Collaborators</h3>
-        <ul
-          class="grid gap-2 mt-2 overflow-y-auto max-h-[268px] md:max-h-[328px]"
-        >
-          {#each selectedCollaborators as collaborator}
-            <li class="flex justify-between items-center">
-              <div class="flex flex-col">
-                <strong>{collaborator.name}</strong>
-                <span class="text-sm text-gray-500">{collaborator.email}</span>
-              </div>
-              <div class="flex gap-2">
-                <button
-                  class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 transition duration-300"
-                  onclick={() => removeCollaborator(collaborator)}
-                >
-                  <TrashIcon size={18} class="text-red-500" />
-                </button>
-              </div>
-            </li>
-          {/each}
-          {#if selectedCollaborators.length === 0}
-            <p class="text-gray-500 text-sm text-center py-4">
-              No collaborators
-            </p>
-          {/if}
-        </ul>
-      </section>
-    </section>
-    <div class="modal-action">
-      <form class="flex gap-2 justify-end" method="dialog">
-        <button class="btn" onclick={() => history.back()}>Cancel</button>
-        <button class="btn btn-primary" onclick={submitCollaborators}>
-          Submit
-        </button>
-      </form>
-    </div>
+<Dialog.Content class="card bg-base-100 w-full">
+  <h2 class="card-title">Share map "{map.name}"</h2>
+  <section class="py-4 relative">
+    <SearchInput
+      options={searchOptions}
+      onChange={searchCollaborators}
+      onSelect={addCollaborator}
+    />
+  </section>
+  <section>
+    <h3 class="text-md font-semibold">Collaborators</h3>
+    <ul class="grid gap-2 mt-2 overflow-y-auto max-h-[268px] md:max-h-[328px]">
+      {#each selectedCollaborators as collaborator}
+        <li class="flex justify-between items-center">
+          <div class="flex flex-col">
+            <strong>{collaborator.name}</strong>
+            <span class="text-sm text-gray-500">{collaborator.email}</span>
+          </div>
+          <div class="flex gap-2">
+            <button
+              class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 transition duration-300"
+              onclick={() => removeCollaborator(collaborator)}
+            >
+              <TrashIcon size={18} class="text-red-500" />
+            </button>
+          </div>
+        </li>
+      {/each}
+      {#if selectedCollaborators.length === 0}
+        <p class="text-gray-500 text-sm text-center py-4">No collaborators</p>
+      {/if}
+    </ul>
+  </section>
+  <div class="card-actions justify-end">
+    <button class="btn" onclick={() => onClose()}>Cancel</button>
+    <button class="btn btn-primary" onclick={submitCollaborators}>
+      Submit
+    </button>
   </div>
-</dialog>
+</Dialog.Content>

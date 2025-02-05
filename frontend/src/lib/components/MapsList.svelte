@@ -43,12 +43,13 @@
         </div>
       </div>
       <div class="flex gap-2">
-        <button
+        <a
           class="btn btn-sm btn-circle btn-ghost hover:bg-primary-100 transition duration-300"
+          href={`/#/${map.id}/add-collaborators`}
           onclick={() => onAddCollaborators(map)}
         >
           <UserPlus size={18} class="text-primary" />
-        </button>
+        </a>
         <button
           class="btn btn-sm btn-circle btn-ghost hover:bg-red-100 transition duration-300"
           onclick={() => onDelete(map)}

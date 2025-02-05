@@ -31,8 +31,12 @@ const makeHttpClient = (baseUrl: string, token?: string) => {
 
       return { data: response.data, status: response.status };
     },
-    delete: async <T = any>(url: string) => {
-      const response = await axiosInstance.delete<T>(url);
+    delete: async <T = any>(url: string, data?: any) => {
+      const response = await axiosInstance.request<T>({
+        url,
+        method: "DELETE",
+        data,
+      });
 
       return { data: response.data, status: response.status };
     },
