@@ -1,8 +1,10 @@
+<script module>
+  export type Option = { value: string; label: string };
+</script>
+
 <script lang="ts">
   import { SearchIcon } from "lucide-svelte";
   import Search from "svelte-search";
-
-  export type Option = { value: string; label: string };
 
   type Props = {
     options: Array<Option>;
@@ -41,7 +43,10 @@
   </label>
   <div class="w-full bg-white">
     {#if value && options.length > 0}
-      <ul role="listbox" class="overflow-auto mt-2 bg-white max-h-[200px] w-full absolute z-50 shadow rounded-b-md">
+      <ul
+        role="listbox"
+        class="overflow-auto mt-2 bg-white max-h-[200px] w-full absolute z-50 shadow rounded-b-md"
+      >
         {#each options as option}
           <li role="option" aria-selected={option.value === value}>
             <button
