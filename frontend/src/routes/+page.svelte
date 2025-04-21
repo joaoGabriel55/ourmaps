@@ -53,9 +53,15 @@
   const handleDelete = (id: string) => {
     customMaps = customMaps.filter((map) => map.id !== id);
 
-    deleteCustomMap(id, makeOurMapsAPI(data.token)).catch((error) => {
-      showToast("Error deleting map. Please try again", "error");
-    });
+    deleteCustomMap(id, makeOurMapsAPI(data.token))
+      .catch(() => {
+        showToast("Error deleting map. Please try again", "error");
+      })
+      .then(() => {
+        openConfirmDeleteDialog = false;
+
+        showToast("Map deleted successfully!", "success");
+      });
   };
 
   $effect(() => {

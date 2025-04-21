@@ -12,7 +12,7 @@ export const updateCustomMap = async (
   map: UpdateCustomMapInput,
   httpClient: HTTPClient
 ) => {
-  return await httpClient.put(`/custom_maps/${map.id}`, {
+  return await httpClient.patch(`/custom_maps/${map.id}`, {
     id: map.id,
     name: map.name,
     owner_id: map.ownerId,

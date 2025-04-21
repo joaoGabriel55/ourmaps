@@ -78,6 +78,8 @@
       );
 
       onClose();
+
+      showToast("Collaborators added successfully!", "success");
     } catch (e: any) {
       showToast(e.response.data.error, "error");
     }

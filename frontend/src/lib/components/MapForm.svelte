@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { LockKeyhole } from "lucide-svelte";
+  import { EarIcon, EarthIcon, LockKeyhole } from "lucide-svelte";
   import BackIcon from "lucide-svelte/icons/arrow-left";
   import type { CustomMap } from "$core/custom-map";
 
@@ -10,6 +10,8 @@
   };
 
   let { title, map, onSubmit }: Props = $props();
+
+  let isPrivate = $state((map?.visibility || "private") === "private");
 
   function handleSubmit(event: SubmitEvent) {
     event.preventDefault();
@@ -39,13 +41,20 @@
   <div class="form-control mt-4">
     <label class="label cursor-pointer">
       <div class="flex items-center gap-2">
-        <LockKeyhole size={18} />
-        <span class="label-text">Private</span>
+        {#if isPrivate}
+          <LockKeyhole size={18} />
+        {:else}
+          <EarthIcon size={18} />
+        {/if}
+        <span class="label-text">{isPrivate ? "Private" : "Public"}</span>
       </div>
       <input
         class="toggle toggle-primary"
         type="checkbox"
         name="visibility"
+        onchange={() => {
+          isPrivate = !isPrivate;
+        }}
         checked={map?.visibility === "private"}
       />
     </label>
@@ -62,8 +71,8 @@
     ></textarea>
   </label>
   <hr class="my-4" />
-  <div class="grid gap-2">
+  <div class="grid gap-2 md:grid-cols-2">
+    <a class="btn btn-ghost" href="/">Cancel</a>
     <button type="submit" class="btn btn-primary w-full">Save</button>
-    <a class="btn btn-sm btn-ghost" href="/">Cancel</a>
   </div>
 </form>

@@ -21,6 +21,7 @@ class CustomMapRepository < ApplicationRecord
     }
 
     maps = CustomMap
+      .includes(:collaborators)
       .where(filters)
       .paginate(per_page: paginator[:per_page], page: paginator[:page])
 
